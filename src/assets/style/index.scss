@@ -1,0 +1,57 @@
+* {
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  width: 100%;
+}
+.white{
+  background-color: #ffffff;
+}
+a{
+  text-decoration: none;
+}
+.gray{
+  background-color: #eef0f3;
+}
+.mr20{
+  margin-right: 20px;
+}
+.mb20{
+  margin-bottom: 20px;
+}
+.p20{
+  padding: 20px;
+}
+.pl20{
+  padding-left: 20px;
+}
+.text-right{
+  text-align: right;
+}
+.fr{
+  float: right;
+}
+.flex{
+  display: flex;
+}
+.flex-between{
+  display: flex;
+  justify-content: space-between;
+}
+.flex-center{
+  display: flex;
+  justify-content: center;
+}
+
+// 抽屉添加滚动支持
+.el-drawer__body{
+  overflow-y: auto;
+}
+
+// 页面容器样式
+.page-content-wrapper {
+  flex: 1;
+  padding: 20px;
+  background: #eef0f3;
+}

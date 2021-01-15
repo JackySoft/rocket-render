@@ -1,0 +1,60 @@
+{
+  "name": "Oc-Pro",
+  "version": "0.1.0",
+  "private": true,
+  "author": "chenjb <chenjb@2345.com>",
+  "scripts": {
+    "serve": "vue-cli-service serve --mode dev",
+    "build": "vue-cli-service build --mode prod",
+    "lint": "vue-cli-service lint",
+    "build:prod": "vue-cli-service build --mode prod",
+    "build:test": "vue-cli-service build --mode test",
+    "dev": "vue-cli-service serve --mode dev"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@ued2345/laserbeak": "0.20.0",
+    "@ued2345/single-storage": "^0.0.4",
+    "axios": "^0.19.0",
+    "core-js": "^3.6.5",
+    "element-ui": "^2.14.1",
+    "path-to-regexp": "^1.8.0",
+    "vue": "^2.6.11",
+    "vue-router": "^3.2.0",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "@ued2345/pro-plus": "^0.2.2",
+    "@ued2345/vue-cli-plugin-oc-pro": "~0.8.15",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/eslint-config-standard": "^5.1.2",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-component": "^1.1.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "ghooks": "^2.0.4",
+    "mockjs": "^1.1.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.2",
+    "validate-commit-msg": "^2.14.0",
+    "vue-cli-plugin-element": "^1.0.1",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "config": {
+    "ghooks": {
+      "commit-msg": "validate-commit-msg"
+    }
+  },
+  "license": "MIT",
+  "repository": "git@gitlab.2345.cn:ued/business/oc-form.git"
+}

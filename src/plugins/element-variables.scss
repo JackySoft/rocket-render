@@ -1,0 +1,15 @@
+/* 改变主题色变量，默认主题色 #409eff */
+$--color-primary: #1890ff;
+/* 基础边框线 */
+$--border-color-base: #dcdfe6;
+
+/* 修复element移除选中状态延迟的bug */
+.el-checkbox-button .el-checkbox-button__inner {
+  border-color: $--border-color-base !important;
+}
+
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+/* 字体加载展示逻辑：阻塞 */
+$--font-display: block;
+@import '~element-ui/packages/theme-chalk/src/index';

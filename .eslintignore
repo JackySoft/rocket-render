@@ -1,0 +1,3 @@
+# 在生成后的项目中忽略检查下列文件
+babel.config.js
+/node_modules

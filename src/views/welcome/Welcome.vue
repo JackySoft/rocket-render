@@ -1,0 +1,60 @@
+<template>
+  <Wrapper>
+    <div class="welcome">
+      <div class="welcome-desc">
+        <!-- TODO 初始化完成后可以替换这里的相关说明 -->
+        <h1 class="welcome-inner-title">欢迎使用</h1>
+        <p class="welcome-inner-content">Octopus Pro</p>
+        <p class="welcome-inner-tip">-- 环科路555号最具影响力的中后台前端方案</p>
+      </div>
+      <div class="welcome-image"></div>
+    </div>
+  </Wrapper>
+</template>
+
+<script>
+export default {
+  name: 'Welcome'
+}
+</script>
+
+<style scoped lang="scss">
+.welcome {
+  background: #fff;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .welcome-desc {
+    position: relative;
+    bottom: 40px;
+
+    .welcome-inner-title {
+      font-size: 30px;
+      line-height: 42px;
+      color: #333;
+    }
+
+    .welcome-inner-content {
+      font-size: 44px;
+      line-height: 62px;
+      color: #409eff;
+    }
+  }
+
+  .welcome-inner-tip {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #999;
+  }
+
+  .welcome-image {
+    margin-left: 105px;
+    width: 371px;
+    height: 438px;
+    background-image: url('../../assets/image/welcome.png');
+  }
+}
+</style>
