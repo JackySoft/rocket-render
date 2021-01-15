@@ -1,0 +1,398 @@
+<template>
+  <el-form
+    class="query-form"
+    :class="{ dialog: type === 'dialog' }"
+    ref="searchForm"
+    :model="value"
+    :inline="inline"
+    @submit.native.prevent="handleQuery"
+  >
+    <!-- 行内布局-->
+    <template v-if="inline" >
+      <template v-for="(item, index) in form">
+        <el-form-item
+          :label="item.type === 'checkbox' ? '' : item.label"
+          :key="item.model || index"
+          :prop="item.model || ''"
+          :required="item.required"
+          :rules="item.rules"
+        >
+          <!-- 根据type动态转换组件名称 -->
+          <component
+            v-if="['input','select','checkbox','radio','switch','cascader'].includes(item.type)"
+            v-model="value[item.model]"
+            :item="item"
+            :is="`O${item.type[0].toUpperCase()+item.type.slice(1)}`"
+            @input="handleInput(item,value)"
+          >
+            <template v-slot:select v-if="item.prependConfig">
+              <OSelect
+                v-model="value[item.prependConfig.model]"
+                :item="item.prependConfig"
+                @input="handleInput(item.prependConfig,value)"
+              />
+            </template>
+          </component>
+
+          <!-- 普通数字框 -->
+          <OInput
+            v-if="['text', 'number', 'textarea'].includes(item.type)"
+            v-model="value[item.model]"
+            :item="item"
+            @input="handleInput(item,value)"
+          />
+
+          <!-- type无法转换为DatePicker，所以需要单独定义 -->
+          <ODatePicker
+            v-if="['date', 'daterange', 'datetime', 'datetimerange'].includes(item.type)"
+            v-model="value[item.model]"
+            :item="item"
+            @input="handleInput(item,value)"
+          />
+
+          <!-- 增加一个时段选择 -->
+          <template v-if="item.type === 'time-select'">
+            <el-row :gutter="item.gutter || 10">
+              <el-col :span="12">
+                <OTimeSelect
+                  v-model="value[item.items[0].model]"
+                  :item="{...item.items[0],placeholder:'起始'}"
+                  @change="handleInput(item,value)"
+                />
+              </el-col>
+              <el-col :span="12">
+                <OTimeSelect
+                  v-model="value[item.items[1].model]"
+                  :item="{...item.items[1],placeholder:'结束',pickerOptions:{...(item.items[1].pickerOptions),minTime: value[item.items[0].model]}}"
+                />
+              </el-col>
+            </el-row>
+          </template>
+
+        </el-form-item>
+      </template>
+      <el-form-item>
+        <el-button @click="handleReset">重置</el-button>
+        <el-button type="primary" @click="handleQuery">查询</el-button>
+      </el-form-item>
+    </template>
+    <!-- 固定栅格布局-->
+    <el-row type="flex" :gutter="20" v-else>
+      <template v-for="(item, index) in form">
+        <el-col
+          :key="index"
+          :xs="24"
+          :sm="24"
+          :md="md"
+          :lg="lg"
+          :xl="xl"
+          :class="{ hidden: index >= hiddenIndex && !isOpen }"
+        >
+          <el-form-item
+            :label="item.type === 'checkbox' ? '' : item.label"
+            :key="item.model || index"
+            :prop="item.model || ''"
+          >
+            <!-- 根据type动态转换组件名称 -->
+            <component
+              v-if="['input','select','checkbox','radio','switch','cascader'].includes(item.type)"
+              v-model="value[item.model]"
+              :item="item"
+              :is="`O${item.type[0].toUpperCase()+item.type.slice(1)}`"
+              @input="handleInput(item,value)"
+            >
+              <template v-slot:select v-if="item.prependConfig">
+                <OSelect
+                  v-model="value[item.prependConfig.model]"
+                  :item="item.prependConfig"
+                  @input="handleInput(item.prependConfig,value)"
+                />
+              </template>
+            </component>
+
+            <!-- 普通数字框 -->
+            <OInput
+              v-if="['text', 'number', 'textarea'].includes(item.type)"
+              v-model="value[item.model]"
+              :item="item"
+              @input="handleInput(item,value)"
+            />
+
+            <!-- type无法转换为DatePicker，所以需要单独定义 -->
+            <ODatePicker
+              v-if="['date', 'daterange', 'datetime', 'datetimerange'].includes(item.type)"
+              v-model="value[item.model]"
+              :item="item"
+              @input="handleInput(item,value)"
+            />
+            <!-- 增加一个时段选择 -->
+            <template v-if="item.type === 'time-select'">
+              <el-row :gutter="item.gutter || 10">
+                <el-col :span="12">
+                  <OTimeSelect
+                    v-model="value[item.items[0].model]"
+                    :item="item.items[0]"
+                    @input="handleInput(item,value)"
+                  />
+                </el-col>
+                <el-col :span="12">
+                  <OTimeSelect
+                    v-model="value[item.items[1].model]"
+                    :item="{...item.items[1],pickerOptions:{...(item.items[1].pickerOptions),minTime: value[item.items[0].model]}}"
+                  />
+                </el-col>
+              </el-row>
+            </template>
+          </el-form-item>
+        </el-col>
+      </template>
+      <el-col
+        :xs="24"
+        :sm="24"
+        :md="md"
+        :lg="lg"
+        :xl="xl"
+        :offset="offset"
+        class="text-right mb20"
+      >
+        <el-button @click="handleReset">重置</el-button>
+        <el-button type="primary" @click="handleQuery">查询</el-button>
+        <el-button type="text" v-if="showOpen" @click="handleOpen" size="medium"
+          >{{ isOpen ? "收起" : "展开"
+          }}<i :class="[isOpen ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i
+        ></el-button>
+      </el-col>
+    </el-row>
+  </el-form>
+</template>
+<script>
+import * as items from './../components'
+/**
+ * 根据屏幕宽度，做栅格列数适配
+ * 弹框中表单和页面查询表单要区分开
+ * 弹框一律最大显示2列，页面查询表单最大显示4列
+ * @param {formLength} JSON表单总长度
+ * @param {isOpen} 是否展开
+ * @param {mode} 是否为弹框
+ */
+const getResult = (formLength, isOpen, mode) => {
+  const w = document.documentElement.clientWidth
+  let len = 0
+  let hiddenIndex = 0
+  let offset = 0
+  let showOpen = true
+  let md = 12 // 1200px以下，一行2列
+  let lg = 8 // 1200px以上，一行显示3列
+  let xl = 6 // 1920px以上，一行显示4列
+  if (mode === 'dialog') {
+    if (isOpen) {
+      hiddenIndex = 0
+      offset = formLength % 2 === 0 ? 12 : 0
+    } else {
+      hiddenIndex = 1
+      offset = formLength > 1 ? 0 : 12
+    }
+    md = 12
+    lg = 12
+    xl = 12
+  } else {
+    if (w >= 1920) {
+      hiddenIndex = 3
+      len = formLength % 4
+      if (isOpen) {
+        if (len === 0) offset = 18
+        else if (len === 1) offset = 12
+        else if (len === 2) offset = 6
+        else if (len === 3) offset = 0
+      } else if (formLength > 3) {
+        offset = 0
+      } else {
+        if (len === 0) offset = 0
+        else if (len === 1) offset = 12
+        else if (len === 2) offset = 6
+        else if (len === 3) offset = 0
+      }
+    } else if (w >= 1200) {
+      // 一行显示三列
+      hiddenIndex = 2
+      len = formLength % 3
+      if (isOpen) {
+        if (len === 0) offset = 16
+        else if (len === 1) offset = 8
+        else if (len === 2) offset = 0
+      } else if (formLength > 2) {
+        offset = 0
+      } else {
+        if (len === 0) offset = 0
+        else if (len === 1) offset = 8
+        else if (len === 2) offset = 0
+      }
+    } else if (w >= 992) {
+      hiddenIndex = 1
+      if (isOpen) {
+        if (formLength % 2 === 0) offset = 12
+      }
+    } else {
+      hiddenIndex = 1
+    }
+    if (formLength <= hiddenIndex) {
+      showOpen = false
+    }
+  }
+
+  return {
+    hiddenIndex,
+    offset,
+    showOpen,
+    md,
+    lg,
+    xl,
+    w,
+  }
+}
+// 添加防抖，防止resize重复调用
+function debounce (method, delay, immediate) {
+  let timer = null
+  if (immediate) {
+    method && method()
+  }
+  return function () {
+    const self = this
+    const args = arguments
+    timer && clearTimeout(timer)
+    timer = setTimeout(function () {
+      method.apply(self, args)
+    }, delay)
+  }
+}
+export default {
+  name: 'QueryForm',
+  props: {
+    inline: Boolean, // true为行内，false为栅格
+    type: String, // 当设置为dialog时，说明QueryForm在dialog中使用，会调整QueryForm背景色
+    form: Array, // 表单JSON对象
+    model: Object, // 默认v-model参数
+  },
+  components: { ...items },
+  data () {
+    return {
+      value: { ...this.model }, // 初始化表单值
+      md: 12, // 992-1200 , 默认加载两列
+      lg: 8, // 1200 - 1920 , 默认加载3列
+      xl: 6, // >=1920 , 默认加载四列
+      showOpen: true, // 显示展开/收起按钮
+      isOpen: false, // 当前是否为展开状态
+      hiddenIndex: 0, // 需要隐藏的索引
+      offset: 0, // 偏移的列数
+      screenWidth: 0, // 当前屏幕可用宽度
+    }
+  },
+  mounted () {
+    window.onresize = debounce(this.handleLayout, 500, true)
+  },
+  methods: {
+    /**
+     * 触发自定义事件
+     * @callback(val,values,model)当前值/所有值/当前model
+     */
+    handleInput (item, values) {
+      if (item.change) {
+        item.change(values[item.model], values, item.model)
+      }
+      if (item.type === 'time-select') {
+        this.value[item.items[1].model] = null
+      }
+    },
+    /**
+     * 表单重置
+     * 外部也可通过$refs进行内部API调用
+     */
+    handleReset () {
+      this.$refs.searchForm.resetFields()
+      this.$emit('update:model', { ...this.value })
+      // 时段/级联组件-重置功能需要单独做
+      this.$emit('handleReset', 1)
+    },
+    /**
+     * 点击查询，回传数据，重置页码
+     */
+    handleQuery () {
+      this.$emit('update:model', { ...this.value })
+      this.$emit('handleQuery', 1)
+    },
+    /**
+     * 点击展开/收起
+     */
+    handleOpen () {
+      this.isOpen = !this.isOpen
+      const res = getResult(this.form.length, this.isOpen, this.mode)
+      this.hiddenIndex = res.hiddenIndex
+      this.offset = res.offset
+      this.md = res.md
+      this.lg = res.lg
+      this.xl = res.xl
+    },
+    /**
+     * 监听resize事件，并通过防抖控制重复触发
+     */
+    handleLayout () {
+      // 根据当前屏幕尺寸，计算需要展示的列数以及隐藏列数
+      const { hiddenIndex, offset, showOpen, md, lg, xl, w } = getResult(
+        this.form.length,
+        this.isOpen,
+        this.mode
+      )
+      this.hiddenIndex = hiddenIndex
+      this.offset = offset
+      this.showOpen = showOpen
+      this.md = md
+      this.lg = lg
+      this.xl = xl
+      this.screenWidth = w
+    }
+  },
+  /**
+   * 销毁全局事件
+   */
+  unmounted () {
+    window.onresize = null
+  }
+}
+</script>
+<style lang="scss">
+// 默认为白色背景，当在弹框中时为灰色背景
+.query-form {
+  background-color: #ffffff;
+  margin-bottom: 20px;
+  padding: 20px 20px 0;
+  border-radius: 4px;
+  border: 1px solid #ebeef5;
+  &.dialog {
+    background-color: #f7f8fa;
+    border: none;
+  }
+  .hidden {
+    display: none;
+  }
+  .el-row--flex {
+    flex-wrap: wrap;
+    .el-form-item {
+      display: flex;
+      .el-form-item__content {
+        flex: 1;
+        .el-date-editor {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+// 弹框中表格样式控制
+.el-dialog__wrapper,
+.el-drawer__wrapper {
+  .query-form {
+    background-color: #f7f8fa;
+    border: none;
+  }
+}
+</style>

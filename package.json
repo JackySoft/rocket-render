@@ -1,6 +1,6 @@
 {
-  "name": "Oc-Pro",
-  "version": "0.1.0",
+  "name": "@ued2345/octopus-form",
+  "version": "1.1.8",
   "private": true,
   "author": "chenjb <chenjb@2345.com>",
   "scripts": {
@@ -9,9 +9,19 @@
     "lint": "vue-cli-service lint",
     "build:prod": "vue-cli-service build --mode prod",
     "build:test": "vue-cli-service build --mode test",
-    "dev": "vue-cli-service serve --mode dev"
+    "dev": "vue-cli-service serve --mode dev",
+    "packages": "vue-cli-service build --target lib --name octopus-form --dest lib packages/index.js"
   },
-  "main": "index.js",
+  "main": "packages/index.js",
+  "typings": "types/index.d.ts",
+  "publishConfig": {
+    "@ued2345:registry": "https://nexus.2345.cn/repository/npm-hosted/"
+  },
+  "files": [
+    "packages",
+    "dist/*.js",
+    "types/*.d.ts"
+  ],
   "dependencies": {
     "@ued2345/laserbeak": "0.20.0",
     "@ued2345/single-storage": "^0.0.4",
@@ -56,5 +66,9 @@
     }
   },
   "license": "MIT",
+  "bugs": {
+    "url": "https://confluence.2345.cn/pages/viewpage.action?pageId=98641002"
+  },
+  "homepage": "http://ocwidget.ued.2345.cn/pc/Release.html#_1-1-2%E6%9B%B4%E6%96%B0%E5%86%85%E5%AE%B9",
   "repository": "git@gitlab.2345.cn:ued/business/oc-form.git"
 }

@@ -10,7 +10,7 @@ console.log('当前环境:' + env)
 const EnvConfig = {
   dev: { // 开发环境
     baseApi: `//gateway.tech.2345.cn/permission-${match}`,
-    mockApi: 'http://yapi.web.2345.cn/mock/437'
+    mockApi: 'http://yapi.web.2345.cn/mock/437',
   },
   test: { // 测试环境
     baseApi: `//gateway.tech.2345.cn/permission-${match}`,
@@ -26,6 +26,6 @@ export default {
   env, // 当前环境dev|test|prod
   routePass: false, // 全局设置所有路由免验证，仅在开发环境下生效
   mock: false, // 是否开启全局mock,即使开启，在生产环境也不会生效
-  namespace: '__ADMIN_DEMO', // 项目localStorage\sessionStorage命名空间
+  namespace: '__ADMIN_OC_FORM', // 项目localStorage\sessionStorage命名空间
   ...EnvConfig[env]
 }

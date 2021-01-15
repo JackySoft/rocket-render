@@ -77,15 +77,15 @@ export default {
   methods: {
     getUserMenu () {
       // TODO 这里是模拟获取菜单的逻辑，以接入【中台权限中心】为例，如果你的项目不接入中台权限中心，你可能需要调整
-      this.$api.getUserMenu({
+      this.$api.getUserInfo({
         reqTypeEnumValue: 'ALL', // 获取所有信息
         userId: this.userInfo.userId, // 当前用户ID
         systemId: this.systemId // 当前子系统ID，大中台平台跳转时会携带，其他项目需要自行根据环境写入
       }).then(res => {
         // 存储菜单信息
-        this.$store.commit('userMenu', res.menuInfos || [])
+        this.$store.commit('userMenu', res.authTree || [])
         // 更新用户信息
-        this.$store.commit('userInfo', res.userInfoDTO || {})
+        this.$store.commit('userInfo', res.userInfo || {})
         // 操作权限数据结构处理
         if (res.accessPointList) {
           const accessPointList = res.accessPointList || []
