@@ -18,6 +18,7 @@
     <!-- 基础表格 -->
     <div class="base-table">
       <el-table
+        ref="baseTable"
         v-loading="$attrs.loading"
         :size="size"
         :border="border"
