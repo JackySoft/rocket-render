@@ -28,12 +28,12 @@
       title="嵌套表单"
       :visible.sync="showModal1"
       width="50%"
-      @close="handleClose('elForm')"
+      @close="$refs.dialogForm.handleReset()"
     >
       <rocket-form
         ref="dialogForm"
         :config="rocketConfig"
-        @handleClose="showModal1=false"
+        @handleClose="handleClose()"
         v-model="userInfo"
       ></rocket-form>
     </el-dialog>
@@ -189,7 +189,8 @@ export default {
       userInfo: {
         a1: '10001',
         a2: '10002',
-        a3: 1
+        a3: 1,
+        list: [{ a7: '', a8: '' }]
       }
     }
   },
@@ -212,8 +213,7 @@ export default {
       })
     },
     handleClose (form) {
-      // 表单重置
-      this.$refs[form].handleReset()
+      this.showModal1 = false
     },
     getSelectList (val, values, model) {
       this.$request.get('/select/list').then((res) => {
