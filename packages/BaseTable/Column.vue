@@ -12,6 +12,11 @@
     :class-name="item.className"
     :show-overflow-tooltip="item.showOverflowTooltip === undefined?true:item.showOverflowTooltip"
   >
+    <template slot="header" v-if="item.tips">
+      <el-tooltip :content="item.tips" placement="top" >
+        <div>{{item.label}}<i class="el-icon-info"></i></div>
+      </el-tooltip>
+    </template>
     <!-- 自定义单元格 -->
     <template slot-scope="scope">
       <div v-if="item.type === 'index'">{{scope.$index+1}}</div>
@@ -19,6 +24,10 @@
       <template v-if="item.type === 'click'">
         <span v-if="!formatText(item,scope.row) || formatText(item,scope.row) === item.empty || formatText(item,scope.row) === '--'">{{ formatText(item,scope.row) }}</span>
         <span class="btn-link" @click="handleCellClick(scope.row,item.prop)" v-else>{{ formatText(item,scope.row) }}</span>
+      </template>
+      <!-- 单个cell点击,通过prop可以获取是哪列触发的点击 -->
+      <template v-if="item.type === 'html'">
+        <span v-html="scope.row[item.prop]"></span>
       </template>
       <!-- 图片显示，支持轮播预览，默认只显示第一张图片 -->
       <div v-else-if="item.type === 'image'">
@@ -164,7 +173,7 @@ export default {
       if (item.formatter) return item.formatter(row)
       text = row[item.prop]
       if (text || text * 1 === 0) return text
-      if (item.hasOwnProperty('empty')) return item.empty
+      if (typeof item.empty !== 'undefined') return item.empty
       return '--'
     },
     /**

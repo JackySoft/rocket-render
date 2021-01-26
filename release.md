@@ -1,3 +1,7 @@
+1.2.0
+1. 表格数据支持html赋值，type:html即可
+2. 表头支持鼠标悬浮显示tips信息
+3. 
 1.1.8Bug修复
 1. queryForm 支持重置事件
 2. queryForm 中 select 支持远程搜索

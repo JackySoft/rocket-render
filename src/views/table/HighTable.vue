@@ -82,8 +82,9 @@ export default {
         {
           prop: 'uid',
           label: '用户ID',
-          align: 'left',
-          type: 'click'
+          align: 'center',
+          type: 'click',
+          tips: '测试一下'
         },
         {
           prop: 'user-info',
