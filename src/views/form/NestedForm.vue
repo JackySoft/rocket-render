@@ -1,15 +1,15 @@
 <template>
   <wrapper>
     <!-- 表单查询区 -->
-    <!-- <query-form
+    <query-form
       :inline="false"
       :form="form"
       :model.sync="queryParams"
       @handleQuery="getTableList"
-    /> -->
+    />
 
     <!-- 列表区域 -->
-    <!-- <base-table
+    <base-table
       :loading="showLoading"
       :column.sync="mainColumn"
       :data="mainData"
@@ -21,18 +21,19 @@
           >动态创建三</el-button
         >
       </template>
-    </base-table> -->
+    </base-table>
 
     <!-- 页内弹框 -->
     <el-dialog
       title="嵌套表单"
       :visible.sync="showModal1"
-      width="70%"
-      @close="handleClose('dialogForm3')"
+      width="50%"
+      @close="handleClose('elForm')"
     >
       <rocket-form
         ref="dialogForm"
         :config="rocketConfig"
+        @handleClose="showModal1=false"
         v-model="userInfo"
       ></rocket-form>
     </el-dialog>
@@ -189,13 +190,7 @@ export default {
         a1: '10001',
         a2: '10002',
         a3: 1
-      },
-      formData: {
-        chance: {
-        },
-        time: {},
-        list: [{ num1: 0, num2: 0 }]
-      },
+      }
     }
   },
   mounted () {
