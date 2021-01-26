@@ -116,6 +116,13 @@ export const asyncRoutes = [
             path: 'drawer',
             name: '抽屉表单',
             component: () => import('./../views/form/DrawerPower.vue'),
+          }, {
+            path: 'nested',
+            name: '嵌套表单',
+            meta: {
+              exemption: true,
+            },
+            component: () => import('./../views/form/NestedForm.vue'),
           }
         ]
       },

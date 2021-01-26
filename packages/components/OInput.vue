@@ -3,42 +3,31 @@
 <el-input
   :type="item.type==='input'?'text':item.type"
   :value="value"
-  @input="handleInput($event)"
-  :style="{ width: item.width }"
-  :placeholder="item.placeholder"
-  :maxlength="item.maxlength"
-  :disabled="item.disabled"
-  :readonly="item.readonly"
-  :show-word-limit="item.showWordLimit"
-  :rows="item.rows"
-  :clearable="true"
-  :prefix-icon="item.prefixIcon"
-  :suffix-icon="item.sufixIcon"
-  :class="{'disable-arrow':item.arrow===false}"
+  :style="item.style || item.width?`width:${item.width}`:''"
+  :class="[item.arrow===false?'disable-arrow':'',item.class]"
+  v-bind="item"
+  v-on="$listeners"
 >
-  <!-- 支持前缀select -->
-  <template slot="prepend" v-if="item.prependConfig">
-    <slot name="select"></slot>
+  <template v-if="item.slot">
+    <!-- 支持前缀select -->
+    <!-- <template slot="prepend" v-if="item.slot.prepend && item.slot.prepend.type === 'select'">
+      <OSelect
+        :item="item.slot.prepend"
+        :value="values[item.slot.prepend.model]"
+        @input="(val)=>values[item.slot.prepend.model] = val"
+      />
+    </template> -->
+    <!-- 支持文本框添加文本前缀，比如：https -->
+    <template slot="prepend" v-if="item.slot.prepend">{{item.slot.prepend}}</template>
+    <!-- 支持文本框后添加文本后缀，比如：邮箱.com -->
+    <template slot="append" v-if="item.slot.append">{{item.slot.append}}</template>
   </template>
-  <!-- 支持文本框添加文本前缀，比如：https -->
-  <template slot="prepend" v-else-if="item.prepend">{{item.prepend}}</template>
-  <!-- 支持文本框后添加文本后缀，比如：邮箱.com -->
-  <template slot="append" v-if="item.append">{{item.append}}</template>
 </el-input>
 </template>
 <script>
 export default {
   name: 'OInput',
   props: ['item', 'value'],
-  methods: {
-    // 数据回传
-    handleInput (val) {
-      this.$emit('input', val)
-    },
-    updatePrependValue (val) {
-      this.$emit('update:prependValue', val)
-    }
-  }
 }
 </script>
 <style lang="scss">

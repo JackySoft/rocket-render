@@ -2,10 +2,11 @@
 <!-- 下拉组件 -->
 <el-select
   :value="value"
-  @input="handleInput($event)"
-  v-bind="item"
   :popper-append-to-body="false"
-  :style="{ width: item.width || '100%' }"
+  :style="item.style || item.width?`width:${item.width}`:'100%'"
+  :class="[item.arrow===false?'disable-arrow':'',item.class]"
+  v-bind="item"
+  v-on="$listeners"
 >
   <el-option
     v-for="option in item.options"
@@ -20,12 +21,6 @@
 <script>
 export default {
   name: 'OSelect',
-  props: ['item', 'value'],
-  methods: {
-    // 数据回传
-    handleInput (val) {
-      this.$emit('input', val)
-    },
-  }
+  props: ['item', 'value']
 }
 </script>

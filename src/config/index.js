@@ -9,7 +9,7 @@ const match = (document.domain.match(/([^.*]+).2345.cn/) || ['', 'st0'])[1]
 console.log('当前环境:' + env)
 const EnvConfig = {
   dev: { // 开发环境
-    baseApi: `//gateway.tech.2345.cn/permission-${match}`,
+    baseApi: 'http://yapi.web.2345.cn/mock/437',
     mockApi: 'http://yapi.web.2345.cn/mock/437',
   },
   test: { // 测试环境
