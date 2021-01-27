@@ -151,6 +151,7 @@ export default {
       } else if (item.type === 'time-select') {
         // this.value[item.items[1].model] = null
       }
+      console.log(values)
       this.$emit('input', { ...this.value, [item.model]: values })
     },
     // 表单重置

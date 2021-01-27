@@ -14,15 +14,7 @@
 
 <el-upload
   v-if="item.httpRequest"
-  :class="item.class"
-  :style="item.style"
-  :list-type="item.listType"
-  :action="item.action"
-  :show-file-list="true"
-  :file-list="fileList"
-  :limit="item.limit || 1"
-  :multiple="item.multiple"
-  :auto-upload="item.autoUpload"
+  v-bind="$attrs"
   :before-upload="(file) => onBeforeUpload(file, item)"
   :on-remove="handleFileRemove"
   :on-exceed="onFileExceed"
@@ -40,18 +32,8 @@
 </el-upload>
 <el-upload
   v-else
-  :class="item.class"
-  :style="item.style"
-  :headers="item.headers || { Authorization: item.token }"
-  :list-type="item.listType"
-  :action="item.action"
-  :name="item.name || 'file'"
-  :show-file-list="true"
+  v-bind="$attrs"
   :file-list="fileList"
-  :limit="item.limit || 1"
-  :data="item.data"
-  :multiple="item.multiple"
-  :auto-upload="item.autoUpload"
   :before-upload="(file) => onBeforeUpload(file, item)"
   :on-remove="handleFileRemove"
   :on-success="
@@ -151,7 +133,7 @@ export default {
       fileList.pop()
       // 保存上传内容到隐藏域
       const arr = fileList.slice()
-      if (result[code] === codeVal) {
+      if (result[code] === codeVal || result[code] === 200) {
         const { name = '', url = '' } = result[data]
         arr.push({
           name,

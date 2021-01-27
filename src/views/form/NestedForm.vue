@@ -39,7 +39,6 @@
     </el-dialog>
   </wrapper>
 </template>
-
 <script>
 import config from './nested'
 export default {
@@ -190,7 +189,8 @@ export default {
         a1: '10001',
         a2: '10002',
         a3: 1,
-        list: [{ a7: '', a8: '' }]
+        list: [{ a7: '', a8: '' }],
+        checked: []
       }
     }
   },

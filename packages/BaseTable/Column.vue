@@ -1,7 +1,6 @@
 <template>
   <!-- 常规列处理：点击/图片/操作按钮/link/url/badge -->
   <el-table-column
-    :type="item.type"
     :prop="item.prop"
     :label="item.label"
     :fixed="item.fixed"
@@ -13,7 +12,7 @@
     :show-overflow-tooltip="item.showOverflowTooltip === undefined?true:item.showOverflowTooltip"
   >
     <template slot="header" v-if="item.tips">
-      <el-tooltip :content="item.tips" placement="top" >
+      <el-tooltip :content="item.tips" placement="top" style="display:inline-block;">
         <div>{{item.label}}<i class="el-icon-info"></i></div>
       </el-tooltip>
     </template>
