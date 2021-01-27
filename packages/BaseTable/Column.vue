@@ -1,7 +1,6 @@
 <template>
   <!-- 常规列处理：点击/图片/操作按钮/link/url/badge -->
   <el-table-column
-    :type="item.type"
     :prop="item.prop"
     :label="item.label"
     :fixed="item.fixed"
