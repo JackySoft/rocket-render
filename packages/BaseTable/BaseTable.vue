@@ -279,6 +279,9 @@ export default {
         }
       }
     }
+    .el-tooltip{
+      width:auto!important;
+    }
   }
 }
 .el-tooltip__popper{
