@@ -2,7 +2,7 @@
   <div class="pro-table" :class="{'auto':isFullScreen}" id="ocBaseTable">
     <div class="card-header">
       <!-- 表格上方操作按钮 -->
-      <div class="action">
+      <div class="action" v-if="$slots.action">
         <slot name="action"></slot>
       </div>
       <!-- 工具条 -->
