@@ -5,6 +5,7 @@
     :label="item.label"
     :fixed="item.fixed"
     :width="item.width"
+    :min-width="item.minWidth"
     :sortable="item.sortable"
     :sort-orders="item.sortOrders"
     :align="item.align || 'center'"

@@ -10,66 +10,7 @@
     <!-- 行内布局-->
     <template v-if="inline" >
       <template v-for="(item, index) in form">
-        <el-form-item
-          :label="item.type === 'checkbox' ? '' : item.label"
-          :key="item.model || index"
-          :prop="item.model || ''"
-          :required="item.required"
-          :rules="item.rules"
-        >
-          <!-- 根据type动态转换组件名称 -->
-          <component
-            v-if="['input','select','checkbox','radio','switch','cascader'].includes(item.type)"
-            v-model="value[item.model]"
-            :item="item"
-            :is="`O${item.type[0].toUpperCase()+item.type.slice(1)}`"
-            @input="handleInput(item,value)"
-          >
-            <template v-slot:select v-if="item.prependConfig">
-              <OSelect
-                v-model="value[item.prependConfig.model]"
-                :item="item.prependConfig"
-                @input="handleInput(item.prependConfig,value)"
-              />
-            </template>
-          </component>
-
-          <!-- 普通数字框 -->
-          <OInput
-            v-if="['text', 'number', 'textarea'].includes(item.type)"
-            v-model="value[item.model]"
-            :item="item"
-            @input="handleInput(item,value)"
-          />
-
-          <!-- type无法转换为DatePicker，所以需要单独定义 -->
-          <ODatePicker
-            v-if="['date', 'daterange', 'datetime', 'datetimerange'].includes(item.type)"
-            v-model="value[item.model]"
-            :item="item"
-            @input="handleInput(item,value)"
-          />
-
-          <!-- 增加一个时段选择 -->
-          <template v-if="item.type === 'time-select'">
-            <el-row :gutter="item.gutter || 10">
-              <el-col :span="12">
-                <OTimeSelect
-                  v-model="value[item.items[0].model]"
-                  :item="{...item.items[0],placeholder:'起始'}"
-                  @change="handleInput(item,value)"
-                />
-              </el-col>
-              <el-col :span="12">
-                <OTimeSelect
-                  v-model="value[item.items[1].model]"
-                  :item="{...item.items[1],placeholder:'结束',pickerOptions:{...(item.items[1].pickerOptions),minTime: value[item.items[0].model]}}"
-                />
-              </el-col>
-            </el-row>
-          </template>
-
-        </el-form-item>
+        <FormItem :key="index"  :item="item" v-bind="item" :value="value[item.model]" @input="(val)=>handleInput(item,val)"/>
       </template>
       <el-form-item>
         <el-button @click="handleReset">重置</el-button>
@@ -88,62 +29,7 @@
           :xl="xl"
           :class="{ hidden: index >= hiddenIndex && !isOpen }"
         >
-          <el-form-item
-            :label="item.type === 'checkbox' ? '' : item.label"
-            :key="item.model || index"
-            :prop="item.model || ''"
-          >
-            <!-- 根据type动态转换组件名称 -->
-            <component
-              v-if="['input','select','checkbox','radio','switch','cascader'].includes(item.type)"
-              v-model="value[item.model]"
-              :item="item"
-              :is="`O${item.type[0].toUpperCase()+item.type.slice(1)}`"
-              @input="handleInput(item,value)"
-            >
-              <template v-slot:select v-if="item.prependConfig">
-                <OSelect
-                  v-model="value[item.prependConfig.model]"
-                  :item="item.prependConfig"
-                  @input="handleInput(item.prependConfig,value)"
-                />
-              </template>
-            </component>
-
-            <!-- 普通数字框 -->
-            <OInput
-              v-if="['text', 'number', 'textarea'].includes(item.type)"
-              v-model="value[item.model]"
-              :item="item"
-              @input="handleInput(item,value)"
-            />
-
-            <!-- type无法转换为DatePicker，所以需要单独定义 -->
-            <ODatePicker
-              v-if="['date', 'daterange', 'datetime', 'datetimerange'].includes(item.type)"
-              v-model="value[item.model]"
-              :item="item"
-              @input="handleInput(item,value)"
-            />
-            <!-- 增加一个时段选择 -->
-            <template v-if="item.type === 'time-select'">
-              <el-row :gutter="item.gutter || 10">
-                <el-col :span="12">
-                  <OTimeSelect
-                    v-model="value[item.items[0].model]"
-                    :item="item.items[0]"
-                    @input="handleInput(item,value)"
-                  />
-                </el-col>
-                <el-col :span="12">
-                  <OTimeSelect
-                    v-model="value[item.items[1].model]"
-                    :item="{...item.items[1],pickerOptions:{...(item.items[1].pickerOptions),minTime: value[item.items[0].model]}}"
-                  />
-                </el-col>
-              </el-row>
-            </template>
-          </el-form-item>
+          <FormItem :key="index"  :item="item" v-bind="item" :value="value[item.model]" @input="(val)=>handleInput(item,val)"/>
         </el-col>
       </template>
       <el-col
@@ -166,7 +52,7 @@
   </el-form>
 </template>
 <script>
-import * as items from './../components'
+import FormItem from './../components/FormItem'
 /**
  * 根据屏幕宽度，做栅格列数适配
  * 弹框中表单和页面查询表单要区分开
@@ -273,7 +159,7 @@ export default {
     form: Array, // 表单JSON对象
     model: Object, // 默认v-model参数
   },
-  components: { ...items },
+  components: { FormItem },
   data () {
     return {
       value: { ...this.model }, // 初始化表单值
@@ -295,13 +181,35 @@ export default {
      * 触发自定义事件
      * @callback(val,values,model)当前值/所有值/当前model
      */
-    handleInput (item, values) {
-      if (item.change) {
-        item.change(values[item.model], values, item.model)
+    handleInput (item, val) {
+      const { action } = item
+      /**
+       * type: 'reset' 重置对应表单
+       * model: 'all' 重置所有表单
+       * model: ['state'] 重置指定表单
+       * 重置也可以通过change事件进行重置
+       */
+      if (action && action.type === 'reset') {
+        const modelList = action.model
+        // 重置所有表单
+        if (modelList === 'all') {
+          this.handleReset()
+          this.value[item.model] = val
+        } else if (modelList) {
+          // 重置部分表单
+          modelList.map(key => {
+            if (Array.isArray(this.value[key])) {
+              this.value[key] = []
+            } else {
+              this.value[key] = undefined
+            }
+          })
+        }
       }
-      if (item.type === 'time-select') {
-        this.value[item.items[1].model] = null
+      if (typeof item.change === 'function') {
+        item.change(val, this.value, item.model)
       }
+      this.value = { ...this.value, [item.model]: val }
     },
     /**
      * 表单重置
@@ -310,7 +218,6 @@ export default {
     handleReset () {
       this.$refs.searchForm.resetFields()
       this.$emit('update:model', { ...this.value })
-      // 时段/级联组件-重置功能需要单独做
       this.$emit('handleReset', 1)
     },
     /**

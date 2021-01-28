@@ -3907,10 +3907,22 @@ electron-to-chromium@^1.3.634:
   resolved "https://registry.npm.taobao.org/electron-to-chromium/download/electron-to-chromium-1.3.640.tgz?cache=0&sync_timestamp=1610677892556&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Felectron-to-chromium%2Fdownload%2Felectron-to-chromium-1.3.640.tgz#94e68c0ae79181a1d6fd1ed9a42b9790d51a1bca"
   integrity sha1-lOaMCueRgaHW/R7ZpCuXkNUaG8o=
 
-element-ui@^2.13.2, element-ui@^2.14.1, element-ui@^2.4.5:
+element-ui@^2.13.2, element-ui@^2.4.5:
   version "2.14.1"
   resolved "https://registry.npm.taobao.org/element-ui/download/element-ui-2.14.1.tgz#8b5745c7366c1c1a603bb6c021286ea7187e2aa2"
   integrity sha1-i1dFxzZsHBpgO7bAIShupxh+KqI=
+  dependencies:
+    async-validator "~1.8.1"
+    babel-helper-vue-jsx-merge-props "^2.0.0"
+    deepmerge "^1.2.0"
+    normalize-wheel "^1.0.1"
+    resize-observer-polyfill "^1.5.0"
+    throttle-debounce "^1.0.1"
+
+element-ui@^2.15.0:
+  version "2.15.0"
+  resolved "https://registry.npm.taobao.org/element-ui/download/element-ui-2.15.0.tgz?cache=0&sync_timestamp=1610710802284&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Felement-ui%2Fdownload%2Felement-ui-2.15.0.tgz#de9b73a8d1e3e3b50e82b923a5fa95295239bd41"
+  integrity sha1-3ptzqNHj47UOgrkjpfqVKVI5vUE=
   dependencies:
     async-validator "~1.8.1"
     babel-helper-vue-jsx-merge-props "^2.0.0"

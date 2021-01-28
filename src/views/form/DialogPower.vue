@@ -143,7 +143,7 @@ export default {
         {
           prop: 'use_status',
           label: '当前状态',
-          width: 50,
+          width: 80,
           formatter (row) {
             return {
               1: '在线',
@@ -182,7 +182,7 @@ export default {
           prop: '',
           label: '操作',
           type: 'action',
-          width: '200px',
+          minWidth: '200px',
           fixed: 'right',
           list: [
             {
@@ -219,11 +219,6 @@ export default {
         showFooter: true,
         formList: [
           {
-            type: 'detail',
-            label: '用户ID',
-            model: 'uid',
-          },
-          {
             type: 'text',
             label: '用户名称',
             placeholder: '请输入用户名称',
@@ -249,18 +244,6 @@ export default {
                 trigger: ['change', 'blur'],
               },
             ],
-            prependConfig: {
-              type: 'select',
-              model: 'query_field',
-              label: '',
-              width: '90px',
-              options: [
-                { label: '全部', value: 0 },
-                { label: '已注销', value: 1 },
-                { label: '老用户', value: 2 },
-                { label: '新用户', value: 3 },
-              ],
-            },
           },
           {
             type: 'select',
@@ -288,16 +271,13 @@ export default {
             },
           },
           {
-            type: 'union-select',
+            type: 'inline',
             label: '城市',
-            action: {
-              type: 'cascader', // 表示，此事件会触发级联行为
-              model: 'user_city'
-            },
-            items: [
+            list: [
               {
-                placeholder: '请选择省份',
-                model: 'user_province',
+                type: 'select',
+                span: 11,
+                model: 'province',
                 options: [
                   {
                     label: '湖北省',
@@ -314,11 +294,25 @@ export default {
                 ],
               },
               {
-                placeholder: '请选择城市',
-                model: 'user_city',
-                options: [],
+                type: 'label',
+                span: 2
               },
-            ],
+              {
+                type: 'select',
+                model: 'city',
+                span: 11,
+                options: [
+                  {
+                    label: '襄阳',
+                    value: 10001
+                  },
+                  {
+                    label: '武汉',
+                    value: 20001
+                  }
+                ],
+              }
+            ]
           },
           {
             type: 'radio',
@@ -461,48 +455,6 @@ export default {
                   step: '01:00',
                   end: '23:00',
                 },
-              },
-            ],
-          },
-          {
-            type: 'union-select',
-            label: '城市',
-            items: [
-              {
-                placeholder: '请选择省份',
-                model: 'user_province',
-                change: this.getSelectList,
-                options: [
-                  {
-                    label: '湖北省',
-                    value: 10001,
-                    children: [
-                      { label: '武汉市', value: 100010 },
-                      { label: '襄阳市', value: 100011 },
-                    ]
-                  },
-                  {
-                    label: '上海市',
-                    value: 20001,
-                    children: [
-                      { label: '浦东区', value: 200010 },
-                      { label: '松江区', value: 200011 },
-                    ]
-                  },
-                  {
-                    label: '北京市',
-                    value: 30001,
-                    children: [
-                      { label: '海淀区', value: 300010 },
-                      { label: '朝阳区', value: 300011 },
-                    ]
-                  },
-                ],
-              },
-              {
-                placeholder: '请选择城市',
-                model: 'user_city',
-                options: []
               },
             ],
           },
