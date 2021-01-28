@@ -30,12 +30,12 @@
       width="50%"
       @close="$refs.dialogForm.handleReset()"
     >
-      <rocket-form
+      <power-form
         ref="dialogForm"
         :config="rocketConfig"
         @handleClose="handleClose()"
         v-model="userInfo"
-      ></rocket-form>
+      ></power-form>
     </el-dialog>
   </wrapper>
 </template>
@@ -97,7 +97,7 @@ export default {
         {
           type: 'checkbox',
           model: 'isChecked',
-          label: '是否选择',
+          label: '是否选择'
         },
       ],
       mainColumn: [

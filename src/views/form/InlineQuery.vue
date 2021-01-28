@@ -102,34 +102,33 @@ export default {
           type: 'daterange',
           model: 'login_time',
           label: '日期范围',
-          width: '220px'
+          width: '220px',
+          shortcuts: true,
         },
         {
           type: 'time-select',
           label: '注册时段',
-          gutter: 10,
+          model: 'time_part_start',
           action: {
             type: 'reset',
             model: ['time_part_end']
           },
-          items: [
-            {
-              model: 'time_part_start',
-              pickerOptions: {
-                start: '00:00',
-                step: '01:00',
-                end: '23:00',
-              },
-            },
-            {
-              model: 'time_part_end',
-              pickerOptions: {
-                start: '00:00',
-                step: '01:00',
-                end: '23:00',
-              },
-            },
-          ],
+          change: this.handleTime,
+          pickerOptions: {
+            start: '00:00',
+            step: '01:00',
+            end: '23:00',
+          },
+        },
+        {
+          type: 'time-select',
+          label: '-',
+          model: 'time_part_end',
+          pickerOptions: {
+            start: '00:00',
+            step: '01:00',
+            end: '23:00',
+          },
         },
         {
           type: 'cascader',
@@ -270,6 +269,9 @@ export default {
       this.$request.get('/select/list').then((res) => {
         this.form[3].options = res
       })
+    },
+    handleTime (val) {
+      this.form[7].pickerOptions.minTime = val
     }
   },
 }

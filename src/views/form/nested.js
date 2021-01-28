@@ -15,170 +15,57 @@ export default {
   showFooter: true,
   formList: [
     {
-      type: 'input',
-      label: '所属媒体',
-      placeholder: '请输入所属媒体',
-      model: 'a1',
-      width: '400px',
-      rules: [{ required: true, message: '所属媒体不能为空', trigger: ['blur'] }],
-      tips: {
-        align: 'right',
-        text: '一个媒体对应一个任务ID',
-        style: {
-          'font-size': '14px',
-          'margin-left': '10px'
-        }
+      type: 'link',
+      label: 'Link',
+      link: {
+        type: 'primary',
+        underline: true,
+        disabled: false,
+        href: '//www.baidu.com',
+        icon: 'el-icon-edit',
+        target: '_blank',
       },
-      prepend: '状态',
-      append: '@163.com'
+      text: '链接'
     },
     {
-      type: 'input-number',
-      label: '所属媒体',
-      placeholder: '请输入所属媒体',
-      model: 'a2',
-      tips: '一个媒体对应一个任务ID',
+      type: 'label',
+
     },
     {
-      type: 'time-select',
-      label: '时间',
-      placeholder: '时间',
-      model: 'a2-1',
-      pickerOptions: {
-        start: '08:30',
-        step: '00:15',
-        end: '18:30'
-      }
-    },
-    {
-      type: 'time-picker',
-      label: '任意时间',
-      placeholder: '时间',
-      isRange: true,
-      model: 'a2-2',
-      pickerOptions: {
-        selectableRange: '18:30:00 - 20:30:00'
-      }
-    },
-    {
-      type: 'radiogroup',
-      label: '状态',
-      placeholder: '时间',
-      model: 'a3-1',
-      options: [
+      type: 'inline',
+      label: '选择省市区',
+      list: [
         {
-          label: '在职',
-          value: 1
+          type: 'select',
+          model: 'province',
+          change (val, values, model) {
+            console.log(val, values, model)
+          },
+          options: [
+            {
+              label: '湖北省',
+              value: 10001,
+              children: [
+                { label: '武汉市', value: 100010 },
+                { label: '襄阳市', value: 100011 },
+              ]
+            },
+            {
+              label: '上海市',
+              value: 20001,
+              children: [
+                { label: '浦东区', value: 200010 },
+                { label: '松江区', value: 200011 },
+              ]
+            },
+          ]
         },
         {
-          label: '离职',
-          value: 2
+          type: 'select',
+          model: 'city',
+          options: []
         }
       ]
-    },
-    {
-      type: 'switch',
-      label: '状态',
-      placeholder: '时间',
-      model: 'a4-1',
-    },
-    {
-      type: 'checkbox-group',
-      subType: 'button',
-      label: '按钮组',
-      placeholder: '时间',
-      model: 'checked',
-      options: [
-        {
-          label: '在职',
-          value: 1
-        },
-        {
-          label: '离职',
-          value: 2
-        },
-        {
-          label: '在职1',
-          value: 3,
-        },
-        {
-          label: '离职2',
-          value: 4
-        }
-      ]
-    },
-    {
-      type: 'cascader',
-      label: '级联',
-      model: 'cascader',
-      props: { checkStrictly: true },
-      clearable: true,
-      options: [{
-        value: 1,
-        label: '东南1',
-        children: [{
-          value: 12,
-          label: '上海1'
-        }]
-      }, {
-        value: 2,
-        label: '东南2',
-        children: [{
-          value: 22,
-          label: '上海2'
-        }]
-      }]
-    },
-    {
-      type: 'transfer',
-      label: '授权用户',
-      model: 'checkedUser',
-      filterable: true,
-      placeholder: '请选择授权用户',
-      titles: ['未授权用户', '已授权用户'],
-      buttonTexts: ['回左边', '到右边'],
-      leftDefaultChecked: ['4'],
-      rightDefaultChecked: ['3'],
-      data: [
-        {
-          key: '1',
-          label: 'Jack',
-          disabled: true
-        },
-        {
-          key: '2',
-          label: 'Tom',
-        },
-        {
-          key: '3',
-          label: 'Lucy',
-        },
-        {
-          key: '4',
-          label: 'Lily',
-        }
-      ]
-    },
-    {
-      type: 'upload',
-      label: '上传',
-      model: 'user_image',
-      listType: 'picture-card', // text/picture/picture-card
-      action: 'http://helper.ued.2345.cn/api/v1/oss/upload?appCode=luban&stage=testing',
-      token: '',
-      fileType: ['image/jpg', 'image/jpeg', 'image/png'],
-      fileSize: 10 * 1024,
-      // fileLimit: {
-      //   // width: 2076,
-      //   // height: 146,
-      //   // ratio: 1,
-      //   tips: '文件尺寸不符合要求'
-      // },
-      limit: 1,
-      tips: { align: 'right', text: '只能上传jpg/png文件，且不超过500kb' },
-      // response: { response: '', code: 'code', data: 'data', msg: 'msg', codeVal: 200 },
-      // httpRequest: this.rewriteUpload, // 自定义上传
-      // autoUpload: true,
     },
     {
       type: 'inline',
@@ -218,7 +105,6 @@ export default {
           span: 5,
           type: 'label',
           text: '至少配置两种抽选结果',
-          labelWidth: '0'
         }
       ]
     },
@@ -297,9 +183,8 @@ export default {
               icon: 'el-icon-plus',
               text: '增加'
             },
-            click (item, subItem, value) {
-              const sub = item.list[0]
-              item.list.push(sub)
+            click (value, config) {
+              console.log(value, config)
             },
             labelWidth: '0'
           }

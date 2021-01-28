@@ -51,21 +51,21 @@
     <!-- TimePicker-固定时间 -->
     <el-time-select
       v-else-if="item.type === 'time-select'"
-      :style="item.style || item.width?`width:${item.width}`:'width:100%'"
+      :style="item.style || item.width?`width:${item.width}`:''"
       v-bind="$attrs"
       v-on="$listeners"
     />
     <!-- TimePicker-任意时间 -->
     <el-time-picker
       v-else-if="item.type === 'time-picker'"
-      :style="item.style || item.width?`width:${item.width}`:'width:100%'"
+      :style="item.style || item.width?`width:${item.width}`:''"
       v-bind="$attrs"
       v-on="$listeners"
     />
     <!-- 支持Element所有日期类型 -->
     <el-date-picker
       v-else-if="['date', 'week', 'month', 'year', 'dates', 'datetime'].includes(item.type)"
-      :style="item.style || item.width?`width:${item.width}`:'width:100%'"
+      :style="item.style || item.width?`width:${item.width}`:''"
       v-bind="$attrs"
       v-on="$listeners"
       :placeholder="item.placeholder || '选择日期'"
@@ -78,7 +78,7 @@
     <!-- 支持Element所有日期范围类型 -->
     <el-date-picker
       v-else-if="['daterange', 'monthrange', 'datetimerange'].includes(item.type)"
-      :style="item.style || item.width?`width:${item.width}`:'width:100%'"
+      :style="item.style || item.width?`width:${item.width}`:''"
       v-bind="$attrs"
       v-on="$listeners"
       :start-placeholder="item.startPlaceholder || '开始日期'"
@@ -122,14 +122,14 @@
     ></el-switch>
     <!-- 单个复选，一般可用switch代替 -->
     <el-checkbox
-      v-else-if="item.type === 'checkbox'"
+      v-else-if="item.type === 'checkbox' && !item.options"
       :style="item.style || item.width?`width:${item.width}`:'width:100%'"
       v-bind="$attrs"
       v-on="$listeners"
     >{{ item.label }}</el-checkbox>
     <!-- 复选框组，为了便于开发，仅通过options区分 -->
     <el-checkbox-group
-      v-else-if="item.type === 'checkbox-group'"
+      v-else-if="item.type === 'checkbox' && item.options"
       :style="item.style || item.width?`width:${item.width}`:'width:100%'"
       :size="item.size"
       :disabled="item.disabled"
@@ -158,12 +158,14 @@
         >
       </template>
     </el-checkbox-group>
+    <!-- 级联框 -->
     <el-cascader
       v-else-if="item.type === 'cascader'"
       :style="item.style || item.width?`width:${item.width}`:'width:100%'"
       v-bind="$attrs"
       v-on="$listeners"
     />
+    <!-- 穿梭框 -->
     <el-transfer
       v-else-if="item.type === 'transfer'"
       :style="item.style || item.width?`width:${item.width}`:'width:100%'"
@@ -177,18 +179,23 @@
       v-bind="$attrs"
       v-on="$listeners"
     />
+    <!-- link -->
+    <el-link
+      v-if="item.type === 'link'"
+      v-bind="item.link"
+      v-on="$listeners"
+    >{{item.text}}</el-link>
     <!-- 按钮 -->
     <el-button
       v-if="item.type === 'button'"
-      :type="item.button.type"
-      :style="{ width: item.width }"
+      :style="item.style || item.width?`width:${item.width}`:'width:100%'"
       v-bind="item.button"
       v-on="$listeners"
     >
       {{item.button.text}}
     </el-button>
     <!-- 纯文本 -->
-    <div v-if="item.type === 'label'">{{item.text}}</div>
+    <div v-if="item.type === 'label'" :style="item.style">{{item.text}}</div>
     <template v-if="item.tips || item.type === 'tips'">
         <!-- 默认tips在文本框下面-->
         <div class="form-tip" v-if="typeof item.tips === 'string'">{{ item.tips }}</div>
@@ -200,11 +207,11 @@
   </el-form-item>
 </template>
 <script>
-import * as items from './index'
+import OUpload from './OUpload'
 export default {
   name: 'FormItem',
   props: ['item'],
-  components: { ...items },
+  components: { OUpload },
   data () {
     return {
       pickerOptions: {
@@ -290,39 +297,7 @@ export default {
         }
       },
     }
-  },
-  methods: {
-    /**
-     * 触发自定义事件
-     * @callback(val,values,model)当前值/所有值/当前model
-     */
-    handleInput (val) {
-      this.$emit('input', val)
-    },
-    // 表单重置
-    handleReset () {
-      this.$refs.powerForm.resetFields()
-    },
-    // 默认走dialog弹框自带的关闭，也可以执行当前页面关闭按钮
-    handleClose () {
-      this.$refs.powerForm.resetFields()
-      this.$emit('handleClose')
-    },
-    // 默认触发查询点击事件
-    handleSubmit () {
-      this.$refs.powerForm.validate((valid) => {
-        if (valid) {
-          this.$emit('handleSubmit')
-        }
-      })
-    },
-    // 自定义校验方法,回调参数为被校验的表单项 prop 值，表示校验是否通过
-    validate (fn) {
-      this.$refs.powerForm.validate((valid) => {
-        (typeof fn === 'function') && fn(valid)
-      })
-    },
-  },
+  }
 }
 </script>
 <style lang="scss">

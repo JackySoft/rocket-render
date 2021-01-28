@@ -161,7 +161,9 @@ export default {
         total_count: 0,
       },
       showModal: false,
-      dialogForm: {},
+      dialogForm: {
+        intrest: []
+      },
       dialogConfig: {
         title: '创建用户',
         width: '800px',
