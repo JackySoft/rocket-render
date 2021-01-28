@@ -12,8 +12,8 @@
     :show-overflow-tooltip="item.showOverflowTooltip === undefined?true:item.showOverflowTooltip"
   >
     <template slot="header" v-if="item.tips">
-      <el-tooltip :content="item.tips" placement="top" >
-        <div>{{item.label}}<i class="el-icon-info"></i></div>
+      <el-tooltip :content="item.tips" placement="top">
+        <span>{{item.label}}<i class="el-icon-info" style="margin-left:3px;"></i></span>
       </el-tooltip>
     </template>
     <!-- 自定义单元格 -->

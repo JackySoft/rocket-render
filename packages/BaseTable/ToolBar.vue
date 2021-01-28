@@ -41,7 +41,7 @@
                 alt=""
               />
             </el-button>
-            <el-dropdown-menu slot="dropdown">
+            <el-dropdown-menu slot="dropdown" style="max-height:50%;overflow:auto;">
               <el-tree
                 style="padding-right: 20px"
                 @check="handleColumn"
