@@ -1,15 +1,8 @@
 <template>
   <!-- 常规列处理：点击/图片/操作按钮/link/url/badge -->
   <el-table-column
-    :prop="item.prop"
-    :label="item.label"
-    :fixed="item.fixed"
-    :width="item.width"
-    :min-width="item.minWidth"
-    :sortable="item.sortable"
-    :sort-orders="item.sortOrders"
+    v-bind="item"
     :align="item.align || 'center'"
-    :class-name="item.className"
     :show-overflow-tooltip="item.showOverflowTooltip === undefined?true:item.showOverflowTooltip"
   >
     <template slot="header" v-if="item.tips">

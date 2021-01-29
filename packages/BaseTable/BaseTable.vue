@@ -30,7 +30,7 @@
           <!-- 处理多选 -->
           <el-table-column
             v-if="item.type === 'selection'"
-            :key="`col-${i}`"
+            :key="`col-index-${i}`"
             type="selection"
             align="center"
             :fixed="item.fixed"
@@ -39,15 +39,9 @@
           <!-- 保留slot功能 -->
           <el-table-column
             v-else-if="item.type === 'slot'"
-            :key="`col-${i}`"
-            :prop="item.prop"
-            :label="item.label"
-            :fixed="item.fixed"
-            :width="item.width"
-            :sortable="item.sortable"
-            :sort-orders="item.sortOrders"
+            :key="`col-${item.prop}`"
+            v-bind="item"
             :align="item.align || 'center'"
-            :class-name="item.className"
             :show-overflow-tooltip="item.showOverflowTooltip === undefined?true:item.showOverflowTooltip">
             <template slot-scope="scope">
               <slot :name="item.slotName" v-bind:row="scope.row"></slot>
@@ -56,17 +50,17 @@
           <!-- 多级表头 -->
           <template v-else-if="item.span">
             <el-table-column
-               :key="`col-${i}`"
-              :label="item.label"
+              :key="`col-${item.label}`"
+              v-bind="item"
               :align="item.align || 'center'"
             >
-              <template v-for="(sub,j) in item.span">
-                <Column :item="sub" :key="`span-${j}`" v-on="$listeners"/>
+              <template v-for="(sub) in item.span">
+                <Column :item="sub" :key="`span-${sub.prop}`" v-on="$listeners"/>
               </template>
             </el-table-column>
           </template>
           <!-- 非跨行表头 -->
-          <Column v-else :item="item" :key="`col-${i}`" v-on="$listeners"/>
+          <Column v-else :item="item" :key="`col-${item.prop}`" v-on="$listeners"/>
         </template>
       </el-table>
       <!-- 表格分页，可隐藏 -->
