@@ -22,7 +22,7 @@
                 alt=""
               />
             </el-button>
-            <el-dropdown-menu slot="dropdown">
+            <el-dropdown-menu slot="dropdown" :appendToBody="false" >
               <el-dropdown-item command="medium">大号</el-dropdown-item>
               <el-dropdown-item command="small">默认</el-dropdown-item>
               <el-dropdown-item command="mini">紧凑</el-dropdown-item>
@@ -41,7 +41,7 @@
                 alt=""
               />
             </el-button>
-            <el-dropdown-menu slot="dropdown" style="max-height:50%;overflow:auto;">
+            <el-dropdown-menu slot="dropdown" :appendToBody="false"  style="max-height:300px;overflow:auto;">
               <el-tree
                 style="padding-right: 20px"
                 @check="handleColumn"

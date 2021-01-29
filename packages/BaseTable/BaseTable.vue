@@ -1,14 +1,18 @@
 <template>
   <div class="pro-table" :class="{'auto':isFullScreen}" id="ocBaseTable">
-    <div class="card-header">
+    <div class="card-header" v-if="$slots.action || toolbar">
       <!-- 表格上方操作按钮 -->
-      <div class="action" v-if="$slots.action">
-        <slot name="action"></slot>
+      <div>
+        <div class="action" v-if="$slots.action">
+          <slot name="action"></slot>
+        </div>
       </div>
       <!-- 工具条 -->
       <tool-bar
         v-if="toolbar"
-        v-bind="$attrs"
+        :column="$attrs.column"
+        :toolbar="$attrs.toolbar"
+        :id="$attrs.id"
         @handleReload="handleReload"
         @handleDensity="handleDensity"
         @handleColumn="handleColumn"
