@@ -41,6 +41,7 @@
             v-else-if="item.type === 'slot'"
             :key="`col-${item.prop}`"
             v-bind="item"
+            type=""
             :align="item.align || 'center'"
             :show-overflow-tooltip="item.showOverflowTooltip === undefined?true:item.showOverflowTooltip">
             <template slot-scope="scope">
@@ -52,6 +53,7 @@
             <el-table-column
               :key="`col-${item.label}`"
               v-bind="item"
+              type=""
               :align="item.align || 'center'"
             >
               <template v-for="(sub) in item.span">
