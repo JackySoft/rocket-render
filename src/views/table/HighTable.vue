@@ -77,6 +77,7 @@ export default {
           prop: 'index',
           type: 'slot',
           label: '自定义列',
+          sortable: true,
           slotName: 'copy'
         },
         {
@@ -84,6 +85,7 @@ export default {
           label: '用户ID',
           align: 'center',
           type: 'click',
+          sortable: true,
           tips: '测试一下'
         },
         {

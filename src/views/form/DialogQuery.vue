@@ -179,7 +179,7 @@ export default {
       },
       userForm: [
         {
-          type: 'text',
+          type: 'input',
           label: '用户名称',
           placeholder: '请输入用户名称',
           model: 'cname',
