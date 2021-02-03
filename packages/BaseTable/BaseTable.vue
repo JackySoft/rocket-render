@@ -36,8 +36,8 @@
             v-if="item.type === 'selection'"
             :key="`col-index-${i}`"
             type="selection"
+            v-bind="item"
             align="center"
-            :fixed="item.fixed"
             :width="50">
           </el-table-column>
           <!-- 保留slot功能 -->
