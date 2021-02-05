@@ -128,7 +128,7 @@
       :style="item.style || item.width?`width:${item.width}`:'width:100%'"
       v-bind="$attrs"
       v-on="$listeners"
-    >{{ item.label }}</el-checkbox>
+    >{{item.showLabel?item.label:''}}</el-checkbox>
     <!-- 复选框组，为了便于开发，仅通过options区分 -->
     <el-checkbox-group
       v-else-if="item.type === 'checkbox' && item.options"

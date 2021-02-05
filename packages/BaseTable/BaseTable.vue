@@ -48,6 +48,11 @@
             type=""
             :align="item.align || 'center'"
             :show-overflow-tooltip="item.showOverflowTooltip === undefined?true:item.showOverflowTooltip">
+            <template slot="header" v-if="item.tips">
+              <el-tooltip :content="item.tips" placement="top">
+                <span>{{item.label}}<i class="el-icon-info" style="margin-left:3px;"></i></span>
+              </el-tooltip>
+            </template>
             <template slot-scope="scope">
               <slot :name="item.slotName" v-bind:row="scope.row"></slot>
             </template>
