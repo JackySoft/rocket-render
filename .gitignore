@@ -1,15 +1,6 @@
 .DS_Store
 node_modules
 /dist
-/octopus-pro
-/generator/template
-# local env files
-# .env.local
-#.env.*.local
-
-/docs/.vuepress/dist
-# sentry-release
-.sentry-release
 # Log files
 npm-debug.log*
 yarn-debug.log*

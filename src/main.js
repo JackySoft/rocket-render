@@ -9,7 +9,7 @@ import api from './api'
 import request from './utils/request'
 import components from './components'
 import * as fliters from './filters'
-import OcForm from './../packages/index'
+import Rocket from './../packages/index'
 // 注册指令
 import './directives'
 // 开启日志上报
@@ -22,7 +22,7 @@ Object.keys(fliters).forEach(key => {
 
 // 注册components下的组件为全局组件
 Vue.use(components)
-Vue.use(OcForm)
+Vue.use(Rocket)
 
 // 挂载统一管理的api
 Vue.prototype.$api = api
