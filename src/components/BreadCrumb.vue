@@ -10,18 +10,11 @@
 </template>
 
 <script>
-import pathToRegexp from 'path-to-regexp'
-
 export default {
   name: 'BreadCrumb',
   data () {
     return {
       levelList: null
-    }
-  },
-  watch: {
-    $route (route) {
-      this.getBreadcrumb()
     }
   },
   created () {
@@ -30,27 +23,8 @@ export default {
   methods: {
     getBreadcrumb () {
       // 仅显示有name的
-      let matched = this.$route.matched.filter(item => item.name)
-      const first = matched[0]
-
-      if (first.path !== '/') {
-        matched = [{
-          path: '/',
-          name: '首页'
-        }].concat(matched)
-      } else {
-        matched[0] = {
-          path: '/',
-          name: '首页'
-        }
-      }
+      const matched = this.$route.matched.filter(item => item.name)
       this.levelList = matched.filter(item => item.path && item.name)
-    },
-    pathCompile (path) {
-      // 支持获取路由参数/:id
-      const { params } = this.$route
-      const toPath = pathToRegexp.compile(path)
-      return toPath(params)
     },
     handleLink (item) {
       const { redirect, path } = item

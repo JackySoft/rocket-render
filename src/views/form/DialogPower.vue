@@ -523,11 +523,6 @@ export default {
   },
   mounted () {
     this.getTableList()
-    this.$request.get('http://st1-helper.ued.2345.cn/api/oss/config?appCode=luban&stage=testing').then((res) => {
-      this.uploadConfig = res
-    }).catch((res) => {
-      console.log(res)
-    })
   },
   methods: {
     // 首页列表查询

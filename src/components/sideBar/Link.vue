@@ -27,13 +27,6 @@ export default {
   },
   methods: {
     linkProps (to) {
-      if (this.isExternal) {
-        return {
-          href: to,
-          target: '_blank',
-          rel: 'noopener'
-        }
-      }
       return {
         // tag: 'div',
         to: to

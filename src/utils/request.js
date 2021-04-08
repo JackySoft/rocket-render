@@ -8,7 +8,6 @@
 import axios from 'axios'
 import { Notification } from 'element-ui'
 import config from './../config/index'
-import store from '@/store'
 
 /**
  *  自定义配置新建一个 axios 实例
@@ -23,7 +22,7 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   const headers = config.headers
   // TODO 这里需要针对项目修改token传递方式
-  if (!headers.authToken) headers.authToken = store.state.token
+  if (!headers.authToken) headers.authToken = 'token'
   return config
 })
 
@@ -32,19 +31,13 @@ service.interceptors.response.use(response => {
   // 获取返回结构
   // TODO code, data, msg 是公司最新的响应体结构
   // TODO success， errorCode， errorMessage是原中台权限中心的响应体结构
-  const { code, data, msg, success, errorCode, errorMessage } = response.data
+  const { code, data, msg } = response.data
   // code为0，直接把结果返回回去，这样前端代码就不用在获取一次data
-  if (success === true || code === 0 || code === 200) {
+  if (code === 0) {
     return data
   } else {
-    // TODO 这是适配中台权限中心的errorCode
-    if (errorCode === '105') {
-      setTimeout(() => {
-        location.replace('http://oa.2345.cn')
-      }, 2000)
-    }
-    Notification.error(errorMessage || msg || '网络请求异常，请稍后重试!')
-    return Promise.reject(errorMessage || msg || '网络请求异常，请稍后重试!')
+    Notification.error(msg || '网络请求异常，请稍后重试!')
+    return Promise.reject(msg || '网络请求异常，请稍后重试!')
   }
 }, (err) => {
   Notification.error('网络请求异常，请稍后重试!')

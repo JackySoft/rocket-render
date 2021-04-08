@@ -1,8 +1,8 @@
 {
   "name": "@ued2345/octopus-form",
-  "version": "1.5.9",
+  "version": "2.0.0",
   "private": false,
-  "author": "chenjb <chenjb@2345.com>",
+  "author": "chenjb",
   "scripts": {
     "serve": "vue-cli-service serve --mode dev",
     "build": "vue-cli-service build --mode prod",
@@ -10,52 +10,46 @@
     "build:prod": "vue-cli-service build --mode prod",
     "build:test": "vue-cli-service build --mode test",
     "dev": "vue-cli-service serve --mode dev",
-    "packages": "vue-cli-service build --target lib --name octopus-form --dest lib packages/index.js"
+    "packages": "vue-cli-service build --target lib --name rocket --dest lib packages/index.js"
   },
   "main": "packages/index.js",
   "typings": "types/index.d.ts",
-  "publishConfig": {
-    "@ued2345:registry": "https://nexus.2345.cn/repository/npm-hosted/"
-  },
   "files": [
     "packages",
     "dist/*.js",
     "types/*.d.ts"
   ],
   "dependencies": {
-    "@ued2345/laserbeak": "0.20.0",
-    "@ued2345/single-storage": "^0.0.4",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.0",
-    "path-to-regexp": "^1.8.0",
+    "path-to-regexp": "^6.2.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
-    "@ued2345/pro-plus": "^0.2.2",
-    "@ued2345/vue-cli-plugin-oc-pro": "~0.8.15",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/eslint-config-standard": "^5.1.2",
+    "@vue/eslint-config-standard": "^6.0.0",
+    "ali-oss": "^6.15.2",
     "babel-eslint": "^10.1.0",
     "babel-plugin-component": "^1.1.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "eslint": "^6.7.2",
+    "eslint": "^7.23.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.0",
-    "eslint-plugin-vue": "^6.2.2",
+    "eslint-plugin-standard": "^5.0.0",
+    "eslint-plugin-vue": "^7.8.0",
     "ghooks": "^2.0.4",
     "mockjs": "^1.1.0",
-    "node-sass": "^4.12.0",
-    "sass-loader": "^8.0.2",
+    "sass": "^1.32.8",
+    "sass-loader": "10.1.1",
     "validate-commit-msg": "^2.14.0",
     "vue-cli-plugin-element": "^1.0.1",
     "vue-template-compiler": "^2.6.11"
@@ -67,8 +61,8 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://confluence.2345.cn/pages/viewpage.action?pageId=98641002"
+    "url": ""
   },
-  "homepage": "http://ocwidget.ued.2345.cn/pc/Release.html#_1-1-2%E6%9B%B4%E6%96%B0%E5%86%85%E5%AE%B9",
-  "repository": "git@gitlab.2345.cn:ued/business/oc-form.git"
+  "homepage": "",
+  "repository": "https://github.com/JackySoft/rocket.git"
 }
