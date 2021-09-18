@@ -1,14 +1,15 @@
 <template>
   <wrapper>
-    <!-- 表单查询区 -->
-    <query-form
-      :form="form"
-      :model.sync="queryForm"
-      @handleQuery="getTableList"
-    />
-
+    <search-box>
+      <!-- 表单查询区 -->
+      <query-form
+        :form="form"
+        :model.sync="queryForm"
+        @handleQuery="getTableList"
+      />
+    </search-box>
     <!-- 列表区域 -->
-    <base-table
+    <rocket-table
       :showLoading="showLoading"
       :column.sync="mainColumn"
       :data="mainData"
@@ -19,7 +20,7 @@
       <template v-slot:action>
         <el-button type="primary" @click="openModal">打开</el-button>
       </template>
-    </base-table>
+    </rocket-table>
 
     <el-drawer
       title="我是标题"

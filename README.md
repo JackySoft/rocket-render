@@ -1,24 +1,18 @@
 # 低代码平台方案
 
-## Project setup
+## 目录说明
+1. packages为核心组件源码
+2. src为Demo源码
+
+## 项目运行
+1. 安装依赖
 ```
 yarn install
 ```
-
-### Compiles and hot-reloads for development
+2. 运行
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## rocket-render开发文档
 
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

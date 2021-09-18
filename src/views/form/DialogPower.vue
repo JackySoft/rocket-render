@@ -1,15 +1,16 @@
 <template>
   <wrapper>
-    <!-- 表单查询区 -->
-    <query-form
-      :inline="false"
-      :form="form"
-      :model.sync="queryParams"
-      @handleQuery="getTableList"
-    />
-
+    <search-box>
+      <!-- 表单查询区 -->
+      <query-form
+        :inline="false"
+        :form="form"
+        :model.sync="queryParams"
+        @handleQuery="getTableList"
+      />
+    </search-box>
     <!-- 列表区域 -->
-    <base-table
+    <rocket-table
       :loading="showLoading"
       :column.sync="mainColumn"
       :data="mainData"
@@ -25,7 +26,7 @@
           >动态创建二</el-button
         >
       </template>
-    </base-table>
+    </rocket-table>
 
     <!-- 页内弹框 -->
     <el-dialog

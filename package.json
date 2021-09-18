@@ -1,8 +1,37 @@
 {
-  "name": "@ued2345/octopus-form",
+  "name": "rocket-render",
+  "description": "a rocket-render component for Vue2.x",
   "version": "2.0.0",
+  "license": "MIT",
   "private": false,
-  "author": "chenjb",
+  "author": {
+    "name": "河畔一角",
+    "email": "sunnyboysoft@163.com",
+    "url": "http://www.imooc.com/t/1343480"
+  },
+  "main": "lib/rocket-render.umd.js",
+  "unpkg": "lib/rocket-render.umd.js",
+  "typings": "types/index.d.ts",
+  "files": [
+    "lib",
+    "packages",
+    "dist/*.js",
+    "types/*.d.ts"
+  ],
+  "bugs": {
+    "url": "https://github.com/JackySoft/rocket-render/issues"
+  },
+  "homepage": "https://github.com/JackySoft/rocket-render.git",
+  "keywords": [
+    "lowcode",
+    "vue rocket",
+    "vue-rocket",
+    "rocket-render"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JackySoft/rocket-render.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve --mode dev",
     "build": "vue-cli-service build --mode prod",
@@ -10,15 +39,8 @@
     "build:prod": "vue-cli-service build --mode prod",
     "build:test": "vue-cli-service build --mode test",
     "dev": "vue-cli-service serve --mode dev",
-    "packages": "vue-cli-service build --target lib --name rocket --dest lib packages/index.js"
+    "packages": "vue-cli-service build --target lib --name rocket-render --dest lib packages/index.js"
   },
-  "main": "packages/index.js",
-  "typings": "types/index.d.ts",
-  "files": [
-    "packages",
-    "dist/*.js",
-    "types/*.d.ts"
-  ],
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
@@ -58,11 +80,5 @@
     "ghooks": {
       "commit-msg": "validate-commit-msg"
     }
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": ""
-  },
-  "homepage": "",
-  "repository": "https://github.com/JackySoft/rocket.git"
+  }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="pro-table" :class="{'auto':isFullScreen}" id="ocBaseTable">
+  <div class="rocket-table" :class="{'auto':isFullScreen}" id="rocketBaseTable">
     <div class="card-header" v-if="$slots.action || toolbar">
       <!-- 表格上方操作按钮 -->
       <div>
@@ -82,9 +82,9 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :page-sizes="[10, 20, 50]"
-        :page-size="pagination.page_size || 20"
-        :current-page="pagination.page || 1"
-        :total="pagination.total_count"
+        :page-size="pagination.pageSize || 20"
+        :current-page="pagination.pageNum || 1"
+        :total="pagination.total"
       ></el-pagination>
     </div>
   </div>
@@ -94,7 +94,7 @@
 import ToolBar from './ToolBar'
 import Column from './Column'
 export default {
-  name: 'BaseTable',
+  name: 'RocketTable',
   inheritAttrs: false,
   props: {
     border: {
@@ -107,9 +107,9 @@ export default {
       type: Object,
       default () {
         return {
-          page: 1, // 当前页码
-          page_size: 20, // 每页条数
-          total_count: 0, // 总条数
+          pageNum: 1, // 当前页码
+          pageSize: 20, // 每页条数
+          total: 0, // 总条数
         }
       },
     },
@@ -160,10 +160,10 @@ export default {
      */
     handleSizeChange (val) {
       // 缓存当前选择的每页条数，在页码切换的时候，需要保持同步
-      this.page_size = val
+      this.pageSize = val
       // 同步分页数据给父组件
       this.$emit('update:pagination', {
-        page_size: val,
+        pageSize: val,
         page: 1,
         total_count: this.pagination.total_count,
       })
@@ -176,7 +176,7 @@ export default {
     handleCurrentChange (val) {
       // 同步分页数据给父组件
       this.$emit('update:pagination', {
-        page_size: this.page_size || this.pagination.page_size,
+        pageSize: this.pageSize || this.pagination.pageSize,
         page: val,
         total_count: this.pagination.total_count,
       })
@@ -186,23 +186,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-// 弹框中表格样式控制
-.el-dialog__wrapper,
-.el-drawer__wrapper {
-  .card-header .action button {
-    &:first-child {
-      margin-left: 0;
-      margin-right: 0;
-    }
-  }
-  .el-table {
-    border: solid 1px #edf0f2;
-    border-bottom: none;
-  }
-}
-// pro-table基础样式
-.pro-table {
+<style lang="scss" scoped>
+.rocket-table {
   border-radius: 2px;
   background: #ffffff;
   padding-bottom: 20px;

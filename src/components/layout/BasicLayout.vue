@@ -116,13 +116,12 @@ export default {
     display: flex;
     align-items: center;
     width: 100%;
-    height: 50px;
+    height: 54px;
     overflow: hidden;
 
     img {
       margin: 0 16px;
-      width: 32px;
-      height: 32px;
+      width: 28px;
     }
 
     p {

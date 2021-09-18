@@ -1,17 +1,20 @@
 <template>
   <wrapper>
-    <!-- 表单查询区 -->
-    <query-form :inline="true" :form="form" :model.sync="queryForm" @handleQuery="getTableList" />
+    <search-box>
+      <!-- 表单查询区 -->
+      <query-form :inline="true" :form="form" :model.sync="queryForm" @handleQuery="getTableList" />
+    </search-box>
 
     <!-- 列表区域 -->
-    <base-table
+    <rocket-table
+      border
       :loading.sync="showLoading"
       :column.sync="mainColumn"
       :data="mainData"
       :pagination.sync="pagination"
       @handleChange="getTableList"
     >
-    </base-table>
+    </rocket-table>
   </wrapper>
 </template>
 

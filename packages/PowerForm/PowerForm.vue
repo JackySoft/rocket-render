@@ -1,7 +1,7 @@
 <template>
 <el-row v-bind="config.layout">
   <el-form
-    class="oc-form"
+    class="power-form"
     :ref="refForm"
     :model="value"
     v-bind="{...config,formList:null,layout:null,labelWidth:config.labelWidth || '100px'}"
@@ -95,6 +95,7 @@ export default {
             } else {
               this.value[key] = undefined
             }
+            return key
           })
         }
       }

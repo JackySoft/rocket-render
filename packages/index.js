@@ -1,15 +1,14 @@
-import QueryForm from './QueryForm/index'
-import BaseTable from './BaseTable/index'
+import RocketForm from './RocketForm/index'
+import RocketTable from './RocketTable/index'
 import PowerForm from './PowerForm/index'
-import './assets/index.scss'
 
 const install = function (Vue) {
-  Vue.use(QueryForm)
-  Vue.use(BaseTable)
+  Vue.use(RocketForm)
+  Vue.use(RocketTable)
   Vue.use(PowerForm)
 }
 export {
-  QueryForm, BaseTable, PowerForm
+  RocketForm, RocketTable, PowerForm
 }
 export default {
   install,

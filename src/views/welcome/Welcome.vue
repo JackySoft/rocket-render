@@ -4,8 +4,8 @@
       <div class="welcome-desc">
         <!-- TODO 初始化完成后可以替换这里的相关说明 -->
         <h1 class="welcome-inner-title">欢迎使用</h1>
-        <p class="welcome-inner-content">Octopus Pro</p>
-        <p class="welcome-inner-tip">-- 环科路555号最具影响力的中后台前端方案</p>
+        <p class="welcome-inner-content">Rocket-UI</p>
+        <p class="welcome-inner-tip">-- 河畔一角</p>
       </div>
       <div class="welcome-image"></div>
     </div>

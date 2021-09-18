@@ -1,10 +1,11 @@
 <template>
   <wrapper>
-    <!-- 表单查询区 -->
-    <query-form :inline="true" :form="form" :model.sync="queryForm" @handleQuery="getTableList" @handleReset="getTableList" />
-
+    <search-box>
+      <!-- 表单查询区 -->
+      <query-form :inline="true" :form="form" :model.sync="queryForm" @handleQuery="getTableList" @handleReset="getTableList" />
+    </search-box>
     <!-- 列表区域 -->
-    <base-table
+    <rocket-table
       :loading.sync="showLoading"
       :column.sync="mainColumn"
       :data="mainData"
@@ -14,7 +15,7 @@
       @handleCellClick="handleCellClick"
       @handleSelectionChange="handleSelectionChange"
     >
-    </base-table>
+    </rocket-table>
   </wrapper>
 </template>
 

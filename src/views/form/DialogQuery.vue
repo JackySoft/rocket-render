@@ -1,14 +1,16 @@
 <template>
   <wrapper>
-    <!-- 表单查询区 -->
-    <query-form
-      :form="form"
-      :model.sync="queryParams"
-      @handleQuery="getTableList"
-    />
-
+    <search-box>
+      <!-- 表单查询区 -->
+      <query-form
+        :form="form"
+        :model.sync="queryParams"
+        @handleQuery="getTableList"
+      />
+    </search-box>
     <!-- 列表区域 -->
-    <base-table
+    <rocket-table
+      border
       :loading="showLoading"
       :column.sync="mainColumn"
       :data="mainData"
@@ -18,7 +20,7 @@
       <template v-slot:action>
         <el-button type="primary" @click="openUserModal()">查看用户</el-button>
       </template>
-    </base-table>
+    </rocket-table>
 
     <!-- 页内弹框:查询表单+表格 -->
     <el-dialog
@@ -33,7 +35,7 @@
         :model.sync="userParams"
         @handleQuery="getUserDataList"
       />
-      <base-table
+      <rocket-table
         :loading="showLoading1"
         :column.sync="userColumn"
         :data="userData"
@@ -45,7 +47,7 @@
         <template v-slot:action>
           <el-button @click="handleExport()">导出</el-button>
         </template>
-      </base-table>
+      </rocket-table>
     </el-dialog>
   </wrapper>
 </template>

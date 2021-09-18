@@ -1,10 +1,11 @@
 <template>
   <wrapper>
-    <!-- 表单查询区 -->
-    <query-form :form="form" :model.sync="queryForm" @handleQuery="getTableList" />
-
+    <search-box>
+      <!-- 表单查询区 -->
+      <query-form :form="form" :model.sync="queryForm" @handleQuery="getTableList" />
+    </search-box>
     <!-- 列表区域 -->
-    <base-table
+    <rocket-table
       :loading.sync="showLoading"
       :column.sync="mainColumn"
       :data="mainData"
@@ -20,7 +21,7 @@
       <template v-slot:copy="scope">
         <el-button type="text" icon="el-icon-document-copy" @click="handleCopy(scope.row)">{{scope.row.uid}}</el-button>
       </template>
-    </base-table>
+    </rocket-table>
   </wrapper>
 </template>
 
@@ -229,7 +230,7 @@ export default {
     },
     // 增加复制功能
     handleCopy (row) {
-      var input = document.createElement('input')
+      const input = document.createElement('input')
       input.style = 'position:absolute;left:0;bottom:0;opacity:0;'
       document.body.append(input)
       input.value = row.uid// 修改文本框的内容
