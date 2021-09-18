@@ -16,6 +16,8 @@ yarn serve
 
 ## rocket-render使用文档
 
+体验DEMO：https://jackysoft.github.io/rocket-render/#/form/grid
+
 1. 安装插件
 ```
 yarn add rocket-render -S
