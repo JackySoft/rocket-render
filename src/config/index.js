@@ -17,8 +17,8 @@ const EnvConfig = {
     sentryDsn: ''
   },
   prod: { // 生产环境
-    baseApi: '',
-    sentryDsn: ''
+    baseApi: 'https://www.fastmock.site/mock/f7b55d085be70bdf2bdd62fb3c65081a/api',
+    sentryDsn: 'https://www.fastmock.site/mock/f7b55d085be70bdf2bdd62fb3c65081a/api'
   }
 }
 export default {

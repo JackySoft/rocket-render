@@ -226,9 +226,9 @@ export default {
       mainData: [],
       // 分页对象
       pagination: {
-        page: 1,
-        page_size: 20,
-        total_count: 0,
+        pageNum: 1,
+        pageSize: 20,
+        total: 0,
       },
     }
   },
@@ -237,9 +237,9 @@ export default {
   },
   methods: {
     // 首页列表查询,page为子组件传递的页码，默认为1
-    getTableList (page = 1) {
+    getTableList (pageNum = 1) {
       this.showLoading = true
-      this.pagination.page = page
+      this.pagination.pageNum = pageNum
       const data = {
         ...this.queryForm, // 查询表单数据
         ...this.pagination, // 默认分页数据

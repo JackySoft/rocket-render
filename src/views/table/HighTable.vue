@@ -156,9 +156,9 @@ export default {
       mainData: [],
       // 分页对象
       pagination: {
-        page: 1,
-        page_size: 20,
-        total_count: 0,
+        pageNum: 1,
+        pageSize: 20,
+        total: 0,
       },
       span: {
         callback ({ row, column, rowIndex, columnIndex }) {
@@ -194,7 +194,7 @@ export default {
       this.$api.getBasicList(data).then((res) => {
         this.mainData = res.list
         this.showLoading = false
-        this.pagination.total_count = res.total_count
+        this.pagination.total = res.total
       })
     },
     // 列汇总

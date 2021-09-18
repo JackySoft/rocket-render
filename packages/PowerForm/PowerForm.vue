@@ -75,6 +75,7 @@ export default {
      */
     handleInput (item, val) {
       const { action } = item
+      const values = { ...this.value }
       /**
        * type: 'reset' 重置对应表单
        * model: 'all' 重置所有表单
@@ -86,23 +87,22 @@ export default {
         // 重置所有表单
         if (modelList === 'all') {
           this.handleReset()
-          this.value[item.model] = val
         } else if (modelList) {
           // 重置部分表单
           modelList.map(key => {
             if (Array.isArray(this.value[key])) {
-              this.value[key] = []
+              values[key] = []
             } else {
-              this.value[key] = undefined
+              values[key] = undefined
             }
             return key
           })
         }
       }
       if (typeof item.change === 'function') {
-        item.change(val, this.value, item.model, this.config)
+        item.change(val, values, item.model, this.config)
       }
-      this.$emit('input', { ...this.value, [item.model]: val })
+      this.$emit('input', { ...values, [item.model]: val })
     },
     // 表单重置
     handleReset () {
