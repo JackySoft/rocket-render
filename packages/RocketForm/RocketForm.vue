@@ -9,7 +9,7 @@
   >
     <!-- 行内布局-->
     <template v-if="inline">
-      <template v-for="(item, index) in form">
+      <template v-for="(item, index) in json">
         <FormItem
           :key="index"
           :item="item"
@@ -164,11 +164,11 @@ function debounce (method, delay, immediate) {
   }
 }
 export default {
-  name: 'QueryForm',
+  name: 'RocketForm',
   props: {
     inline: Boolean, // true为行内，false为栅格
     type: String, // 当设置为dialog时，说明QueryForm在dialog中使用，会调整QueryForm背景色
-    form: Array, // 表单JSON对象
+    json: Array, // 表单JSON对象
     model: Object, // 默认v-model参数
   },
   components: { FormItem },

@@ -1,6 +1,6 @@
-import { OcFormComponent } from './component'
+import { RocketComponent } from './component'
 
-export declare class BaseTable extends OcFormComponent {
+export declare class RocketTable extends RocketComponent {
   loading: boolean
 
   column: object[]

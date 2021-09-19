@@ -1,3 +1,3 @@
-import * as ElementUI from './form'
+import * as RocketRender from './form'
 export * from './form'
-export default ElementUI
+export default RocketRender

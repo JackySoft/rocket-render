@@ -1,7 +1,7 @@
 {
   "name": "rocket-render",
   "description": "a rocket-render component for Vue2.x",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "license": "MIT",
   "private": false,
   "author": {
@@ -9,8 +9,8 @@
     "email": "sunnyboysoft@163.com",
     "url": "http://www.imooc.com/t/1343480"
   },
-  "main": "lib/rocket-render.umd.js",
-  "unpkg": "lib/rocket-render.umd.js",
+  "main": "lib/rocket-render.common.js",
+  "unpkg": "lib/rocket-render.common.js",
   "style": "lib/rocket-render.css",
   "typings": "types/index.d.ts",
   "files": [
