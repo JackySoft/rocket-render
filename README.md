@@ -29,6 +29,7 @@ yarn add rocket-render -S
 ```
 import Vue from 'vue'
 import RocketRender from 'rocket-render'
+import 'rocket-render/lib/rocket-render.css'
 
 Vue.use(RocketRender)
 ```
@@ -38,7 +39,7 @@ Vue.use(RocketRender)
 <template>
     <div class="search-box">
         <!-- 表单查询区 -->
-        <query-form :inline="true" :form="form" :model.sync="queryForm" @handleQuery="getTableList" />
+        <rocket-form :inline="true" :form="form" :model.sync="queryForm" @handleQuery="getTableList" />
     </search-box>
 
     <!-- 列表区域 -->
@@ -55,7 +56,7 @@ Vue.use(RocketRender)
 
 <script>
 export default {
-  name: 'query',
+  name: 'index',
   data () {
     return {
       showLoading: false,

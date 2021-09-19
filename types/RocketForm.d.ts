@@ -1,6 +1,6 @@
 import { RocketComponent } from './component'
 
-export declare class QueryForm extends RocketComponent {
+export declare class RocketForm extends RocketComponent {
   type: string
 
   json: object[]
