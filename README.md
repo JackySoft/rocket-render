@@ -1,31 +1,32 @@
-# 低代码平台方案
+## rocket-render
+一款基于Vue2.6实现的表单、表格低代码插件
 
-## 目录说明
-1. packages为核心组件源码
-2. src为Demo源码
+## Document
 
-## 项目运行
-1. 安装依赖
-```
-yarn install
-```
-2. 运行
-```
-yarn serve
-```
+- 体验DEMO：https://jackysoft.github.io/rocket-render/
 
-## rocket-render使用文档
+- 开发文档：https://jackysoft.github.io/rocket-render-doc
 
-体验DEMO：https://jackysoft.github.io/rocket-render/#/
+## Features
 
-开发文档：https://jackysoft.github.io/rocket-render-doc/
+- 基于json配置化开发表单、表格组件
+- 基于ElementUI二次封装，无缝对接，属性、事件均和ElementUI同步
+- rocket-render更加易用、快速开发
 
-1. 安装插件
+## Install
+
 ```
 yarn add rocket-render -S
+
+# or 
+
+npm i rocket-render -S
 ```
 
-2. main.js中插件加载
+
+## Usage
+
+1. main.js中全局安装插件
 ```
 import Vue from 'vue'
 import RocketRender from 'rocket-render'
@@ -34,15 +35,16 @@ import 'rocket-render/lib/rocket-render.css'
 Vue.use(RocketRender)
 ```
 
-3. 页面使用组件
+2. 页面使用组件
 ```
 <template>
+    <!-- rocket-form没有背景和边距，为了体验，可以给外层添加一个容器并设置背景和边距 -->
     <div class="search-box">
         <!-- 表单查询区 -->
         <rocket-form :inline="true" :form="form" :model.sync="queryForm" @handleQuery="getTableList" />
     </search-box>
 
-    <!-- 列表区域 -->
+    <!-- 列表区域，支撑各种场景的列显示以及自定义列 -->
     <rocket-table
         border
         :loading.sync="showLoading"
