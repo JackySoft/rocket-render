@@ -84,7 +84,7 @@
         :page-sizes="[10, 20, 50]"
         :page-size="pagination.pageSize || 20"
         :current-page="pagination.pageNum || 1"
-        :total="pagination.total"
+        :total="pagination.total || 0"
       ></el-pagination>
     </div>
   </div>

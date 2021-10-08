@@ -1,5 +1,5 @@
 {
-  "name": "rocket-render",
+  "name": "JackySoft@https://github.com/JackySoft/rocket-render",
   "description": "a rocket-render component for Vue2.x",
   "version": "2.0.7",
   "license": "MIT",
@@ -22,6 +22,9 @@
     "url": "https://github.com/JackySoft/rocket-render/issues"
   },
   "homepage": "https://jackysoft.github.io/rocket-render/#/",
+  "publishConfig": {
+    "JackySoft:registry": "https://npm.pkg.github.com"
+  },
   "keywords": [
     "lowcode",
     "vue rocket",
