@@ -1,7 +1,7 @@
 {
-  "name": "JackySoft@https://github.com/JackySoft/rocket-render",
+  "name": "rocket-render",
   "description": "a rocket-render component for Vue2.x",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "license": "MIT",
   "private": false,
   "author": {
