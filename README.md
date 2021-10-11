@@ -41,7 +41,7 @@ Vue.use(RocketRender)
     <!-- rocket-form没有背景和边距，为了体验，可以给外层添加一个容器并设置背景和边距 -->
     <div class="search-box">
         <!-- 表单查询区 -->
-        <rocket-form :inline="true" :json="form" :model.sync="queryForm" @handleQuery="getTableList" />
+        <search-form :inline="true" :json="form" :model.sync="queryForm" @handleQuery="getTableList" />
     </search-box>
 
     <!-- 列表区域，支撑各种场景的列显示以及自定义列 -->
