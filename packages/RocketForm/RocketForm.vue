@@ -1,12 +1,12 @@
 <template>
-<el-row v-bind="config.layout">
+<el-row v-bind="json.layout">
   <el-form
     class="rocket-form"
     :ref="refForm"
     :model="value"
-    v-bind="{...config,formList:null,layout:null,labelWidth:config.labelWidth || '100px'}"
+    v-bind="{...json,formList:null,layout:null,labelWidth:json.labelWidth || '100px'}"
   >
-    <template v-for="(item, index) in config.formList">
+    <template v-for="(item, index) in json.formList">
       <el-col :span="item.span || 24" :key="index" v-if="
           (item.show && item.show.val.includes(value[item.show.model])) ||
           !item.show
@@ -24,7 +24,7 @@
         <template v-else-if="item.type === 'group'">
           <el-form-item v-bind="{...item,list:null}" style="margin-bottom:0;"></el-form-item>
           <el-form-item>
-            <el-row v-bind="config.layout" v-for="(row,key) in item.list" :key="key">
+            <el-row v-bind="json.layout" v-for="(row,key) in item.list" :key="key">
               <template v-for="subItem in row">
                 <el-col :span="subItem.span || 24/item.list.length" :key="subItem.model">
                   <FormItem  :item="subItem" v-bind="subItem" :value="value[subItem.model]" @input="(val)=>handleInput(subItem,val)" @click="handleClick(subItem)"/>
@@ -39,11 +39,11 @@
       </el-col>
     </template>
     <el-col :span="24">
-      <el-form-item key="form-btn-action" v-if="config.showFooter">
+      <el-form-item key="form-btn-action" v-if="json.showFooter">
         <!-- 可自定义按钮配置 -->
-        <template v-if="config.btnGroup">
-          <el-button @click="handleClose">{{config.btnGroup.cancel ? config.btnGroup.cancel.text:'取消'}}</el-button>
-          <el-button type="primary" @click="handleSubmit" :loading="config.btnGroup.confirm?config.btnGroup.confirm.loading:false">{{config.btnGroup.confirm?config.btnGroup.confirm.text:'确定'}}</el-button>
+        <template v-if="json.btnGroup">
+          <el-button @click="handleClose">{{json.btnGroup.cancel ? json.btnGroup.cancel.text:'取消'}}</el-button>
+          <el-button type="primary" @click="handleSubmit" :loading="json.btnGroup.confirm?json.btnGroup.confirm.loading:false">{{json.btnGroup.confirm?json.btnGroup.confirm.text:'确定'}}</el-button>
         </template>
         <template v-else>
           <el-button @click="handleClose">取消</el-button>
@@ -57,21 +57,21 @@
 <script>
 import FormItem from '../components/FormItem.vue'
 export default {
-  name: 'PowerForm',
+  name: 'RocketForm',
   props: {
-    config: Object,
+    json: Object,
     value: Object,
   },
   components: { FormItem },
   data () {
     return {
-      refForm: this.config.ref || 'powerForm',
+      refForm: this.json.ref || 'powerForm',
     }
   },
   methods: {
     /**
      * 触发自定义事件
-     * change(val,values,item,config)当前值/所有值/当前item/所有配置
+     * change(val,values,item,json)当前值/所有值/当前item/所有配置
      */
     handleInput (item, val) {
       const { action } = item
@@ -100,7 +100,7 @@ export default {
         }
       }
       if (typeof item.change === 'function') {
-        item.change(val, values, item.model, this.config)
+        item.change(val, values, item.model, this.json)
       }
       this.$emit('input', { ...values, [item.model]: val })
     },
@@ -129,7 +129,7 @@ export default {
     },
     handleClick (item) {
       if (typeof item.click === 'function') {
-        item.click(this.value, this.config)
+        item.click(this.value, this.json)
       }
     }
   },

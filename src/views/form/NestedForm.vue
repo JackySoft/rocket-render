@@ -34,7 +34,7 @@
     >
       <rocket-form
         ref="dialogForm"
-        :config="rocketConfig"
+        :json="rocketConfig"
         @handleClose="handleClose()"
         v-model="userInfo"
       ></rocket-form>

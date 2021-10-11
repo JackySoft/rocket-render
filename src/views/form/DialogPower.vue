@@ -37,7 +37,7 @@
     >
       <rocket-form
         ref="dialogForm1"
-        :config="dialogConfig1"
+        :json="dialogConfig1"
         v-model="userInfo1"
         @handleClose="handleClose('dialogForm1')"
         @handleSubmit="handleSubmit"
@@ -52,7 +52,7 @@
     >
       <rocket-form
         ref="dialogForm2"
-        :config="dialogConfig2"
+        :json="dialogConfig2"
         v-model="userInfo2"
       ></rocket-form>
       <span slot="footer">

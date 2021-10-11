@@ -32,7 +32,7 @@
       <div class="p20">
         <rocket-form
           ref="dialogForm"
-          :config="dialogConfig"
+          :json="dialogConfig"
           v-model="dialogForm"
           @handleSubmit="handleSubmit"
           @handleClose="handleClose"

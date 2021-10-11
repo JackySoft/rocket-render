@@ -21,7 +21,7 @@
           </template>
           <el-menu-item v-for="menu in menuList.form" :index="menu.path" :key="menu.path">{{menu.name}}</el-menu-item>
         </el-submenu>
-        <el-submenu index="1">
+        <el-submenu index="2">
           <template slot="title">
             <span>表格</span>
           </template>
