@@ -1,23 +1,32 @@
 <template>
   <div class="rocket-table" :class="{'auto':isFullScreen}" id="rocketBaseTable">
-    <div class="card-header" v-if="$slots.action || toolbar">
-      <!-- 表格上方操作按钮 -->
-      <div>
-        <div class="action" v-if="$slots.action">
+    <div class="action-header" v-if="$slots.action || toolbar">
+      <!-- 表格上方标题 -->
+      <div class="title">
+        <div class="action" v-if="$slots.title">
+          <slot name="title"></slot>
+        </div>
+         <div class="action" v-else-if="$slots.action">
           <slot name="action"></slot>
         </div>
       </div>
-      <!-- 工具条 -->
-      <tool-bar
-        v-if="toolbar"
-        :column="$attrs.column"
-        :toolbar="$attrs.toolbar"
-        :id="$attrs.id"
-        @handleReload="handleReload"
-        @handleDensity="handleDensity"
-        @handleColumn="handleColumn"
-        @handleFullScreen="isFullScreen=$event"
-      />
+      <div class="action-wrap">
+        <!-- 表格上方操作按钮 -->
+        <div class="action" v-if="$slots.title && $slots.action">
+          <slot name="action"></slot>
+        </div>
+        <!-- 工具条 -->
+        <tool-bar
+          v-if="toolbar"
+          :column="$attrs.column"
+          :toolbar="$attrs.toolbar"
+          :id="$attrs.id"
+          @handleReload="handleReload"
+          @handleDensity="handleDensity"
+          @handleColumn="handleColumn"
+          @handleFullScreen="isFullScreen=$event"
+        />
+      </div>
     </div>
     <!-- 基础表格 -->
     <div class="base-table">
@@ -191,17 +200,15 @@ export default {
   border-radius: 2px;
   background: #ffffff;
   padding-bottom: 20px;
-  &.auto{
-    overflow: auto;
-  }
-  .card-header {
-    background: #ffffff;
+  .action-header {
+    background: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .action {
-      border-radius: 2px;
-      margin: 16px 20px;
+    .action-wrap {
+      display: flex;
+      align-items: center;
+      padding: 16px 0 16px 20px;
     }
   }
   // 设置表头的背景色

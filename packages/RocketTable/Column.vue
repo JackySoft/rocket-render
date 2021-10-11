@@ -69,7 +69,7 @@
           <!-- 需要根据返回状态动态渲染按钮 -->
           <el-button
             :type="btn.type || 'text'"
-            v-if="btn.permission && btn.prop"
+            v-if="btn.permission !==false && btn.prop"
             :class="[btn.val[scope.row[btn.prop]].color]"
             @click="handleAction(key, scope.row, btn.val[scope.row[btn.prop]].type)"
             :key="`action-${key}`"
@@ -83,7 +83,7 @@
           <!-- 普通操作按钮 -->
           <el-button
             :type="btn.type || 'text'"
-            v-else-if="btn.permission"
+            v-else-if="btn.permission!==false"
             :class="[btn.color]"
             @click="handleAction(key, scope.row, btn.type)"
             :key="key"

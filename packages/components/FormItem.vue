@@ -197,7 +197,7 @@
       {{item.button.text}}
     </el-button>
     <!-- 纯文本 -->
-    <div v-if="item.type === 'label'" :style="item.style">{{item.text}}</div>
+    <div v-if="item.type === 'label'" :style="item.style">{{item.text || $attrs.value}}</div>
     <template v-if="item.tips || item.type === 'tips'">
         <!-- 默认tips在文本框下面-->
         <div class="form-tip" v-if="typeof item.tips === 'string'">{{ item.tips }}</div>

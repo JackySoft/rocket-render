@@ -9,25 +9,28 @@
         @handleQuery="getTableList"
       />
     </search-box>
-    <!-- 列表区域 -->
-    <rocket-table
-      :loading="showLoading"
-      :column.sync="mainColumn"
-      :data="mainData"
-      :pagination.sync="pagination"
-      @handleChange="getTableList"
-      @handleAction="handleAction"
-    >
-      <template v-slot:action>
-        <el-button type="primary" @click="showModal1 = true"
-          >动态创建一</el-button
-        >
-        <el-button type="primary" @click="showModal2 = true"
-          >动态创建二</el-button
-        >
-      </template>
-    </rocket-table>
-
+    <div class="table-box">
+      <!-- 列表区域 -->
+      <rocket-table
+        :loading="showLoading"
+        :column.sync="mainColumn"
+        :data="mainData"
+        border
+        :pagination.sync="pagination"
+        @handleChange="getTableList"
+        @handleAction="handleAction"
+      >
+        <!-- <template v-slot:title> 注册审批 </template> -->
+        <template v-slot:action>
+          <el-button type="primary" @click="showModal1 = true"
+            >动态创建一</el-button
+          >
+          <el-button type="primary" @click="showModal2 = true"
+            >动态创建二</el-button
+          >
+        </template>
+      </rocket-table>
+    </div>
     <!-- 页内弹框 -->
     <el-dialog
       title="用户信息"

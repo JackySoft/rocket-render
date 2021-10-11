@@ -10,12 +10,13 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
+.search-box{
+  border-radius: 10px;
+}
+.table-box{
+  margin-top: 16px;
+  background: #ffffff;
+  padding: 0 22px 24px;
+  border-radius: 10px;
 }
 </style>
