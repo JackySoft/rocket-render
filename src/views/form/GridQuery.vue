@@ -1,10 +1,10 @@
 <template>
   <wrapper>
     <search-box>
-    <!-- 表单查询区 -->
-      <query-form
+      <!-- 表单查询区 -->
+      <search-form
         :inline="false"
-        :form="form"
+        :json="formJson"
         :model.sync="queryForm"
         @handleQuery="getTableList" />
     </search-box>
@@ -39,7 +39,7 @@ export default {
         use_status: 1,
         query_field: 1,
       },
-      form: [
+      formJson: [
         {
           type: 'text',
           model: 'user_name',

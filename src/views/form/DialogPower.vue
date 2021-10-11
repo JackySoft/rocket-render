@@ -2,9 +2,9 @@
   <wrapper>
     <search-box>
       <!-- 表单查询区 -->
-      <query-form
+      <search-form
         :inline="false"
-        :form="form"
+        :json="form"
         :model.sync="queryParams"
         @handleQuery="getTableList"
       />
@@ -35,13 +35,13 @@
       width="70%"
       @close="handleClose('dialogForm1')"
     >
-      <power-form
+      <rocket-form
         ref="dialogForm1"
         :config="dialogConfig1"
         v-model="userInfo1"
         @handleClose="handleClose('dialogForm1')"
         @handleSubmit="handleSubmit"
-      ></power-form>
+      ></rocket-form>
     </el-dialog>
     <!-- 页内弹框 -->
     <el-dialog
@@ -50,11 +50,11 @@
       width="68%"
       @close="handleClose('dialogForm2')"
     >
-      <power-form
+      <rocket-form
         ref="dialogForm2"
         :config="dialogConfig2"
         v-model="userInfo2"
-      ></power-form>
+      ></rocket-form>
       <span slot="footer">
         <el-button @click="handleClose('dialogForm2')">取 消</el-button>
         <el-button type="primary" @click="handleSubmit2">确 定</el-button>

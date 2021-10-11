@@ -2,8 +2,8 @@
   <wrapper>
     <search-box>
       <!-- 表单查询区 -->
-      <query-form
-        :form="form"
+      <search-form
+        :json="form"
         :model.sync="queryForm"
         @handleQuery="getTableList"
       />
@@ -30,13 +30,13 @@
       @close="handleClose"
     >
       <div class="p20">
-        <power-form
+        <rocket-form
           ref="dialogForm"
           :config="dialogConfig"
           v-model="dialogForm"
           @handleSubmit="handleSubmit"
           @handleClose="handleClose"
-        ></power-form>
+        ></rocket-form>
       </div>
     </el-drawer>
   </wrapper>

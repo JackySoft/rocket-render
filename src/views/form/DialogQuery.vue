@@ -2,8 +2,9 @@
   <wrapper>
     <search-box>
       <!-- 表单查询区 -->
-      <query-form
-        :form="form"
+      <search-form
+        :json="form"
+        :inline="true"
         :model.sync="queryParams"
         @handleQuery="getTableList"
       />
@@ -30,8 +31,8 @@
       :before-close="handleClose"
       destroy-on-close
     >
-      <query-form
-        :form="userForm"
+      <search-form
+        :json="userForm"
         :model.sync="userParams"
         @handleQuery="getUserDataList"
       />

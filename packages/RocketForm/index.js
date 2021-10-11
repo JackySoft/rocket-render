@@ -1,4 +1,4 @@
-import RocketForm from './RocketForm.vue'
+import RocketForm from './RocketForm'
 
 RocketForm.install = (Vue) => {
   Vue.component(RocketForm.name, RocketForm)

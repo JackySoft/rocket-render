@@ -2,9 +2,9 @@
   <wrapper>
     <search-box>
       <!-- 表单查询区 -->
-      <query-form
+      <search-form
         :inline="false"
-        :form="form"
+        :json="form"
         :model.sync="queryParams"
         @handleQuery="getTableList"
       />
@@ -32,12 +32,12 @@
       width="50%"
       @close="$refs.dialogForm.handleReset()"
     >
-      <power-form
+      <rocket-form
         ref="dialogForm"
         :config="rocketConfig"
         @handleClose="handleClose()"
         v-model="userInfo"
-      ></power-form>
+      ></rocket-form>
     </el-dialog>
   </wrapper>
 </template>

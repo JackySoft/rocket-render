@@ -2,7 +2,7 @@
   <wrapper>
     <search-box>
       <!-- 表单查询区 -->
-      <query-form :inline="true" :form="form" :model.sync="queryForm" @handleQuery="getTableList" @handleReset="getTableList" />
+      <search-form :inline="true" :json="form" :model.sync="queryForm" @handleQuery="getTableList" @handleReset="getTableList" />
     </search-box>
     <!-- 列表区域 -->
     <rocket-table

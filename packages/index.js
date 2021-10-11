@@ -1,14 +1,14 @@
 import RocketForm from './RocketForm/index'
 import RocketTable from './RocketTable/index'
-import PowerForm from './PowerForm/index'
+import SearchForm from './SearchForm/index'
 
 const install = function (Vue) {
+  Vue.use(SearchForm)
   Vue.use(RocketForm)
   Vue.use(RocketTable)
-  Vue.use(PowerForm)
 }
 export {
-  RocketForm, RocketTable, PowerForm
+  SearchForm, RocketForm, RocketTable,
 }
 export default {
   install,

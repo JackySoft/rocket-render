@@ -1,200 +1,81 @@
 <template>
+<el-row v-bind="config.layout">
   <el-form
     class="rocket-form"
-    :class="{ dialog: type === 'dialog' }"
-    ref="searchForm"
+    :ref="refForm"
     :model="value"
-    :inline="inline"
-    @submit.native.prevent="handleQuery"
+    v-bind="{...config,formList:null,layout:null,labelWidth:config.labelWidth || '100px'}"
   >
-    <!-- 行内布局-->
-    <template v-if="inline">
-      <template v-for="(item, index) in json">
-        <FormItem
-          :key="index"
-          :item="item"
-          v-bind="item"
-          :value="value[item.model]"
-          @input="(val) => handleInput(item, val)"
-        />
-      </template>
-      <el-form-item>
-        <el-button @click="handleReset">重置</el-button>
-        <el-button type="primary" @click="handleQuery">查询</el-button>
-      </el-form-item>
-    </template>
-    <!-- 固定栅格布局-->
-    <el-row type="flex" :gutter="20" v-else>
-      <template v-for="(item, index) in form">
-        <el-col
-          :key="index"
-          :xs="24"
-          :sm="24"
-          :md="md"
-          :lg="lg"
-          :xl="xl"
-          :class="{ hidden: index >= hiddenIndex && !isOpen }"
-        >
-          <FormItem
-            :key="index"
-            :item="item"
-            v-bind="item"
-            :value="value[item.model]"
-            @input="(val) => handleInput(item, val)"
-          />
-        </el-col>
-      </template>
-      <el-col
-        :xs="24"
-        :sm="24"
-        :md="md"
-        :lg="lg"
-        :xl="xl"
-        :offset="offset"
-        class="text-right mb20"
-      >
-        <el-button @click="handleReset">重置</el-button>
-        <el-button type="primary" @click="handleQuery">查询</el-button>
-        <el-button type="text" v-if="showOpen" @click="handleOpen" size="medium"
-          >{{ isOpen ? "收起" : "展开"
-          }}<i :class="[isOpen ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i
-        ></el-button>
+    <template v-for="(item, index) in config.formList">
+      <el-col :span="item.span || 24" :key="index" v-if="
+          (item.show && item.show.val.includes(value[item.show.model])) ||
+          !item.show
+        ">
+        <template v-if="item.type === 'inline'">
+          <el-form-item v-bind="{...item,list:null,labelSuffix:''}" style="margin-bottom:0;">
+            <template v-for="(subItem,index) in item.list">
+              <!-- 设置gutter后，此处会有padding值，导致无法对齐-->
+              <el-col :span="subItem.span || 24/item.list.length" :key="subItem.model" :style="{'padding-left':index==0?'0px':'auto'}">
+                <FormItem  :item="subItem" v-bind="subItem" :value="value[subItem.model]" @input="(val)=>handleInput(subItem,val)" @click="handleClick(subItem)"/>
+              </el-col>
+            </template>
+          </el-form-item>
+        </template>
+        <template v-else-if="item.type === 'group'">
+          <el-form-item v-bind="{...item,list:null}" style="margin-bottom:0;"></el-form-item>
+          <el-form-item>
+            <el-row v-bind="config.layout" v-for="(row,key) in item.list" :key="key">
+              <template v-for="subItem in row">
+                <el-col :span="subItem.span || 24/item.list.length" :key="subItem.model">
+                  <FormItem  :item="subItem" v-bind="subItem" :value="value[subItem.model]" @input="(val)=>handleInput(subItem,val)" @click="handleClick(subItem)"/>
+                </el-col>
+              </template>
+            </el-row>
+          </el-form-item>
+        </template>
+        <template v-else>
+          <FormItem :item="item" v-bind="item" :value="value[item.model]" @input="(val)=>handleInput(item,val)" @click="handleClick(item)"/>
+        </template>
       </el-col>
-    </el-row>
+    </template>
+    <el-col :span="24">
+      <el-form-item key="form-btn-action" v-if="config.showFooter">
+        <!-- 可自定义按钮配置 -->
+        <template v-if="config.btnGroup">
+          <el-button @click="handleClose">{{config.btnGroup.cancel ? config.btnGroup.cancel.text:'取消'}}</el-button>
+          <el-button type="primary" @click="handleSubmit" :loading="config.btnGroup.confirm?config.btnGroup.confirm.loading:false">{{config.btnGroup.confirm?config.btnGroup.confirm.text:'确定'}}</el-button>
+        </template>
+        <template v-else>
+          <el-button @click="handleClose">取消</el-button>
+          <el-button type="primary" @click="handleSubmit">确定</el-button>
+        </template>
+      </el-form-item>
+    </el-col>
   </el-form>
+</el-row>
 </template>
 <script>
-import FormItem from './../components/FormItem'
-/**
- * 根据屏幕宽度，做栅格列数适配
- * 弹框中表单和页面查询表单要区分开
- * 弹框一律最大显示2列，页面查询表单最大显示4列
- * @param {formLength} JSON表单总长度
- * @param {isOpen} 是否展开
- * @param {mode} 是否为弹框
- */
-const getResult = (formLength, isOpen, mode) => {
-  const w = document.documentElement.clientWidth
-  let len = 0
-  let hiddenIndex = 0
-  let offset = 0
-  let showOpen = true
-  let md = 12 // 1200px以下，一行2列
-  let lg = 8 // 1200px以上，一行显示3列
-  let xl = 6 // 1920px以上，一行显示4列
-  if (mode === 'dialog') {
-    if (isOpen) {
-      hiddenIndex = 0
-      offset = formLength % 2 === 0 ? 12 : 0
-    } else {
-      hiddenIndex = 1
-      offset = formLength > 1 ? 0 : 12
-    }
-    md = 12
-    lg = 12
-    xl = 12
-  } else {
-    if (w >= 1920) {
-      hiddenIndex = 3
-      len = formLength % 4
-      if (isOpen) {
-        if (len === 0) offset = 18
-        else if (len === 1) offset = 12
-        else if (len === 2) offset = 6
-        else if (len === 3) offset = 0
-      } else if (formLength > 3) {
-        offset = 0
-      } else {
-        if (len === 0) offset = 0
-        else if (len === 1) offset = 12
-        else if (len === 2) offset = 6
-        else if (len === 3) offset = 0
-      }
-    } else if (w >= 1200) {
-      // 一行显示三列
-      hiddenIndex = 2
-      len = formLength % 3
-      if (isOpen) {
-        if (len === 0) offset = 16
-        else if (len === 1) offset = 8
-        else if (len === 2) offset = 0
-      } else if (formLength > 2) {
-        offset = 0
-      } else {
-        if (len === 0) offset = 0
-        else if (len === 1) offset = 8
-        else if (len === 2) offset = 0
-      }
-    } else if (w >= 992) {
-      hiddenIndex = 1
-      if (isOpen) {
-        if (formLength % 2 === 0) offset = 12
-      }
-    } else {
-      hiddenIndex = 1
-    }
-    if (formLength <= hiddenIndex) {
-      showOpen = false
-    }
-  }
-
-  return {
-    hiddenIndex,
-    offset,
-    showOpen,
-    md,
-    lg,
-    xl,
-    w,
-  }
-}
-// 添加防抖，防止resize重复调用
-function debounce (method, delay, immediate) {
-  let timer = null
-  if (immediate) {
-    method && method()
-  }
-  return function () {
-    const self = this
-    const args = arguments
-    timer && clearTimeout(timer)
-    timer = setTimeout(function () {
-      method.apply(self, args)
-    }, delay)
-  }
-}
+import FormItem from '../components/FormItem.vue'
 export default {
-  name: 'RocketForm',
+  name: 'PowerForm',
   props: {
-    inline: Boolean, // true为行内，false为栅格
-    type: String, // 当设置为dialog时，说明QueryForm在dialog中使用，会调整QueryForm背景色
-    json: Array, // 表单JSON对象
-    model: Object, // 默认v-model参数
+    config: Object,
+    value: Object,
   },
   components: { FormItem },
   data () {
     return {
-      value: { ...this.model }, // 初始化表单值
-      md: 12, // 992-1200 , 默认加载两列
-      lg: 8, // 1200 - 1920 , 默认加载3列
-      xl: 6, // >=1920 , 默认加载四列
-      showOpen: true, // 显示展开/收起按钮
-      isOpen: false, // 当前是否为展开状态
-      hiddenIndex: 0, // 需要隐藏的索引
-      offset: 0, // 偏移的列数
-      screenWidth: 0, // 当前屏幕可用宽度
+      refForm: this.config.ref || 'powerForm',
     }
-  },
-  mounted () {
-    window.onresize = debounce(this.handleLayout, 500, true)
   },
   methods: {
     /**
      * 触发自定义事件
-     * @callback(val,values,model)当前值/所有值/当前model
+     * change(val,values,item,config)当前值/所有值/当前item/所有配置
      */
     handleInput (item, val) {
       const { action } = item
+      const values = { ...this.value }
       /**
        * type: 'reset' 重置对应表单
        * model: 'all' 重置所有表单
@@ -206,108 +87,67 @@ export default {
         // 重置所有表单
         if (modelList === 'all') {
           this.handleReset()
-          this.value[item.model] = val
         } else if (modelList) {
           // 重置部分表单
           modelList.map(key => {
             if (Array.isArray(this.value[key])) {
-              this.value[key] = []
+              values[key] = []
             } else {
-              this.value[key] = undefined
+              values[key] = undefined
             }
             return key
           })
         }
       }
       if (typeof item.change === 'function') {
-        item.change(val, this.value, item.model)
+        item.change(val, values, item.model, this.config)
       }
-      this.value = { ...this.value, [item.model]: val }
+      this.$emit('input', { ...values, [item.model]: val })
     },
-    /**
-     * 表单重置
-     * 外部也可通过$refs进行内部API调用
-     */
+    // 表单重置
     handleReset () {
-      this.$refs.searchForm.resetFields()
-      this.$emit('update:model', { ...this.value })
-      this.$emit('handleReset', 1)
+      this.$refs[this.refForm].resetFields()
     },
-    /**
-     * 点击查询，回传数据，重置页码
-     */
-    handleQuery () {
-      this.$emit('update:model', { ...this.value })
-      this.$emit('handleQuery', 1)
+    // 默认走dialog弹框自带的关闭，也可以执行当前页面关闭按钮
+    handleClose () {
+      this.$refs[this.refForm].resetFields()
+      this.$emit('handleClose')
     },
-    /**
-     * 点击展开/收起
-     */
-    handleOpen () {
-      this.isOpen = !this.isOpen
-      const res = getResult(this.form.length, this.isOpen, this.mode)
-      this.hiddenIndex = res.hiddenIndex
-      this.offset = res.offset
-      this.md = res.md
-      this.lg = res.lg
-      this.xl = res.xl
+    // 默认触发查询点击事件
+    handleSubmit () {
+      this.$refs[this.refForm].validate((valid) => {
+        if (valid) {
+          this.$emit('handleSubmit', this.value)
+        }
+      })
     },
-    /**
-     * 监听resize事件，并通过防抖控制重复触发
-     */
-    handleLayout () {
-      // 根据当前屏幕尺寸，计算需要展示的列数以及隐藏列数
-      const { hiddenIndex, offset, showOpen, md, lg, xl, w } = getResult(
-        this.form.length,
-        this.isOpen,
-        this.mode
-      )
-      this.hiddenIndex = hiddenIndex
-      this.offset = offset
-      this.showOpen = showOpen
-      this.md = md
-      this.lg = lg
-      this.xl = xl
-      this.screenWidth = w
+    // 自定义校验方法,回调参数为被校验的表单项 prop 值，表示校验是否通过
+    validate (fn) {
+      this.$refs.powerForm.validate((valid) => {
+        (typeof fn === 'function') && fn(valid)
+      })
     },
-  },
-  /**
-   * 销毁全局事件
-   */
-  unmounted () {
-    window.onresize = null
-  },
-  /**
-   * 当父组件修改model时，需要同步修改子组件
-   */
-  watch: {
-    model: function (val) {
-      this.value = { ...val }
+    handleClick (item) {
+      if (typeof item.click === 'function') {
+        item.click(this.value, this.config)
+      }
     }
-  }
+  },
 }
 </script>
 <style lang="scss" scoped>
-// 默认为白色背景，当在弹框中时为灰色背景
-.rocket-form {
-  &.dialog {
-    background-color: #f7f8fa;
-    border: none;
-  }
-  .hidden {
-    display: none;
-  }
-  .el-row--flex {
-    flex-wrap: wrap;
-    .el-form-item {
-      display: flex;
-      .el-form-item__content {
-        flex: 1;
-        .el-date-editor {
-          width: 100%;
-        }
-      }
+.rocket-form{
+  .form-tip{
+    font-size: 14px;
+    color: #747474;
+    height: 25px;
+    line-height: 25px;
+    &.ml20{
+        margin-left: 10px;
     }
+  }
+  .transparent{
+    text-align:center;opacity:0;
   }
 }
 </style>

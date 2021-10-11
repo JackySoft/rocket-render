@@ -1,7 +1,7 @@
 {
   "name": "rocket-render",
   "description": "a rocket-render component for Vue2.x",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "license": "MIT",
   "private": false,
   "author": {
