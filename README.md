@@ -26,7 +26,7 @@ npm i rocket-render -S
 ## WeChat
 > 可通过微信群解决大家遇到的问题，并共同推进rocket-render快速迭代。
 
-![image](https://files.mdnice.com/user/17738/15c5748b-bfd9-4f0a-935b-2a1681af7b01.png =300x100%)
+<img alt="Join Discusion Group" src="https://jackysoft.github.io/rocket-render/wechat.jpg" width="300">
 
 ## Usage
 
