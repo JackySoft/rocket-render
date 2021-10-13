@@ -7,6 +7,7 @@
 
     <!-- 列表区域 -->
     <rocket-table
+      class="table-box"
       border
       :loading.sync="showLoading"
       :column.sync="mainColumn"
@@ -14,6 +15,11 @@
       :pagination.sync="pagination"
       @handleChange="getTableList"
     >
+    <template v-slot:title> 行内表单 </template>
+    <template v-slot:action>
+      <el-button type="primary">新增数据</el-button>
+      <el-button type="primary">导出数据</el-button>
+    </template>
     </rocket-table>
   </wrapper>
 </template>

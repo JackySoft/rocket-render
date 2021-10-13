@@ -11,6 +11,7 @@
     </search-box>
     <!-- 列表区域 -->
     <rocket-table
+      class="table-box"
       border
       :loading="showLoading"
       :column.sync="mainColumn"

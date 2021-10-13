@@ -10,6 +10,8 @@
     </search-box>
     <!-- 列表区域 -->
     <rocket-table
+      class="table-box"
+      border
       :showLoading="showLoading"
       :column.sync="mainColumn"
       :data="mainData"

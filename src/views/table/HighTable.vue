@@ -4,24 +4,30 @@
       <!-- 表单查询区 -->
       <search-form :json="form" :model.sync="queryForm" @handleQuery="getTableList" />
     </search-box>
-    <!-- 列表区域 -->
-    <rocket-table
-      :loading.sync="showLoading"
-      :column.sync="mainColumn"
-      :data="mainData"
-      :pagination.sync="pagination"
-      :span-method="span.callback"
-      @handleChange="getTableList"
-      @handleAction="handleAction"
-      @handleCellClick="handleCellClick"
-      @selection-change="handleSelectionChange"
-      show-summary
-      :summary-method="getSummaries"
-    >
-      <template v-slot:copy="scope">
-        <el-button type="text" icon="el-icon-document-copy" @click="handleCopy(scope.row)">{{scope.row.uid}}</el-button>
-      </template>
-    </rocket-table>
+    <div class="table-box">
+      <!-- 列表区域 -->
+      <rocket-table
+        :loading.sync="showLoading"
+        :column.sync="mainColumn"
+        :data="mainData"
+        :pagination.sync="pagination"
+        :span-method="span.callback"
+        @handleChange="getTableList"
+        @handleAction="handleAction"
+        @handleCellClick="handleCellClick"
+        @selection-change="handleSelectionChange"
+        show-summary
+        :summary-method="getSummaries"
+      >
+        <template v-slot:title> 高级表格 </template>
+        <template v-slot:action>
+          <el-button type="primary">导出数据</el-button>
+        </template>
+        <template v-slot:copy="scope">
+          <el-button type="text" icon="el-icon-document-copy" @click="handleCopy(scope.row)">{{scope.row.uid}}</el-button>
+        </template>
+      </rocket-table>
+    </div>
   </wrapper>
 </template>
 

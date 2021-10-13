@@ -4,18 +4,24 @@
       <!-- 表单查询区 -->
       <search-form :inline="true" :json="form" :model.sync="queryForm" @handleQuery="getTableList" @handleReset="getTableList" />
     </search-box>
-    <!-- 列表区域 -->
-    <rocket-table
-      :loading.sync="showLoading"
-      :column.sync="mainColumn"
-      :data="mainData"
-      :pagination.sync="pagination"
-      @handleChange="getTableList"
-      @handleAction="handleAction"
-      @handleCellClick="handleCellClick"
-      @handleSelectionChange="handleSelectionChange"
-    >
-    </rocket-table>
+    <div class="table-box">
+      <!-- 列表区域 -->
+      <rocket-table
+        :loading.sync="showLoading"
+        :column.sync="mainColumn"
+        :data="mainData"
+        :pagination.sync="pagination"
+        @handleChange="getTableList"
+        @handleAction="handleAction"
+        @handleCellClick="handleCellClick"
+        @handleSelectionChange="handleSelectionChange"
+      >
+        <template v-slot:title> 基础表格 </template>
+        <template v-slot:action>
+          <el-button type="primary">导出数据</el-button>
+        </template>
+      </rocket-table>
+    </div>
   </wrapper>
 </template>
 

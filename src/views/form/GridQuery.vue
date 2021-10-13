@@ -10,12 +10,15 @@
     </search-box>
     <!-- 列表区域 -->
     <rocket-table
+      class="table-box"
+      border
       :loading.sync="showLoading"
       :column.sync="mainColumn"
       :data="mainData"
       :pagination.sync="pagination"
       @handleChange="getTableList"
     >
+    <template v-slot:title> 栅格表单 </template>
     </rocket-table>
   </wrapper>
 </template>

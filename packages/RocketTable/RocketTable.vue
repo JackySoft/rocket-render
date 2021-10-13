@@ -1,6 +1,6 @@
 <template>
   <div class="rocket-table" :class="{'auto':isFullScreen}" id="rocketBaseTable">
-    <div class="action-header" v-if="$slots.action || toolbar">
+    <div class="action-header" v-if="$slots.title ||  $slots.action || toolbar">
       <!-- 表格上方标题 -->
       <div class="title">
         <div class="action" v-if="$slots.title">
@@ -93,7 +93,7 @@
         :page-sizes="[10, 20, 50]"
         :page-size="pagination.pageSize || 20"
         :current-page="pagination.pageNum || 1"
-        :total="pagination.total || 0"
+        :total="+pagination.total || 0"
       ></el-pagination>
     </div>
   </div>
@@ -205,10 +205,10 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 16px 0;
     .action-wrap {
       display: flex;
       align-items: center;
-      padding: 16px 0 16px 20px;
     }
   }
   // 设置表头的背景色

@@ -222,7 +222,21 @@ export default {
       if (typeof item.change === 'function') {
         item.change(val, this.value, item.model)
       }
-      this.value = { ...this.value, [item.model]: val }
+      // 把日期数组拆解为两个字段，方便前端使用
+      if (
+        ['daterange', 'monthrange', 'datetimerange'].includes(item.type) &&
+        item.export
+      ) {
+        if (!Array.isArray(item.export)) { throw Error('item.export must be a Array') }
+        this.value = {
+          ...this.value,
+          [item.model]: val,
+          [item.export[0] || 'startTime']: val[0],
+          [item.export[1] || 'endTime']: val[1],
+        }
+      } else {
+        this.value = { ...this.value, [item.model]: val }
+      }
     },
     /**
      * 表单重置

@@ -215,7 +215,8 @@ export default {
 
 <style lang="scss" scoped>
 .tool-bar {
-  img {
+  margin-left: 15px;
+  svg {
     cursor: pointer;
     width: 18px;
     height: 18px;

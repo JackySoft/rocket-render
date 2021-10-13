@@ -9,21 +9,22 @@
         @handleQuery="getTableList"
       />
     </search-box>
-
-    <!-- 列表区域 -->
-    <rocket-table
-      :loading="showLoading"
-      :column.sync="mainColumn"
-      :data="mainData"
-      :pagination.sync="pagination"
-      @handleChange="getTableList"
-    >
-      <template v-slot:action>
-        <el-button type="primary" @click="showModal1 = true"
-          >动态创建三</el-button
-        >
-      </template>
-    </rocket-table>
+    <div class="table-box">
+      <!-- 列表区域 -->
+      <rocket-table
+        :loading="showLoading"
+        :column.sync="mainColumn"
+        :data="mainData"
+        :pagination.sync="pagination"
+        @handleChange="getTableList"
+      >
+        <template v-slot:action>
+          <el-button type="primary" @click="showModal1 = true"
+            >动态创建三</el-button
+          >
+        </template>
+      </rocket-table>
+    </div>
 
     <!-- 页内弹框 -->
     <el-dialog
@@ -185,7 +186,7 @@ export default {
       pagination: {
         total_count: 0,
       },
-      showModal1: true,
+      showModal1: false,
       rocketConfig: config,
       userInfo: {
         a1: '10001',

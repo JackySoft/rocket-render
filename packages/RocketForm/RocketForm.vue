@@ -123,7 +123,7 @@ export default {
     },
     // 自定义校验方法,回调参数为被校验的表单项 prop 值，表示校验是否通过
     validate (fn) {
-      this.$refs.powerForm.validate((valid) => {
+      this.$refs[this.refForm].validate((valid) => {
         (typeof fn === 'function') && fn(valid)
       })
     },
