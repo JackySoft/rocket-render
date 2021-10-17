@@ -29,6 +29,11 @@ const routes = [
             component: () => import('./../views/form/GridQuery.vue'),
           },
           {
+            path: 'flex',
+            name: 'flex表单',
+            component: () => import('./../views/form/FlexQuery.vue'),
+          },
+          {
             path: 'inline',
             name: '行内表单',
             component: () => import('./../views/form/InlineQuery.vue'),

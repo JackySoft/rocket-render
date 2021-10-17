@@ -34,7 +34,6 @@
     <!-- 下拉控件 -->
     <el-select
       v-else-if="item.type === 'select'"
-      :popper-append-to-body="false"
       :style="item.style || item.width?`width:${item.width}`:'width:100%'"
       v-bind="$attrs"
       v-on="$listeners"
@@ -70,7 +69,6 @@
       v-on="$listeners"
       :value-format="item.valueFormat || 'yyyy-MM-dd'"
       :placeholder="item.placeholder || '选择日期'"
-      :popper-append-to-body="false"
       :picker-options="{
         ...item.pickerOptions,
         ...(item.shortcuts? pickerOptions.date:{})}
@@ -85,7 +83,6 @@
       :value-format="item.valueFormat || 'yyyy-MM-dd'"
       :start-placeholder="item.startPlaceholder || '开始日期'"
       :end-placeholder="item.startPlaceholder || '结束日期'"
-      :popper-append-to-body="false"
       :picker-options="{
         ...item.pickerOptions,
         ...(item.shortcuts? ['monthrange'].includes(item.type)? pickerOptions.monthRange:pickerOptions.daterange:{})}

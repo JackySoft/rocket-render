@@ -3,7 +3,7 @@
     <search-box>
       <!-- 表单查询区 -->
       <search-form
-        :inline="false"
+        inline="grid"
         :json="formJson"
         :model.sync="queryForm"
         @handleQuery="getTableList" />

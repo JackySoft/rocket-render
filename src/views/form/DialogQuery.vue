@@ -4,7 +4,6 @@
       <!-- 表单查询区 -->
       <search-form
         :json="form"
-        :inline="true"
         :model.sync="queryParams"
         @handleQuery="getTableList"
       />

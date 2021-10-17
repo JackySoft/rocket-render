@@ -2,7 +2,7 @@
   <wrapper>
     <search-box>
       <!-- 表单查询区 -->
-      <search-form inline="inline" :json="form" :model.sync="queryForm" @handleQuery="getTableList" />
+      <search-form inline="flex" :json="form" :model.sync="queryForm" @handleQuery="getTableList" />
     </search-box>
 
     <!-- 列表区域 -->
@@ -67,16 +67,6 @@ export default {
           },
         },
         {
-          type: 'radio',
-          label: '使用状态',
-          placeholder: '请选择使用状态',
-          model: 'use_status',
-          options: [
-            { label: '在线', value: 1 },
-            { label: '离线', value: 2 },
-          ]
-        },
-        {
           type: 'select',
           model: 'user_status',
           label: '用户状态',
@@ -91,12 +81,6 @@ export default {
           ],
         },
         {
-          type: 'select',
-          model: 'user_list',
-          label: '用户列表',
-          options: []
-        },
-        {
           type: 'date',
           model: 'register_date',
           label: '注册日期',
@@ -106,88 +90,7 @@ export default {
             console.log(val, values)
             values.user_name = 'tom'
           }
-        },
-        {
-          type: 'daterange',
-          model: 'login_time',
-          label: '日期范围',
-          width: '220px',
-          shortcuts: true,
-        },
-        {
-          type: 'time-select',
-          label: '注册时段',
-          model: 'time_part_start',
-          action: {
-            type: 'reset',
-            model: ['time_part_end']
-          },
-          change: this.handleTime,
-          pickerOptions: {
-            start: '00:00',
-            step: '01:00',
-            end: '23:00',
-          },
-        },
-        {
-          type: 'time-select',
-          label: '-',
-          model: 'time_part_end',
-          pickerOptions: {
-            start: '00:00',
-            step: '01:00',
-            end: '23:00',
-          },
-        },
-        {
-          type: 'cascader',
-          model: 'province',
-          label: '省份',
-          props: {
-            multiple: true, // 支持多选
-          },
-          options: [
-            {
-              value: 'Hubei',
-              label: '湖北',
-              children: [
-                {
-                  value: 'Wuhan',
-                  label: '武汉',
-                  disabled: true// 支持单项禁用
-                }, {
-                  value: 'Xiangyang',
-                  label: '襄阳',
-                }
-              ]
-            },
-            {
-              value: 'Beijing',
-              label: '北京',
-              children: [
-                {
-                  value: 'Haidian',
-                  label: '海淀区',
-                }, {
-                  value: 'ChaoYang',
-                  label: '朝阳',
-                }
-              ]
-            }
-          ]
-        },
-        {
-          type: 'checkbox',
-          model: 'match',
-          label: '是否匹配',
-          trueLabel: 1,
-          falseLabel: 0,
-        },
-        {
-          type: 'switch',
-          model: 'isCheck',
-          label: '是否校验',
-        },
+        }
       ],
       mainColumn: [
         {

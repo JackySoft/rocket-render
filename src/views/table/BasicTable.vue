@@ -2,7 +2,7 @@
   <wrapper>
     <search-box>
       <!-- 表单查询区 -->
-      <search-form :inline="true" :json="form" :model.sync="queryForm" @handleQuery="getTableList" @handleReset="getTableList" />
+      <search-form :json="form" :model.sync="queryForm" @handleQuery="getTableList" @handleReset="getTableList" />
     </search-box>
     <div class="table-box">
       <!-- 列表区域 -->

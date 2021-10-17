@@ -68,6 +68,10 @@ export default {
             name: '栅格表单',
           },
           {
+            path: '/form/flex',
+            name: 'flex表单',
+          },
+          {
             path: '/form/inline',
             name: '行内表单',
           },

@@ -1,30 +1,14 @@
 <template>
   <el-form
-    class="search-form"
-    :class="{ dialog: type === 'dialog' }"
+    class="rr-search-form"
+    :class="{ dialog: type === 'dialog','rr-search-flex':inline=='flex' }"
     ref="searchForm"
     :model="value"
-    :inline="inline"
+    :inline="true"
     @submit.native.prevent="handleQuery"
   >
-    <!-- 行内布局-->
-    <template v-if="inline">
-      <template v-for="(item, index) in json">
-        <FormItem
-          :key="index"
-          :item="item"
-          v-bind="item"
-          :value="value[item.model]"
-          @input="(val) => handleInput(item, val)"
-        />
-      </template>
-      <el-form-item>
-        <el-button @click="handleReset">重置</el-button>
-        <el-button type="primary" @click="handleQuery">查询</el-button>
-      </el-form-item>
-    </template>
     <!-- 固定栅格布局-->
-    <el-row type="flex" :gutter="20" v-else>
+    <el-row type="flex" :gutter="20" v-if="inline=='grid'">
       <template v-for="(item, index) in json">
         <el-col
           :key="index"
@@ -61,6 +45,41 @@
         ></el-button>
       </el-col>
     </el-row>
+    <!-- flex布局-->
+    <template v-else-if="inline=='flex'">
+      <div class="rr-form-item">
+        <template v-for="(item, index) in json">
+          <FormItem
+            :key="index"
+            :item="item"
+            v-bind="item"
+            :value="value[item.model]"
+            @input="(val) => handleInput(item, val)"
+          />
+        </template>
+      </div>
+      <div class="rr-action">
+        <el-button @click="handleReset">重置</el-button>
+        <el-button type="primary" @click="handleQuery">查询</el-button>
+      </div>
+    </template>
+    <!-- 行内布局-->
+    <template v-else-if="inline=='inline'">
+      <template v-for="(item, index) in json">
+        <FormItem
+          :key="index"
+          :item="item"
+          v-bind="item"
+          :value="value[item.model]"
+          @input="(val) => handleInput(item, val)"
+        />
+      </template>
+      <el-form-item>
+        <el-button @click="handleReset">重置</el-button>
+        <el-button type="primary" @click="handleQuery">查询</el-button>
+      </el-form-item>
+    </template>
+
   </el-form>
 </template>
 <script>
@@ -166,7 +185,12 @@ function debounce (method, delay, immediate) {
 export default {
   name: 'SearchForm',
   props: {
-    inline: Boolean, // true为行内，false为栅格
+    inline: {
+      type: String || Boolean,
+      default () {
+        return 'flex'
+      }
+    }, // true为行内，grid为栅格，flex为左右布局
     type: String, // 当设置为dialog时，说明QueryForm在dialog中使用，会调整QueryForm背景色
     json: Array, // 表单JSON对象
     model: Object, // 默认v-model参数
@@ -303,7 +327,21 @@ export default {
 </script>
 <style lang="scss" scoped>
 // 默认为白色背景，当在弹框中时为灰色背景
-.search-form {
+.rr-search-form {
+  &.rr-search-flex{
+    display: flex;
+    justify-content: space-between;
+    .rr-form-item{
+      flex:1;
+    }
+    .rr-action{
+      width:200px;
+      text-align: right;
+    }
+  }
+  .text-right{
+    text-align: right;
+  }
   &.dialog {
     background-color: #f7f8fa;
     border: none;
