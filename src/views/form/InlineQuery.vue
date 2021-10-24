@@ -36,6 +36,8 @@ export default {
         user_status: [1, 2],
         register_date: '2020-11-20',
         login_time: ['2020-11-01', '2020-11-20'],
+        startTime: '2020-11-01',
+        endTime: '2020-11-20',
         time_part_start: '03:00',
         time_part_end: '05:00',
         match: 1,
@@ -113,6 +115,7 @@ export default {
           label: '日期范围',
           width: '220px',
           shortcuts: true,
+          export: ['startTime', 'endTime']
         },
         {
           type: 'time-select',

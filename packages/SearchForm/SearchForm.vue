@@ -254,9 +254,9 @@ export default {
         if (!Array.isArray(item.export)) { throw Error('item.export must be a Array') }
         this.value = {
           ...this.value,
-          [item.model]: val,
-          [item.export[0] || 'startTime']: val[0],
-          [item.export[1] || 'endTime']: val[1],
+          [item.model]: val || '',
+          [item.export[0] || 'startTime']: val ? val[0] : '',
+          [item.export[1] || 'endTime']: val ? val[1] : '',
         }
       } else {
         this.value = { ...this.value, [item.model]: val }

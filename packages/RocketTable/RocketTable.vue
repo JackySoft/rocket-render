@@ -63,7 +63,7 @@
               </el-tooltip>
             </template>
             <template slot-scope="scope">
-              <slot :name="item.slotName" v-bind:row="scope.row"></slot>
+              <slot :name="item.slotName" v-bind:row="{ $index: scope.$index, ...scope.row }"></slot>
             </template>
           </el-table-column>
           <!-- 多级表头 -->
