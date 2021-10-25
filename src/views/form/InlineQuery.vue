@@ -115,6 +115,7 @@ export default {
           label: '日期范围',
           width: '220px',
           shortcuts: true,
+          valueFormat: 'timestamp',
           export: ['startTime', 'endTime']
         },
         {
