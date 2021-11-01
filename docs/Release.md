@@ -2,6 +2,7 @@
 
 ## v2.1.5
 1. RocketTable中permission字段增加字段映射，可根据字段值来控制按钮显示隐藏。
+2. 优化项目结构，整合examples、packages、docs，废除rocket-render-doc项目。
 ## v2.0.3
 
 1. 重构search-form，通过属性、事件透传，支持所有原生属性和事件
