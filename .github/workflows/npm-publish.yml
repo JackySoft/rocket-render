@@ -8,29 +8,20 @@ on:
 
 # 任务
 jobs:
-	# publish-npm任务
   publish-npm:
-  	# 在ubuntu最新版本的虚拟机执行
     runs-on: ubuntu-latest
-    # 设置变量
     strategy:
       matrix:
         node-version: [ 12.x ]
     steps:
-      # 检查并切换到master分支
       - name: 检查master分支
-      	# 使用actions/checkout插件
         uses: actions/checkout@master
 
-      # 安装node
       - name: 设置Node.js
-      	# 使用actions/setup-node插件
         uses: actions/setup-node@master
         with:
-        	# node版本
           node-version: ${{ matrix.node-version }}
 
-			# 初始化缓存
       - name:  缓存
         uses: actions/cache@v2
         id: cache-dependencies
@@ -38,39 +29,28 @@ jobs:
           path: node_modules
           key: ${{runner.OS}}-${{hashFiles('**/yarn.lock')}}
 
-			# 读取当前版本号
       - name: 读取当前版本号
         id: version
         uses: ashley-taylor/read-json-property-action@v1.0
         with:
-        	# 读取dist/package.json的，而不是根路径下的package.json
           path: ./dist/package.json
           property: version
 
-			# 发布NPM包
       - name: 发布NPM包
-      	# 执行发布代码
         run: |
           cd dist
           npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
           npm publish
         env:
-        	# 配置 npm access token 环境变量
           NPM_TOKEN: ${{secrets.NPM_ACCESS_TOKEN}}
 
-			# 创建GitHub Release
       - name: 创建GitHub Release
         id: create_release
         uses: actions/create-release@latest
         env:
-        	# 配置github token （这个无需去github配置，默认存在的）
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-        	# 标签名
           tag_name: v${{steps.version.outputs.value}}
-          # release名
           release_name: v${{steps.version.outputs.value}}
-          # 是否为草稿
           draft: false
-          # 是否为预发布
           prerelease: false
