@@ -168,8 +168,8 @@ export default {
       },
       span: {
         callback ({ row, column, rowIndex, columnIndex }) {
-          if (columnIndex < 3) {
-            if (rowIndex % 2 === 0) {
+          if (columnIndex < 3) { 
+               if (rowIndex % 2 === 0) {
               return {
                 rowspan: 2,
                 colspan: 1,

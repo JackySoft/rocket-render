@@ -66,7 +66,6 @@
 </template>
 
 <script>
-import OSS from 'ali-oss'
 export default {
   name: 'dialog-power',
   data () {
@@ -576,27 +575,11 @@ export default {
       this.showModal1 = false
       this.showModal2 = false
     },
-    getSelectList (val, values, model) {
+    getSelectList () {
       this.$request.get('/select/list').then((res) => {
         this.dialogConfig2.formList[2].items[1].options = res
       })
     },
-    // 自定义上传，不建议使用，可通过部门定义的公共上传服务
-    async rewriteUpload (info, fileList) {
-      const { appCode, cdnDomain } = this.uploadConfig
-      // 设置上传配置
-      const client = new OSS(this.uploadConfig)
-      try {
-        // 自定义上传，通过阿里云OSS-SDK统一上传
-        const r1 = await client.put(`/fe/${appCode}/${info.file.name}`, info.file)
-        // 拼接CDN地址
-        this.userInfo2.user_image.push({
-          url: `//${cdnDomain}/${r1.name}`
-        })
-      } catch (e) {
-        console.error('upload fail:', e)
-      }
-    }
   },
 }
 </script>

@@ -10,7 +10,7 @@ files.keys()
 
 let installed = false
 
-const install = (Vue, option = {}) => {
+const install = (Vue) => {
   if (installed) {
     return
   }
