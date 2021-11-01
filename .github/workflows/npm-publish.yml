@@ -33,7 +33,7 @@ jobs:
         id: version
         uses: ashley-taylor/read-json-property-action@v1.0
         with:
-          path: ./dist/package.json
+          path: ./package.json
           property: version
 
       - name: 发布NPM包
