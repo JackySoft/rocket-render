@@ -83,7 +83,12 @@
           <!-- 普通操作按钮 -->
           <el-button
             :type="btn.type || 'text'"
-            v-else-if="btn.permission!==false"
+            v-else-if="
+              btn.permission === 'undefined' ||
+              btn.permission === true ||
+              (btn.permission.show &&
+                btn.permission.show[scope.row[btn.permission.prop]])
+            "
             :class="[btn.color]"
             @click="handleAction(key, scope.row, btn.type)"
             :key="key"
