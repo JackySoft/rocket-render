@@ -40,7 +40,7 @@ Vue.use(RocketRender)
 ```
 
 2. 页面使用组件
-```
+```html
 <template>
     <!-- rocket-form没有背景和边距，为了体验，可以给外层添加一个容器并设置背景和边距 -->
     <div class="search-box">
