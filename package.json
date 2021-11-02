@@ -35,10 +35,9 @@
     "url": "https://github.com/JackySoft/rocket-render.git"
   },
   "scripts": {
-    "serve": "vue-cli-service serve --mode dev",
-    "build": "vue-cli-service build --mode prod",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "build:prod": "vue-cli-service build --mode prod",
     "lib": "vue-cli-service build --target lib --name rocket-render --dest lib packages/index.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
