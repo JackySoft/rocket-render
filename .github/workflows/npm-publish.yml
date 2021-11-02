@@ -1,26 +1,27 @@
 # action名称
-name: Push Release
+name: Publish and Release
 
 # 当代码合并到master分支的时候，执行下列脚本
 on:
   push:
     branches: [ master ]
-
 # 任务
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
+    environment: npm
     strategy:
       matrix:
         node-version: [ 14.x ]
     steps:
       - name: 检查master分支
-        uses: actions/checkout@v1
+        uses: actions/checkout@master
 
       - name: 设置Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@master
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: https://registry.npmjs.org/ # 如果不配置将影响publish
 
       - name: 安装依赖
         run: npm i
@@ -30,9 +31,12 @@ jobs:
 
       - name: 发布NPM包
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           # NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-        run: 
+        run: |
+          echo 'hello-1' ${{secrets.NPM_AUTH_TOKEN}}
+          echo 'hello-2' ${{secrets.NPM_TOKEN}}
           # npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
           npm publish
       - name: publish 成功通知
