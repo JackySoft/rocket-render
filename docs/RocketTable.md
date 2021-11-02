@@ -381,7 +381,7 @@ export default {
                     showOverflowTooltip: false,
                     type: 'image',
                     image: {
-                        type: 'list', // single/list 支持单张图片和批量图片
+                        type: 'single', // single/list 支持单张图片和批量图片
                         width: 60, // 设置图片宽度
                         height: 40 // 设置图片高度
                     }

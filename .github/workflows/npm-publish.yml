@@ -9,10 +9,6 @@ on:
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
-    environment: npm
-    strategy:
-      matrix:
-        node-version: [ 14.x ]
     steps:
       - name: 检查master分支
         uses: actions/checkout@master
@@ -20,40 +16,59 @@ jobs:
       - name: 设置Node.js
         uses: actions/setup-node@master
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 14
           registry-url: https://registry.npmjs.org/ # 如果不配置将影响publish
 
       - name: 安装依赖
-        run: npm i
+        run: npm install
 
       - name: 构建packages
         run: npm run lib
 
       - name: 发布NPM包
         env:
-          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NPM_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         run: |
-          npm config set registry https://registry.npmjs.org/
           npm publish
       - name: publish 成功通知
         run: echo npm 推送成功，请访问 https://jackysoft.github.io/rocket-render-doc
 
-      # - name: 读取当前版本号
-      #   id: version
-      #   uses: ashley-taylor/read-json-property-action@v1.0
-      #   with:
-      #     path: ./package.json
-      #     property: version
+      - name: 读取当前版本号
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ./package.json
+          property: version
 
-      # - name: 创建GitHub Release
-      #   id: create_release
-      #   uses: actions/create-release@latest
+      - name: 创建GitHub Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{steps.version.outputs.value}}
+          release_name: v${{steps.version.outputs.value}}
+          draft: false
+          prerelease: false
+      # - name: 打包Examples
+      #   run: npm run build
+      # - name: 推送至 jackysoft.github.io/master
+      #   uses: peaceiris/actions-gh-pages@v2
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     EXTERNAL_REPOSITORY: jackysoft/jackysoft.github.io/ #可以新建一个mybells.github.io仓库发布到master
+      #     PUBLISH_BRANCH: master
+      #     PUBLISH_DIR: rocket-render
       #   with:
-      #     tag_name: v${{steps.version.outputs.value}}
-      #     release_name: v${{steps.version.outputs.value}}
-      #     draft: false
-      #     prerelease: false
+      #     emptyCommits: false
+      # - name: 打包文档
+      #   run: npm run docs:build
+      # - name: 推送至 bhabgs.github.io/master
+      #   uses: peaceiris/actions-gh-pages@v2
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     EXTERNAL_REPOSITORY: jackysoft/jackysoft.github.io/ #可以新建一个mybells.github.io仓库发布到master
+      #     PUBLISH_BRANCH: master
+      #     PUBLISH_DIR: rocket-render-doc
+      #   with:
+      #     emptyCommits: false
