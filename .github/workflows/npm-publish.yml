@@ -4,7 +4,7 @@ name: Publish and Release
 # 当代码合并到master分支的时候，执行下列脚本
 on:
   push:
-    branches: [ master ]
+    branches: [ test ]
 # 任务
 jobs:
   publish-npm:
@@ -35,8 +35,7 @@ jobs:
           NPM_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           # NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         run: |
-          echo 'hello-1' ${{secrets.NPM_AUTH_TOKEN}}
-          echo 'hello-2' ${{secrets.NPM_TOKEN}}
+          npm config set registry https://registry.npmjs.org/
           # npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
           npm publish
       - name: publish 成功通知
