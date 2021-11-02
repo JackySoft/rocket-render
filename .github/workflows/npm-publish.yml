@@ -32,7 +32,7 @@ jobs:
           # npm config set registry https://registry.npmjs.org/
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         run: |
-          
+          npm config set registry https://registry.npmjs.org/
           npm publish
       - name: publish 成功通知
         run: echo npm 推送成功，请访问 https://jackysoft.github.io/rocket-render-doc
