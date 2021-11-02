@@ -8,7 +8,7 @@ module.exports = {
       filename: 'index.html'
     }
   },
-  outputDir:'rocket-render',
+  outputDir:'dist/rocket-render',
   publicPath:'/rocket-render',
   // 开发运行相关配置
   devServer: {

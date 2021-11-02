@@ -11,7 +11,7 @@ module.exports = {
       }
     ]
   ],
-  dest: "rocket-render-doc",
+  dest: "dist/rocket-render-doc",
   themeConfig: {
     background: `/images/`,
     logo: "logo.png",
