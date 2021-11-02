@@ -34,9 +34,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           # NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+          # npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
         run: |
           npm config set registry https://registry.npmjs.org/
-          # npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
           npm publish
       - name: publish 成功通知
         run: echo npm 推送成功，请访问 https://jackysoft.github.io/rocket-render-doc
