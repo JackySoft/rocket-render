@@ -30,24 +30,26 @@ jobs:
 
       - name: 发布NPM包
         env:
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-        run:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          # NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+        run: 
+          # npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
           npm publish
 
-      - name: 读取当前版本号
-        id: version
-        uses: ashley-taylor/read-json-property-action@v1.0
-        with:
-          path: ./package.json
-          property: version
+      # - name: 读取当前版本号
+      #   id: version
+      #   uses: ashley-taylor/read-json-property-action@v1.0
+      #   with:
+      #     path: ./package.json
+      #     property: version
 
-      - name: 创建GitHub Release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{steps.version.outputs.value}}
-          release_name: v${{steps.version.outputs.value}}
-          draft: false
-          prerelease: false
+      # - name: 创建GitHub Release
+      #   id: create_release
+      #   uses: actions/create-release@latest
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: v${{steps.version.outputs.value}}
+      #     release_name: v${{steps.version.outputs.value}}
+      #     draft: false
+      #     prerelease: false
