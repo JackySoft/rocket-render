@@ -20,36 +20,33 @@ jobs:
           registry-url: https://registry.npmjs.org/ # 如果不配置将影响publish
 
       - name: 安装依赖
-        run: npm i
+        run: npm install
 
       - name: 构建packages
         run: npm run lib
 
       - name: 发布NPM包
         env:
-          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NPM_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
-          # npm config set registry https://registry.npmjs.org/
-          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         run: |
           npm publish
       - name: publish 成功通知
         run: echo npm 推送成功，请访问 https://jackysoft.github.io/rocket-render-doc
 
-      # - name: 读取当前版本号
-      #   id: version
-      #   uses: ashley-taylor/read-json-property-action@v1.0
-      #   with:
-      #     path: ./package.json
-      #     property: version
+      - name: 读取当前版本号
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ./package.json
+          property: version
 
-      # - name: 创建GitHub Release
-      #   id: create_release
-      #   uses: actions/create-release@latest
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: v${{steps.version.outputs.value}}
-      #     release_name: v${{steps.version.outputs.value}}
-      #     draft: false
-      #     prerelease: false
+      - name: 创建GitHub Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{steps.version.outputs.value}}
+          release_name: v${{steps.version.outputs.value}}
+          draft: false
+          prerelease: false
