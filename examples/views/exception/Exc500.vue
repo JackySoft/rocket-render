@@ -1,15 +1,15 @@
 <template>
   <Wrapper>
     <div class="exception">
-      <Exception :code="500"/>
+      <Exception :code="500" />
     </div>
   </Wrapper>
 </template>
 
 <script>
 export default {
-  name: 'Exc500'
-}
+  name: 'Exc500',
+};
 </script>
 
 <style scoped lang="scss">

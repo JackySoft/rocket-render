@@ -1,5 +1,7 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  }
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": true
 }

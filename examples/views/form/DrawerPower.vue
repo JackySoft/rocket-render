@@ -47,7 +47,7 @@
 <script>
 export default {
   name: 'drawer-power',
-  data () {
+  data() {
     return {
       queryForm: {}, // v-model值
       showLoading: false,
@@ -95,11 +95,11 @@ export default {
           prop: 'use_status',
           label: '当前状态',
           width: 70,
-          formatter (row) {
+          formatter(row) {
             return {
               1: '在线',
               2: '离线',
-            }[row.use_status]
+            }[row.use_status];
           },
         },
         {
@@ -165,7 +165,7 @@ export default {
       },
       showModal: false,
       dialogForm: {
-        intrest: []
+        intrest: [],
       },
       dialogConfig: {
         title: '创建用户',
@@ -274,46 +274,46 @@ export default {
           },
         ],
       },
-    }
+    };
   },
-  mounted () {
-    this.getTableList()
+  mounted() {
+    this.getTableList();
   },
   methods: {
     // 首页列表查询
-    getTableList (page = 1) {
-      this.showLoading = true
-      this.pagination.page = page
+    getTableList(page = 1) {
+      this.showLoading = true;
+      this.pagination.page = page;
       const data = {
         ...this.queryParams, // 查询表单数据
         ...this.pagination, // 默认分页数据
-      }
+      };
       this.$api.getBasicList(data).then((res) => {
-        this.mainData = res.list
-        this.showLoading = false
-        this.pagination.total_count = res.total_count
-      })
+        this.mainData = res.list;
+        this.showLoading = false;
+        this.pagination.total_count = res.total_count;
+      });
     },
-    handleAction ({ index, row }) {
+    handleAction({ index, row }) {
       if (index === 1) {
-        this.showModal = true
-        this.dialogForm = row
+        this.showModal = true;
+        this.dialogForm = row;
       }
     },
-    openModal () {
-      this.showModal = true
+    openModal() {
+      this.showModal = true;
     },
-    async handleSubmit () {
-      const res = await this.$request.get('/user/submit', this.dialogForm)
+    async handleSubmit() {
+      const res = await this.$request.get('/user/submit', this.dialogForm);
       if (res) {
-        this.$message.success('操作成功')
-        this.showModal = false
+        this.$message.success('操作成功');
+        this.showModal = false;
       }
     },
-    handleClose () {
-      this.showModal = false
-      this.$refs.dialogForm.handleReset()
+    handleClose() {
+      this.showModal = false;
+      this.$refs.dialogForm.handleReset();
     },
   },
-}
+};
 </script>

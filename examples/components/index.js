@@ -1,25 +1,24 @@
-const files = require.context('.', true, /\.vue$/)
+const files = require.context('.', true, /\.vue$/);
 
-const components = []
+const components = [];
 
-files.keys()
-  .forEach((key) => {
-    const childModule = files(key).default
-    components.push(childModule)
-  })
+files.keys().forEach((key) => {
+  const childModule = files(key).default;
+  components.push(childModule);
+});
 
-let installed = false
+let installed = false;
 
 const install = (Vue) => {
   if (installed) {
-    return
+    return;
   }
-  installed = true
-  components.forEach(item => {
-    Vue.component(item.name, item)
-  })
-}
+  installed = true;
+  components.forEach((item) => {
+    Vue.component(item.name, item);
+  });
+};
 
 export default {
-  install
-}
+  install,
+};

@@ -56,7 +56,7 @@
 <script>
 export default {
   name: 'dialog-query',
-  data () {
+  data() {
     return {
       showLoading: false,
       // 保存查询条件
@@ -102,11 +102,11 @@ export default {
         {
           prop: 'use_status',
           label: '当前状态',
-          formatter (row) {
+          formatter(row) {
             return {
               1: '在线',
               2: '离线',
-            }[row.use_status]
+            }[row.use_status];
           },
         },
         {
@@ -151,18 +151,18 @@ export default {
                 },
               },
               action: '/query/state',
-              permission: true
+              permission: true,
             },
             {
               text: '编辑',
               action: '/query/edit',
-              permission: true
+              permission: true,
             },
             {
               text: '删除',
               action: '/query/del',
               color: 'danger',
-              permission: true
+              permission: true,
             },
           ],
         },
@@ -216,11 +216,11 @@ export default {
         {
           prop: 'use_status',
           label: '当前状态',
-          formatter (row) {
+          formatter(row) {
             return {
               1: '在线',
               2: '离线',
-            }[row.use_status]
+            }[row.use_status];
           },
         },
         {
@@ -228,57 +228,57 @@ export default {
           label: '注册时间',
         },
       ],
-    }
+    };
   },
-  mounted () {
-    this.getTableList()
-    this.getUserDataList()
+  mounted() {
+    this.getTableList();
+    this.getUserDataList();
   },
   methods: {
     // 首页列表查询,page为子组件传递的页码，默认为1
-    getTableList (page = 1) {
-      this.showLoading = true
-      this.pagination.page = page
+    getTableList(page = 1) {
+      this.showLoading = true;
+      this.pagination.page = page;
       const data = {
         ...this.queryParams, // 查询表单数据
         ...this.pagination, // 默认分页数据
-      }
+      };
       this.$api.getBasicList(data).then((res) => {
-        this.showLoading = false
-        this.mainData = res.list
-        this.pagination.total_count = res.total_count
-      })
+        this.showLoading = false;
+        this.mainData = res.list;
+        this.pagination.total_count = res.total_count;
+      });
     },
     // 用户数据查看
-    getUserDataList (page = 1) {
-      this.showLoading1 = true
-      this.pagination1.page = page
+    getUserDataList(page = 1) {
+      this.showLoading1 = true;
+      this.pagination1.page = page;
       const data = {
         ...this.userParams, // 查询表单数据
         ...this.pagination1, // 默认分页数据
-      }
+      };
       this.$api.getBasicList(data).then((res) => {
-        this.showLoading1 = false
-        this.userData = res.list
-        this.pagination1.total_count = res.total_count
-      })
+        this.showLoading1 = false;
+        this.userData = res.list;
+        this.pagination1.total_count = res.total_count;
+      });
     },
     // 打开用户数据弹框
-    openUserModal () {
-      this.showModal = true
-      this.getUserDataList(1)
+    openUserModal() {
+      this.showModal = true;
+      this.getUserDataList(1);
     },
     // 导出
-    handleExport () {
-      const url = '/basic/export'
+    handleExport() {
+      const url = '/basic/export';
       // 获取当前查询表单参数
-      const query = this.userQuery
-      this.$utils.handleExport(url, query)
+      const query = this.userQuery;
+      this.$utils.handleExport(url, query);
     },
-    handleClose () {
-      this.pagination1.page = 1
-      this.showModal = false
+    handleClose() {
+      this.pagination1.page = 1;
+      this.showModal = false;
     },
   },
-}
+};
 </script>

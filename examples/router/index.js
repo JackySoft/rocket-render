@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import BasicLayout from '../components/layout/BasicLayout'
+import Vue from 'vue';
+import Router from 'vue-router';
+import BasicLayout from '../components/layout/BasicLayout';
 
-Vue.use(Router)
+Vue.use(Router);
 
-const routes = [
+export const routes = [
   {
     path: '/',
     component: BasicLayout,
@@ -16,7 +16,7 @@ const routes = [
           exemption: true,
         },
         name: '欢迎使用本系统',
-        component: () => import('../views/welcome/Welcome.vue')
+        component: () => import('../views/welcome/Welcome.vue'),
       },
       {
         path: '/form',
@@ -47,19 +47,21 @@ const routes = [
             path: 'power',
             name: '弹框动态表单',
             component: () => import('./../views/form/DialogPower.vue'),
-          }, {
+          },
+          {
             path: 'drawer',
             name: '抽屉表单',
             component: () => import('./../views/form/DrawerPower.vue'),
-          }, {
+          },
+          {
             path: 'nested',
             name: '嵌套表单',
             meta: {
               exemption: true,
             },
             component: () => import('./../views/form/NestedForm.vue'),
-          }
-        ]
+          },
+        ],
       },
       {
         path: '/table',
@@ -76,12 +78,29 @@ const routes = [
             name: '高级表格',
             component: () => import('./../views/table/HighTable.vue'),
           },
-        ]
-      }
-    ]
-  }
-]
+        ],
+      },
+      {
+        path: '/desc',
+        name: '描述',
+        component: () => import('./../components/layout/BlankLayout.vue'),
+        children: [
+          {
+            path: 'basic',
+            name: '常规描述信息',
+            component: () => import('./../views/desc/BasicDesc.vue'),
+          },
+          {
+            path: 'high',
+            name: '插槽描述',
+            component: () => import('./../views/desc/SlotDesc.vue'),
+          },
+        ],
+      },
+    ],
+  },
+];
 
 export default new Router({
-  routes
-})
+  routes,
+});

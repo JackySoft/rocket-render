@@ -6,7 +6,8 @@
         inline="grid"
         :json="formJson"
         :model.sync="queryForm"
-        @handleQuery="getTableList" />
+        @handleQuery="getTableList"
+      />
     </search-box>
     <!-- 列表区域 -->
     <rocket-table
@@ -18,7 +19,7 @@
       :pagination.sync="pagination"
       @handleChange="getTableList"
     >
-    <template v-slot:title> 栅格表单 </template>
+      <template v-slot:title> 栅格表单 </template>
     </rocket-table>
   </wrapper>
 </template>
@@ -26,7 +27,7 @@
 <script>
 export default {
   name: 'query',
-  data () {
+  data() {
     return {
       showLoading: false,
       // 保存查询条件
@@ -89,13 +90,13 @@ export default {
           model: 'register_date',
           label: '注册日期',
           shortcuts: true,
-          width: '150px'
+          width: '150px',
         },
         {
           type: 'daterange',
           model: 'login_time',
           label: '日期范围',
-          width: '220px'
+          width: '220px',
         },
         {
           type: 'time-select',
@@ -103,7 +104,7 @@ export default {
           gutter: 10,
           action: {
             type: 'reset',
-            model: ['time_part_end']
+            model: ['time_part_end'],
           },
           items: [
             {
@@ -129,7 +130,8 @@ export default {
           model: 'province',
           label: '省份',
           props: {
-            multiple: true, checkStrictly: true
+            multiple: true,
+            checkStrictly: true,
           },
           options: [
             {
@@ -139,11 +141,12 @@ export default {
                 {
                   value: 'Wuhan',
                   label: '武汉',
-                }, {
+                },
+                {
                   value: 'Xiangyang',
                   label: '襄阳',
-                }
-              ]
+                },
+              ],
             },
             {
               value: 'Beijing',
@@ -152,13 +155,14 @@ export default {
                 {
                   value: 'Haidian',
                   label: '海淀区',
-                }, {
+                },
+                {
                   value: 'ChaoYang',
                   label: '朝阳',
-                }
-              ]
-            }
-          ]
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'checkbox',
@@ -182,12 +186,12 @@ export default {
         {
           prop: 'uid',
           label: '用户ID',
-          align: 'left'
+          align: 'left',
         },
         {
           prop: 'cname',
           label: '用户名称',
-          align: 'left'
+          align: 'left',
         },
         {
           prop: 'user_img',
@@ -195,17 +199,17 @@ export default {
           width: 240,
           type: 'image',
           image: {
-            type: 'single'
-          }
+            type: 'single',
+          },
         },
         {
           prop: 'use_status',
           label: '当前状态',
-          formatter (row) {
+          formatter(row) {
             return {
               1: '在线',
               2: '离线',
-            }[row.use_status]
+            }[row.use_status];
           },
         },
         {
@@ -214,7 +218,7 @@ export default {
         },
         {
           prop: 'user_status_name',
-          label: '用户状态'
+          label: '用户状态',
         },
         {
           prop: 'intrest_name',
@@ -224,7 +228,7 @@ export default {
         {
           prop: 'register_date',
           label: '注册时间',
-        }
+        },
       ],
       mainData: [],
       // 分页对象
@@ -233,26 +237,26 @@ export default {
         pageSize: 20,
         total: 0,
       },
-    }
+    };
   },
-  mounted () {
-    this.getTableList()
+  mounted() {
+    this.getTableList();
   },
   methods: {
     // 首页列表查询,page为子组件传递的页码，默认为1
-    getTableList (pageNum = 1) {
-      this.showLoading = true
-      this.pagination.pageNum = pageNum
+    getTableList(pageNum = 1) {
+      this.showLoading = true;
+      this.pagination.pageNum = pageNum;
       const data = {
         ...this.queryForm, // 查询表单数据
         ...this.pagination, // 默认分页数据
-      }
+      };
       this.$api.getBasicList(data).then((res) => {
-        this.mainData = res.list
-        this.showLoading = false
-        this.pagination.total_count = res.total_count
-      })
-    }
+        this.mainData = res.list;
+        this.showLoading = false;
+        this.pagination.total_count = res.total_count;
+      });
+    },
   },
-}
+};
 </script>

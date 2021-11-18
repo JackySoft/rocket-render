@@ -2,7 +2,12 @@
   <wrapper>
     <search-box>
       <!-- 表单查询区 -->
-      <search-form inline="flex" :json="form" :model.sync="queryForm" @handleQuery="getTableList" />
+      <search-form
+        inline="flex"
+        :json="form"
+        :model.sync="queryForm"
+        @handleQuery="getTableList"
+      />
     </search-box>
 
     <!-- 列表区域 -->
@@ -15,11 +20,11 @@
       :pagination.sync="pagination"
       @handleChange="getTableList"
     >
-    <template v-slot:title> 行内表单 </template>
-    <template v-slot:action>
-      <el-button type="primary">新增数据</el-button>
-      <el-button type="primary">导出数据</el-button>
-    </template>
+      <template v-slot:title> 行内表单 </template>
+      <template v-slot:action>
+        <el-button type="primary">新增数据</el-button>
+        <el-button type="primary">导出数据</el-button>
+      </template>
     </rocket-table>
   </wrapper>
 </template>
@@ -27,7 +32,7 @@
 <script>
 export default {
   name: 'query',
-  data () {
+  data() {
     return {
       showLoading: false,
       // 保存查询条件
@@ -49,9 +54,9 @@ export default {
           model: 'user_name',
           label: '用户',
           placeholder: '请输入用户名称',
-          change (val, values, model) {
+          change(val, values, model) {
             // 可获取所有值，也可直接重置修改其它字段
-            values.use_status = 2
+            values.use_status = 2;
           },
           prependConfig: {
             type: 'select',
@@ -86,11 +91,11 @@ export default {
           label: '注册日期',
           shortcuts: true,
           width: '150px',
-          change (val, values) {
-            console.log(val, values)
-            values.user_name = 'tom'
-          }
-        }
+          change(val, values) {
+            console.log(val, values);
+            values.user_name = 'tom';
+          },
+        },
       ],
       mainColumn: [
         {
@@ -106,12 +111,12 @@ export default {
         {
           prop: 'uid',
           label: '用户ID',
-          align: 'left'
+          align: 'left',
         },
         {
           prop: 'cname',
           label: '用户名称',
-          align: 'left'
+          align: 'left',
         },
         {
           prop: 'user_img',
@@ -119,17 +124,17 @@ export default {
           width: 240,
           type: 'image',
           image: {
-            type: 'single'
-          }
+            type: 'single',
+          },
         },
         {
           prop: 'use_status',
           label: '当前状态',
-          formatter (row) {
+          formatter(row) {
             return {
               1: '在线',
               2: '离线',
-            }[row.use_status]
+            }[row.use_status];
           },
         },
         {
@@ -138,7 +143,7 @@ export default {
         },
         {
           prop: 'user_status_name',
-          label: '用户状态'
+          label: '用户状态',
         },
         {
           prop: 'intrest_name',
@@ -148,7 +153,7 @@ export default {
         {
           prop: 'register_date',
           label: '注册时间',
-        }
+        },
       ],
       mainData: [],
       // 分页对象
@@ -157,34 +162,34 @@ export default {
         pageSize: 20,
         total: 0,
       },
-    }
+    };
   },
-  mounted () {
-    this.getTableList()
+  mounted() {
+    this.getTableList();
   },
   methods: {
     // 首页列表查询,page为子组件传递的页码，默认为1
-    getTableList (pageNum = 1) {
-      this.showLoading = true
-      this.pagination.pageNum = pageNum
+    getTableList(pageNum = 1) {
+      this.showLoading = true;
+      this.pagination.pageNum = pageNum;
       const data = {
         ...this.queryForm, // 查询表单数据
         ...this.pagination, // 默认分页数据
-      }
+      };
       this.$api.getBasicList(data).then((res) => {
-        this.mainData = res.list
-        this.showLoading = false
-        this.pagination.total = res.total
-      })
+        this.mainData = res.list;
+        this.showLoading = false;
+        this.pagination.total = res.total;
+      });
     },
-    getSelectList (val, values, model) {
+    getSelectList(val, values, model) {
       this.$request.get('/select/list').then((res) => {
-        this.form[3].options = res
-      })
+        this.form[3].options = res;
+      });
     },
-    handleTime (val) {
-      this.form[7].pickerOptions.minTime = val
-    }
+    handleTime(val) {
+      this.form[7].pickerOptions.minTime = val;
+    },
   },
-}
+};
 </script>

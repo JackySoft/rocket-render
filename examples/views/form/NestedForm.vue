@@ -42,10 +42,10 @@
   </wrapper>
 </template>
 <script>
-import config from './nested'
+import config from './nested';
 export default {
   name: 'dialog-nested',
-  data () {
+  data() {
     return {
       showLoading: false,
       // 保存查询条件
@@ -99,14 +99,14 @@ export default {
         {
           type: 'checkbox',
           model: 'isChecked',
-          label: '是否选择'
+          label: '是否选择',
         },
       ],
       mainColumn: [
         {
           prop: 'uid',
           label: '用户ID',
-          fixed: 'left'
+          fixed: 'left',
         },
         {
           prop: 'cname',
@@ -119,11 +119,11 @@ export default {
         {
           prop: 'use_status',
           label: '当前状态',
-          formatter (row) {
+          formatter(row) {
             return {
               1: '在线',
               2: '离线',
-            }[row.use_status]
+            }[row.use_status];
           },
         },
         {
@@ -192,47 +192,47 @@ export default {
         a2: '10002',
         a3: 1,
         list: [{ a7: '', a8: '' }],
-        checked: []
-      }
-    }
+        checked: [],
+      },
+    };
   },
-  mounted () {
-    this.getTableList()
+  mounted() {
+    this.getTableList();
   },
   methods: {
     // 首页列表查询
-    getTableList (page = 1) {
-      this.showLoading = true
-      this.pagination.page = page
+    getTableList(page = 1) {
+      this.showLoading = true;
+      this.pagination.page = page;
       const data = {
         ...this.queryParams, // 查询表单数据
         ...this.pagination, // 默认分页数据
-      }
+      };
       this.$api.getBasicList(data).then((res) => {
-        this.showLoading = false
-        this.mainData = res.list
-        this.pagination.total_count = res.total_count
-      })
+        this.showLoading = false;
+        this.mainData = res.list;
+        this.pagination.total_count = res.total_count;
+      });
     },
-    handleClose (form) {
-      this.showModal1 = false
+    handleClose(form) {
+      this.showModal1 = false;
     },
-    getSelectList (val, values, model) {
+    getSelectList(val, values, model) {
       this.$request.get('/select/list').then((res) => {
-        this.dialogConfig2.formList[2].items[1].options = res
-      })
-    }
+        this.dialogConfig2.formList[2].items[1].options = res;
+      });
+    },
   },
-}
+};
 </script>
 <style lang="scss" scoped>
 .form_tip {
-    font-size: 12px;
-    color: #999999;
-    height: 25px;
-    line-height: 25px;
-    &.ml20{
-      margin-left: 20px;
-    }
+  font-size: 12px;
+  color: #999999;
+  height: 25px;
+  line-height: 25px;
+  &.ml20 {
+    margin-left: 20px;
   }
+}
 </style>

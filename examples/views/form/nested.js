@@ -7,7 +7,7 @@ export default {
   inline: false,
   class: 'query-test',
   style: {
-    width: '100%'
+    width: '100%',
   },
   layout: {
     gutter: 15,
@@ -25,11 +25,10 @@ export default {
         icon: 'el-icon-edit',
         target: '_blank',
       },
-      text: '链接'
+      text: '链接',
     },
     {
       type: 'label',
-
     },
     {
       type: 'inline',
@@ -38,8 +37,8 @@ export default {
         {
           type: 'select',
           model: 'province',
-          change (val, values, model) {
-            console.log(val, values, model)
+          change(val, values, model) {
+            console.log(val, values, model);
           },
           options: [
             {
@@ -48,7 +47,7 @@ export default {
               children: [
                 { label: '武汉市', value: 100010 },
                 { label: '襄阳市', value: 100011 },
-              ]
+              ],
             },
             {
               label: '上海市',
@@ -56,16 +55,16 @@ export default {
               children: [
                 { label: '浦东区', value: 200010 },
                 { label: '松江区', value: 200011 },
-              ]
+              ],
             },
-          ]
+          ],
         },
         {
           type: 'select',
           model: 'city',
-          options: []
-        }
-      ]
+          options: [],
+        },
+      ],
     },
     {
       type: 'inline',
@@ -82,7 +81,7 @@ export default {
             { label: '20%', value: 2 },
             { label: '30%', value: 3 },
             { label: '40%', value: 4 },
-          ]
+          ],
         },
         {
           span: 8,
@@ -90,7 +89,7 @@ export default {
           placeholder: '请输入概率配置',
           model: 'a4',
           append: '%',
-          labelWidth: '0'
+          labelWidth: '0',
         },
         {
           span: 3,
@@ -99,14 +98,14 @@ export default {
             type: 'text',
             text: '添加抽奖结果',
           },
-          labelWidth: '0'
+          labelWidth: '0',
         },
         {
           span: 5,
           type: 'label',
           text: '至少配置两种抽选结果',
-        }
-      ]
+        },
+      ],
     },
     {
       type: 'inline',
@@ -120,8 +119,8 @@ export default {
           pickerOptions: {
             start: '08:30',
             step: '00:15',
-            end: '18:30'
-          }
+            end: '18:30',
+          },
         },
         {
           span: 8,
@@ -131,8 +130,8 @@ export default {
           pickerOptions: {
             start: '08:30',
             step: '00:15',
-            end: '18:30'
-          }
+            end: '18:30',
+          },
         },
         {
           span: 3,
@@ -141,15 +140,15 @@ export default {
             type: 'text',
             text: '添加区间',
           },
-          labelWidth: '0'
+          labelWidth: '0',
         },
         {
           span: 5,
           type: 'tips',
           tips: '至少配置两种抽选结果',
-          labelWidth: '0'
-        }
-      ]
+          labelWidth: '0',
+        },
+      ],
     },
     {
       type: 'group',
@@ -163,8 +162,10 @@ export default {
             label: '抽取',
             labelWidth: '80px',
             model: 'a7',
-            rules: [{ required: true, message: '请输入抽取次数', trigger: 'blur' }],
-            label1: '次可开启宝箱1'
+            rules: [
+              { required: true, message: '请输入抽取次数', trigger: 'blur' },
+            ],
+            label1: '次可开启宝箱1',
           },
           {
             span: 8,
@@ -172,7 +173,9 @@ export default {
             placeholder: '请输入奖励金币',
             label: '奖励金币',
             model: 'a8',
-            rules: [{ required: true, message: '请输入奖励金币', trigger: 'blur' }]
+            rules: [
+              { required: true, message: '请输入奖励金币', trigger: 'blur' },
+            ],
           },
           {
             span: 3,
@@ -181,15 +184,15 @@ export default {
               type: 'primary',
               round: true,
               icon: 'el-icon-plus',
-              text: '增加'
+              text: '增加',
             },
-            click (value, config) {
-              console.log(value, config)
+            click(value, config) {
+              console.log(value, config);
             },
-            labelWidth: '0'
-          }
-        ]
-      ]
+            labelWidth: '0',
+          },
+        ],
+      ],
     },
     {
       type: 'inline',
@@ -200,32 +203,30 @@ export default {
           type: 'input',
           label: '数量区间',
           model: 'num1',
-
         },
         {
           span: 6,
           type: 'input',
           label: '',
           model: 'num2',
-          labelWidth: '20px'
+          labelWidth: '20px',
         },
         {
           span: 8,
           type: 'input',
           label: '下发概率',
           model: 'num3',
-          append: '%'
+          append: '%',
         },
         {
           span: 4,
           type: 'button',
           button: {
             type: 'text',
-            text: '添加幸运卡配置'
+            text: '添加幸运卡配置',
           },
-
-        }
-      ]
-    }
-  ]
-}
+        },
+      ],
+    },
+  ],
+};

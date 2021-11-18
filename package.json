@@ -40,7 +40,8 @@
     "lint": "vue-cli-service lint",
     "lib": "vue-cli-service build --target lib --name rocket-render --dest lib packages/index.js",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "format": "prettier --write \"examples/**/*.{js,ts,jsx,tsx}\" \"examples/**/*.vue\" ./**/*.{js,ts} "
   },
   "dependencies": {
     "axios": "^0.24.0",
@@ -57,6 +58,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "prettier": "^2.4.1",
     "sass": "^1.43.4",
     "sass-loader": "10.1.0",
     "vue-template-compiler": "^2.6.11",

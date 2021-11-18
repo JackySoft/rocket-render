@@ -1,15 +1,15 @@
 <template>
   <Wrapper>
     <div class="exception">
-      <Exception :code="403"/>
+      <Exception :code="403" />
     </div>
   </Wrapper>
 </template>
 
 <script>
 export default {
-  name: 'Exc403'
-}
+  name: 'Exc403',
+};
 </script>
 
 <style scoped lang="scss">

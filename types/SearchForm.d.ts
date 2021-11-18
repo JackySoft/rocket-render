@@ -1,11 +1,11 @@
-import { RocketComponent } from './component'
+import { RocketComponent } from './component';
 
 export declare class SearchForm extends RocketComponent {
-  type: string
+  type: string;
 
-  json: object[]
+  json: object[];
 
-  inline: boolean
+  inline: boolean;
 
-  model: object
+  model: object;
 }

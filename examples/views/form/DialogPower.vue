@@ -68,7 +68,7 @@
 <script>
 export default {
   name: 'dialog-power',
-  data () {
+  data() {
     return {
       showLoading: false,
       // 保存查询条件
@@ -130,7 +130,7 @@ export default {
           prop: 'uid',
           label: '用户ID',
           width: 80,
-          fixed: 'left'
+          fixed: 'left',
         },
         {
           prop: 'cname',
@@ -146,11 +146,11 @@ export default {
           prop: 'use_status',
           label: '当前状态',
           width: 80,
-          formatter (row) {
+          formatter(row) {
             return {
               1: '在线',
               2: '离线',
-            }[row.use_status]
+            }[row.use_status];
           },
         },
         {
@@ -283,11 +283,11 @@ export default {
                 options: [
                   {
                     label: '湖北省',
-                    value: 10001
+                    value: 10001,
                   },
                   {
                     label: '上海市',
-                    value: 20001
+                    value: 20001,
                   },
                   {
                     label: '北京市',
@@ -297,7 +297,7 @@ export default {
               },
               {
                 type: 'label',
-                span: 2
+                span: 2,
               },
               {
                 type: 'select',
@@ -306,15 +306,15 @@ export default {
                 options: [
                   {
                     label: '襄阳',
-                    value: 10001
+                    value: 10001,
                   },
                   {
                     label: '武汉',
-                    value: 20001
-                  }
+                    value: 20001,
+                  },
                 ],
-              }
-            ]
+              },
+            ],
           },
           {
             type: 'radio',
@@ -332,7 +332,7 @@ export default {
             model: 'user_type',
             action: {
               type: 'reset',
-              model: ['status', 'register_date', 'register_date_range']
+              model: ['status', 'register_date', 'register_date_range'],
             },
             options: [
               {
@@ -421,8 +421,8 @@ export default {
           },
           cancel1: {
             text: '取消1',
-          }
-        }
+          },
+        },
       },
       userInfo1: {
         uid: 10001,
@@ -465,7 +465,8 @@ export default {
             label: '上传',
             model: 'user_image',
             listType: 'picture-card', // text/picture/picture-card
-            action: 'http://st1-helper.ued.2345.cn/api/v1/oss/upload?appCode=luban&stage=testing',
+            action:
+              'http://st1-helper.ued.2345.cn/api/v1/oss/upload?appCode=luban&stage=testing',
             token: '',
             fileType: ['image/jpg', 'image/jpeg', 'image/png'],
             fileSize: 10 * 1024,
@@ -473,11 +474,17 @@ export default {
               // width: 2076,
               // height: 146,
               ratio: 1,
-              tips: '文件尺寸不符合要求'
+              tips: '文件尺寸不符合要求',
             },
             limit: 5,
             tips: '只能上传jpg/png文件，且不超过500kb',
-            response: { response: '', code: 'code', data: 'data', msg: 'msg', codeVal: 200 },
+            response: {
+              response: '',
+              code: 'code',
+              data: 'data',
+              msg: 'msg',
+              codeVal: 200,
+            },
             // httpRequest: this.rewriteUpload, // 自定义上传
             // autoUpload: true,
           },
@@ -495,7 +502,7 @@ export default {
               {
                 key: '1',
                 label: 'Jack',
-                disabled: true
+                disabled: true,
               },
               {
                 key: '2',
@@ -508,9 +515,9 @@ export default {
               {
                 key: '4',
                 label: 'Lily',
-              }
-            ]
-          }
+              },
+            ],
+          },
         ],
       },
       userInfo2: {
@@ -518,68 +525,73 @@ export default {
         start_time: '',
         end_time: '',
         checkedUser: ['3'],
-        user_image: [{ name: '8f49776a42e7766bed1ad9e87d1b7f5e.jpg', url: '//octopus-fe.2345cdn.net/fe/luban/2021/1/8f49776a42e7766bed1ad9e87d1b7f5e.jpg' }]
+        user_image: [
+          {
+            name: '8f49776a42e7766bed1ad9e87d1b7f5e.jpg',
+            url: '//octopus-fe.2345cdn.net/fe/luban/2021/1/8f49776a42e7766bed1ad9e87d1b7f5e.jpg',
+          },
+        ],
       },
-      uploadConfig: {}
-    }
+      uploadConfig: {},
+    };
   },
-  mounted () {
-    this.getTableList()
+  mounted() {
+    this.getTableList();
   },
   methods: {
     // 首页列表查询
-    getTableList (page = 1) {
-      this.showLoading = true
-      this.pagination.page = page
+    getTableList(page = 1) {
+      this.showLoading = true;
+      this.pagination.page = page;
       const data = {
         ...this.queryParams, // 查询表单数据
         ...this.pagination, // 默认分页数据
-      }
+      };
       this.$api.getBasicList(data).then((res) => {
-        this.showLoading = false
-        this.mainData = res.list
-        this.pagination.total_count = res.total_count
-      })
+        this.showLoading = false;
+        this.mainData = res.list;
+        this.pagination.total_count = res.total_count;
+      });
     },
-    async handleSubmit () {
-      const data = this.userInfo1
-      const res = await this.$request.get('/user/submit', data)
+    async handleSubmit() {
+      const data = this.userInfo1;
+      const res = await this.$request.get('/user/submit', data);
       if (res) {
-        this.$message.success('操作成功')
-        this.showModal1 = false
+        this.$message.success('操作成功');
+        this.showModal1 = false;
       }
     },
-    async handleSubmit2 () {
-      const data = this.userInfo2
-      const res = await this.$request.get('/user/submit', data)
+    async handleSubmit2() {
+      const data = this.userInfo2;
+      const res = await this.$request.get('/user/submit', data);
       if (res) {
-        this.$message.success('操作成功')
-        this.showModal2 = false
+        this.$message.success('操作成功');
+        this.showModal2 = false;
       }
     },
-    handleAction ({ index, row }) {
+    handleAction({ index, row }) {
       if (index === 1) {
-        this.showModal1 = true
-        this.userInfo1 = row
+        this.showModal1 = true;
+        this.userInfo1 = row;
       }
     },
-    handleClose (form) {
+    handleClose(form) {
       // 表单重置
-      this.$refs[form].handleReset()
+      this.$refs[form].handleReset();
       // 或者手动重置
       // this.userInfo1 = {
       //   uid: "10001",
       //   intrest: [1, 2],
       // };
-      this.userInfo2 = {}
-      this.showModal1 = false
-      this.showModal2 = false
+      this.userInfo2 = {};
+      this.showModal1 = false;
+      this.showModal2 = false;
     },
-    getSelectList () {
+    getSelectList() {
       this.$request.get('/select/list').then((res) => {
-        this.dialogConfig2.formList[2].items[1].options = res
-      })
+        this.dialogConfig2.formList[2].items[1].options = res;
+      });
     },
   },
-}
+};
 </script>

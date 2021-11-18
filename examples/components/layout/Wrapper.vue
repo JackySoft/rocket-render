@@ -6,13 +6,13 @@
 
 <script>
 export default {
-  name: 'Wrapper'
-}
+  name: 'Wrapper',
+};
 </script>
 
 <style scoped>
-  .page-content-wrapper {
-    padding: 20px;
-    background: #eef0f3;
-  }
+.page-content-wrapper {
+  padding: 20px;
+  background: #eef0f3;
+}
 </style>

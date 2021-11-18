@@ -1,19 +1,19 @@
 <template>
-  <router-view id="app"/>
+  <router-view id="app" />
 </template>
 
 <script>
 export default {
   name: 'App',
-  components: {}
-}
+  components: {},
+};
 </script>
 
 <style>
-.search-box{
+.search-box {
   border-radius: 10px;
 }
-.table-box{
+.table-box {
   margin-top: 16px;
   background: #ffffff;
   padding: 0 22px 24px;

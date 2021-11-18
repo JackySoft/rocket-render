@@ -2,7 +2,11 @@
   <wrapper>
     <search-box>
       <!-- 表单查询区 -->
-      <search-form :json="form" :model.sync="queryForm" @handleQuery="getTableList" />
+      <search-form
+        :json="form"
+        :model.sync="queryForm"
+        @handleQuery="getTableList"
+      />
     </search-box>
     <div class="table-box">
       <!-- 列表区域 -->
@@ -24,7 +28,12 @@
           <el-button type="primary">导出数据</el-button>
         </template>
         <template v-slot:copy="scope">
-          <el-button type="text" icon="el-icon-document-copy" @click="handleCopy(scope.row)">{{scope.row.uid}}</el-button>
+          <el-button
+            type="text"
+            icon="el-icon-document-copy"
+            @click="handleCopy(scope.row)"
+            >{{ scope.row.uid }}</el-button
+          >
         </template>
       </rocket-table>
     </div>
@@ -34,7 +43,7 @@
 <script>
 export default {
   name: 'HighTable',
-  data () {
+  data() {
     return {
       showLoading: false,
       // 保存查询条件
@@ -42,14 +51,14 @@ export default {
         user_name: 'jack',
         register_date: '2020-11-20',
         match: 1,
-        use_status: 1
+        use_status: 1,
       },
       form: [
         {
           type: 'text',
           model: 'user_name',
           label: '用户',
-          placeholder: '请输入用户名称'
+          placeholder: '请输入用户名称',
         },
         {
           type: 'radio',
@@ -66,7 +75,7 @@ export default {
           model: 'register_date',
           label: '注册日期',
           shortcuts: true,
-          width: '150px'
+          width: '150px',
         },
         {
           type: 'switch',
@@ -85,7 +94,7 @@ export default {
           type: 'slot',
           label: '自定义列',
           sortable: true,
-          slotName: 'copy'
+          slotName: 'copy',
         },
         {
           prop: 'uid',
@@ -93,7 +102,7 @@ export default {
           align: 'center',
           type: 'click',
           sortable: true,
-          tips: '测试一下'
+          tips: '测试一下',
         },
         {
           prop: 'user-info',
@@ -103,7 +112,7 @@ export default {
             {
               prop: 'cname',
               label: '用户名称',
-              align: 'left'
+              align: 'left',
             },
             {
               prop: 'user_img',
@@ -113,10 +122,10 @@ export default {
               image: {
                 type: 'single', // single/list 支持单张图片和批量图片
                 width: 60, // 设置图片宽度
-                height: 40 // 设置图片高度
-              }
+                height: 40, // 设置图片高度
+              },
             },
-          ]
+          ],
         },
         {
           prop: 'site_url',
@@ -127,11 +136,11 @@ export default {
         {
           prop: 'use_status',
           label: '当前状态',
-          formatter (row) {
+          formatter(row) {
             return {
               1: '在线',
               2: '离线',
-            }[row.use_status]
+            }[row.use_status];
           },
         },
         {
@@ -143,12 +152,12 @@ export default {
           empty: '00',
           link: {
             prop: 'name', // 渲染的字段
-            limit: 3// 默认渲染个数，支持展开和关闭
-          }
+            limit: 3, // 默认渲染个数，支持展开和关闭
+          },
         },
         {
           prop: 'user_status_name',
-          label: '用户状态'
+          label: '用户状态',
         },
         {
           prop: 'intrest_name',
@@ -157,7 +166,7 @@ export default {
         {
           prop: 'register_date',
           label: '注册时间',
-        }
+        },
       ],
       mainData: [],
       // 分页对象
@@ -167,86 +176,98 @@ export default {
         total: 0,
       },
       span: {
-        callback ({ row, column, rowIndex, columnIndex }) {
-          if (columnIndex < 3) { 
-               if (rowIndex % 2 === 0) {
+        callback({ row, column, rowIndex, columnIndex }) {
+          if (columnIndex < 3) {
+            if (rowIndex % 2 === 0) {
               return {
                 rowspan: 2,
                 colspan: 1,
-              }
+              };
             } else {
               return {
                 rowspan: 0,
-                colspan: 0
-              }
+                colspan: 0,
+              };
             }
           }
-        }
-      }
-    }
+        },
+      },
+    };
   },
-  mounted () {
-    this.getTableList()
+  mounted() {
+    this.getTableList();
   },
   methods: {
     // 首页列表查询,page为子组件传递的页码，默认为1
-    getTableList (page = 1) {
-      this.showLoading = true
-      this.pagination.page = page
+    getTableList(page = 1) {
+      this.showLoading = true;
+      this.pagination.page = page;
       const data = {
         ...this.queryForm, // 查询表单数据
         ...this.pagination, // 默认分页数据
-      }
+      };
       this.$api.getBasicList(data).then((res) => {
-        this.mainData = res.list
-        this.showLoading = false
-        this.pagination.total = res.total
-      })
+        this.mainData = res.list;
+        this.showLoading = false;
+        this.pagination.total = res.total;
+      });
     },
     // 列汇总
-    getSummaries (param) {
-      const sums = ['', '总价', '20', 'Jack', '头像', 'ali.com', '在线', '集碎片', '老用户', '游戏', '2020-12-23']
-      return sums
+    getSummaries(param) {
+      const sums = [
+        '',
+        '总价',
+        '20',
+        'Jack',
+        '头像',
+        'ali.com',
+        '在线',
+        '集碎片',
+        '老用户',
+        '游戏',
+        '2020-12-23',
+      ];
+      return sums;
     },
     // 单元格-列点击
-    handleCellClick ({ row }) {
-      this.$message.success('单元格点击，值为：' + row.uid)
+    handleCellClick({ row }) {
+      this.$message.success('单元格点击，值为：' + row.uid);
     },
     // 复选点击
-    handleSelectionChange (rows) {
-      this.$message.success('勾选项id为' + rows.map(item => item.id))
+    handleSelectionChange(rows) {
+      this.$message.success('勾选项id为' + rows.map((item) => item.id));
     },
     // action为点击的按钮索引，row为当前行的数据
-    handleAction ({ index, row }) {
+    handleAction({ index, row }) {
       if (index === 0) {
-        this.$message.success('你选择了第一个按钮')
+        this.$message.success('你选择了第一个按钮');
       } else if (index === 1) {
-        this.$message.success('你选择了第二个按钮')
+        this.$message.success('你选择了第二个按钮');
       } else {
-        this.$message.success('你选择了第三个按钮')
+        this.$message.success('你选择了第三个按钮');
       }
-      console.log(row)
+      console.log(row);
     },
     // 导出
-    handleExport () {
-      const url = '/basic/export'
+    handleExport() {
+      const url = '/basic/export';
       // 获取当前查询表单参数
-      const query = this.query
-      this.$utils.handleExport(url, query)
+      const query = this.query;
+      this.$utils.handleExport(url, query);
     },
     // 增加复制功能
-    handleCopy (row) {
-      const input = document.createElement('input')
-      input.style = 'position:absolute;left:0;bottom:0;opacity:0;'
-      document.body.append(input)
-      input.value = row.uid// 修改文本框的内容
-      input.select() // 选中文本
-      document.execCommand('copy') // 执行浏览器复制命令
-      this.$message.success('复制成功')
+    handleCopy(row) {
+      const input = document.createElement('input');
+      input.style = 'position:absolute;left:0;bottom:0;opacity:0;';
+      document.body.append(input);
+      input.value = row.uid; // 修改文本框的内容
+      input.select(); // 选中文本
+      document.execCommand('copy'); // 执行浏览器复制命令
+      this.$message.success('复制成功');
       setTimeout(() => {
-        document.body.removeChild(input)
-      }, 50)
-    }
+        document.body.removeChild(input);
+      }, 50);
+    },
   },
-}
+};
 </script>

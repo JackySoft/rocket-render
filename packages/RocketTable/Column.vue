@@ -2,7 +2,6 @@
   <!-- 常规列处理：点击/图片/操作按钮/link/url/badge -->
   <el-table-column
     v-bind="item"
-    type=""
     :align="item.align || 'center'"
     :show-overflow-tooltip="item.showOverflowTooltip === undefined?true:item.showOverflowTooltip"
   >

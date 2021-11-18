@@ -42,12 +42,12 @@ Vue.use(RocketRender)
 2. 页面使用组件
 ```html
 <template>
+  <div>
     <!-- rocket-form没有背景和边距，为了体验，可以给外层添加一个容器并设置背景和边距 -->
     <div class="search-box">
         <!-- 表单查询区 -->
         <search-form :json="form" :model.sync="queryForm" @handleQuery="getTableList" />
-    </search-box>
-
+    </div>
     <!-- 列表区域，支撑各种场景的列显示以及自定义列 -->
     <rocket-table
         border
@@ -58,6 +58,7 @@ Vue.use(RocketRender)
         @handleChange="getTableList"
     >
     </rocket-table>
+  </div>
 </template>
 
 <script>
@@ -66,7 +67,7 @@ export default {
   data () {
     return {
       showLoading: false,
-      // 保存查询条件
+      // 表单model对象，用于初始化值和获取表单值
       queryForm: {
         user_name: 'jack',
         user_status: [1, 2],
@@ -79,6 +80,7 @@ export default {
         use_status: 1,
         query_field: 1,
       },
+      // 动态生成查询表单
       form: [
         {
           type: 'text',
@@ -225,6 +227,7 @@ export default {
           label: '是否校验',
         },
       ],
+      // 表格列头
       mainColumn: [
         {
           prop: 'selection',
@@ -284,7 +287,7 @@ export default {
         }
       ],
       mainData: [],
-      // 分页对象
+      // 分页对象，此结构目前固定
       pagination: {
         pageNum: 1,
         pageSize: 20,
@@ -307,12 +310,18 @@ export default {
       this.$api.getBasicList(data).then((res) => {
         this.mainData = res.list
         this.showLoading = false
-        this.pagination.total_count = res.total_count
+        this.pagination.total = res.total_count
       })
     },
     getSelectList (val, values, model) {
       this.$request.get('/select/list').then((res) => {
-        this.form[3].options = res
+        // 此处通过数组方法进行动态修改，不可以使用索引修改：this.form[3].options = res;
+        this.form.splice(3,1,{
+          type: 'select',
+          model: 'user_list',
+          label: '用户列表',
+          options: res
+        },)
       })
     },
     handleTime (val) {

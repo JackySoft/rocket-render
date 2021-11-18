@@ -1,19 +1,19 @@
-import { RocketComponent } from './component'
+import { RocketComponent } from './component';
 
 export declare class RocketTable extends RocketComponent {
-  loading: boolean
+  loading: boolean;
 
-  column: object[]
+  column: object[];
 
-  data: []
+  data: [];
 
-  pagination: object
+  pagination: object;
 
-  height: string
+  height: string;
 
-  maxHeight: string
+  maxHeight: string;
 
-  layout: string
+  layout: string;
 
-  pager: boolean
+  pager: boolean;
 }

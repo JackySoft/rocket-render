@@ -2,7 +2,12 @@
   <wrapper>
     <search-box>
       <!-- 表单查询区 -->
-      <search-form :json="form" :model.sync="queryForm" @handleQuery="getTableList" @handleReset="getTableList" />
+      <search-form
+        :json="form"
+        :model.sync="queryForm"
+        @handleQuery="getTableList"
+        @handleReset="getTableList"
+      />
     </search-box>
     <div class="table-box">
       <!-- 列表区域 -->
@@ -28,7 +33,7 @@
 <script>
 export default {
   name: 'query',
-  data () {
+  data() {
     return {
       showLoading: false,
       // 保存查询条件
@@ -41,7 +46,7 @@ export default {
         time_part_end: '05:00',
         match: 1,
         province: ['Hubei', 'Wuhan'],
-        use_status: 1
+        use_status: 1,
       },
       form: [
         {
@@ -49,7 +54,7 @@ export default {
           model: 'user_name',
           label: '用户',
           arrow: false,
-          placeholder: '请输入用户名称'
+          placeholder: '请输入用户名称',
         },
         {
           type: 'radio',
@@ -79,13 +84,13 @@ export default {
           model: 'register_date',
           label: '注册日期',
           shortcuts: true,
-          width: '150px'
+          width: '150px',
         },
         {
           type: 'daterange',
           model: 'login_time',
           label: '日期范围',
-          width: '220px'
+          width: '220px',
         },
         {
           type: 'time-select',
@@ -93,7 +98,7 @@ export default {
           gutter: 10,
           action: {
             type: 'reset',
-            model: ['time_part_end']
+            model: ['time_part_end'],
           },
           items: [
             {
@@ -126,11 +131,12 @@ export default {
                 {
                   value: 'Wuhan',
                   label: '武汉',
-                }, {
+                },
+                {
                   value: 'Xiangyang',
                   label: '襄阳',
-                }
-              ]
+                },
+              ],
             },
             {
               value: 'Beijing',
@@ -139,13 +145,14 @@ export default {
                 {
                   value: 'Haidian',
                   label: '海淀区',
-                }, {
+                },
+                {
                   value: 'ChaoYang',
                   label: '朝阳',
-                }
-              ]
-            }
-          ]
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'checkbox',
@@ -174,12 +181,12 @@ export default {
         {
           prop: 'uid',
           label: '用户ID',
-          align: 'left'
+          align: 'left',
         },
         {
           prop: 'cname',
           label: '用户名称',
-          align: 'left'
+          align: 'left',
         },
         {
           prop: 'user_img',
@@ -189,8 +196,8 @@ export default {
           image: {
             type: 'single', // single/list 支持单张图片和批量图片
             width: 60, // 设置图片宽度
-            height: 40 // 设置图片高度
-          }
+            height: 40, // 设置图片高度
+          },
         },
         {
           prop: 'site_url',
@@ -202,14 +209,14 @@ export default {
           prop: 'use_status',
           label: '当前状态',
           type: 'click',
-          formatter (row) {
+          formatter(row) {
             if (row.use_status > 2) {
-              return '--'
+              return '--';
             }
             return {
               1: '在线',
               2: '离线',
-            }[row.use_status]
+            }[row.use_status];
           },
         },
         {
@@ -218,7 +225,7 @@ export default {
         },
         {
           prop: 'user_status_name',
-          label: '用户状态'
+          label: '用户状态',
         },
         {
           prop: 'register_date',
@@ -255,7 +262,7 @@ export default {
               permission: true,
             },
           ],
-        }
+        },
       ],
       mainData: [],
       // 分页对象
@@ -264,50 +271,50 @@ export default {
         pageSize: 20,
         total: 0,
       },
-    }
+    };
   },
-  mounted () {
-    this.getTableList()
+  mounted() {
+    this.getTableList();
   },
   methods: {
     // 首页列表查询,page为子组件传递的页码，默认为1
-    getTableList (pageNum = 1) {
-      this.showLoading = true
-      this.pagination.pageNum = pageNum
+    getTableList(pageNum = 1) {
+      this.showLoading = true;
+      this.pagination.pageNum = pageNum;
       const data = {
         ...this.queryForm, // 查询表单数据
         ...this.pagination, // 默认分页数据
-      }
+      };
       this.$api.getBasicList(data).then((res) => {
-        this.mainData = res.list
-        this.showLoading = false
-        this.pagination.total = res.total
-      })
+        this.mainData = res.list;
+        this.showLoading = false;
+        this.pagination.total = res.total;
+      });
     },
-    handleCellClick ({ row }) {
-      this.$message.success('单元格点击，值为：' + row.uid)
+    handleCellClick({ row }) {
+      this.$message.success('单元格点击，值为：' + row.uid);
     },
-    handleSelectionChange (rows) {
-      this.$message.success('勾选项id为' + rows.map(item => item.id))
+    handleSelectionChange(rows) {
+      this.$message.success('勾选项id为' + rows.map((item) => item.id));
     },
     // action为点击的按钮索引，row为当前行的数据
-    handleAction ({ index, row }) {
+    handleAction({ index, row }) {
       if (index === 0) {
-        this.$message.success('你选择了第一个按钮')
+        this.$message.success('你选择了第一个按钮');
       } else if (index === 1) {
-        this.$message.success('你选择了第二个按钮')
+        this.$message.success('你选择了第二个按钮');
       } else {
-        this.$message.success('你选择了第三个按钮')
+        this.$message.success('你选择了第三个按钮');
       }
-      console.log(row)
+      console.log(row);
     },
     // 导出
-    handleExport () {
-      const url = '/basic/export'
+    handleExport() {
+      const url = '/basic/export';
       // 获取当前查询表单参数
-      const query = this.query
-      this.$utils.handleExport(url, query)
+      const query = this.query;
+      this.$utils.handleExport(url, query);
     },
   },
-}
+};
 </script>

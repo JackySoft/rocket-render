@@ -1,7 +1,7 @@
-import { RocketComponent } from './component'
+import { RocketComponent } from './component';
 
 export declare class RocketForm extends RocketComponent {
-  config: object
+  config: object;
 
-  value: object
+  value: object;
 }

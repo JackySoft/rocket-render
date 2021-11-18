@@ -6,7 +6,7 @@
         <h1 class="welcome-inner-title">欢迎使用</h1>
         <p class="welcome-inner-content">Rocket-Render</p>
         <p class="welcome-inner-tip">-- 河畔一角</p>
-        <p class="wechat"><img src="wechat.jpg" alt=""></p>
+        <p class="wechat"><img src="wechat.jpg" alt="" /></p>
       </div>
       <div class="welcome-image"></div>
     </div>
@@ -15,8 +15,8 @@
 
 <script>
 export default {
-  name: 'Welcome'
-}
+  name: 'Welcome',
+};
 </script>
 
 <style scoped lang="scss">
@@ -42,9 +42,9 @@ export default {
       line-height: 62px;
       color: #409eff;
     }
-    .wechat{
+    .wechat {
       width: 280px;
-      img{
+      img {
         width: 100%;
         height: 100%;
       }
