@@ -1,6 +1,6 @@
-import RocketForm from './RocketForm'
+import RocketForm from './RocketForm';
 
 RocketForm.install = (Vue) => {
-  Vue.component(RocketForm.name, RocketForm)
-}
-export default RocketForm
+  Vue.component(RocketForm.name, RocketForm);
+};
+export default RocketForm;

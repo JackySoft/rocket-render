@@ -1,6 +1,6 @@
-import SearchForm from './SearchForm.vue'
+import SearchForm from './SearchForm.vue';
 
 SearchForm.install = (Vue) => {
-  Vue.component(SearchForm.name, SearchForm)
-}
-export default SearchForm
+  Vue.component(SearchForm.name, SearchForm);
+};
+export default SearchForm;

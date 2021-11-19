@@ -1,14 +1,14 @@
 <template>
   <el-form
     class="rr-search-form"
-    :class="{ dialog: type === 'dialog','rr-search-flex':inline=='flex' }"
+    :class="{ dialog: type === 'dialog', 'rr-search-flex': inline == 'flex' }"
     ref="searchForm"
     :model="value"
     :inline="true"
     @submit.native.prevent="handleQuery"
   >
     <!-- 固定栅格布局-->
-    <el-row type="flex" :gutter="20" v-if="inline=='grid'">
+    <el-row type="flex" :gutter="20" v-if="inline == 'grid'">
       <template v-for="(item, index) in json">
         <el-col
           :key="index"
@@ -40,13 +40,13 @@
         <el-button @click="handleReset">重置</el-button>
         <el-button type="primary" @click="handleQuery">查询</el-button>
         <el-button type="text" v-if="showOpen" @click="handleOpen" size="medium"
-          >{{ isOpen ? "收起" : "展开"
+          >{{ isOpen ? '收起' : '展开'
           }}<i :class="[isOpen ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i
         ></el-button>
       </el-col>
     </el-row>
     <!-- flex布局-->
-    <template v-else-if="inline=='flex'">
+    <template v-else-if="inline == 'flex'">
       <div class="rr-form-item">
         <template v-for="(item, index) in json">
           <FormItem
@@ -64,7 +64,7 @@
       </div>
     </template>
     <!-- 行内布局-->
-    <template v-else-if="inline=='inline'">
+    <template v-else-if="inline == 'inline'">
       <template v-for="(item, index) in json">
         <FormItem
           :key="index"
@@ -79,11 +79,10 @@
         <el-button type="primary" @click="handleQuery">查询</el-button>
       </el-form-item>
     </template>
-
   </el-form>
 </template>
 <script>
-import FormItem from './../components/FormItem'
+import FormItem from './../components/FormItem';
 /**
  * 根据屏幕宽度，做栅格列数适配
  * 弹框中表单和页面查询表单要区分开
@@ -93,67 +92,67 @@ import FormItem from './../components/FormItem'
  * @param {mode} 是否为弹框
  */
 const getResult = (formLength, isOpen, mode) => {
-  const w = document.documentElement.clientWidth
-  let len = 0
-  let hiddenIndex = 0
-  let offset = 0
-  let showOpen = true
-  let md = 12 // 1200px以下，一行2列
-  let lg = 8 // 1200px以上，一行显示3列
-  let xl = 6 // 1920px以上，一行显示4列
+  const w = document.documentElement.clientWidth;
+  let len = 0;
+  let hiddenIndex = 0;
+  let offset = 0;
+  let showOpen = true;
+  let md = 12; // 1200px以下，一行2列
+  let lg = 8; // 1200px以上，一行显示3列
+  let xl = 6; // 1920px以上，一行显示4列
   if (mode === 'dialog') {
     if (isOpen) {
-      hiddenIndex = 0
-      offset = formLength % 2 === 0 ? 12 : 0
+      hiddenIndex = 0;
+      offset = formLength % 2 === 0 ? 12 : 0;
     } else {
-      hiddenIndex = 1
-      offset = formLength > 1 ? 0 : 12
+      hiddenIndex = 1;
+      offset = formLength > 1 ? 0 : 12;
     }
-    md = 12
-    lg = 12
-    xl = 12
+    md = 12;
+    lg = 12;
+    xl = 12;
   } else {
     if (w >= 1920) {
-      hiddenIndex = 3
-      len = formLength % 4
+      hiddenIndex = 3;
+      len = formLength % 4;
       if (isOpen) {
-        if (len === 0) offset = 18
-        else if (len === 1) offset = 12
-        else if (len === 2) offset = 6
-        else if (len === 3) offset = 0
+        if (len === 0) offset = 18;
+        else if (len === 1) offset = 12;
+        else if (len === 2) offset = 6;
+        else if (len === 3) offset = 0;
       } else if (formLength > 3) {
-        offset = 0
+        offset = 0;
       } else {
-        if (len === 0) offset = 0
-        else if (len === 1) offset = 12
-        else if (len === 2) offset = 6
-        else if (len === 3) offset = 0
+        if (len === 0) offset = 0;
+        else if (len === 1) offset = 12;
+        else if (len === 2) offset = 6;
+        else if (len === 3) offset = 0;
       }
     } else if (w >= 1200) {
       // 一行显示三列
-      hiddenIndex = 2
-      len = formLength % 3
+      hiddenIndex = 2;
+      len = formLength % 3;
       if (isOpen) {
-        if (len === 0) offset = 16
-        else if (len === 1) offset = 8
-        else if (len === 2) offset = 0
+        if (len === 0) offset = 16;
+        else if (len === 1) offset = 8;
+        else if (len === 2) offset = 0;
       } else if (formLength > 2) {
-        offset = 0
+        offset = 0;
       } else {
-        if (len === 0) offset = 0
-        else if (len === 1) offset = 8
-        else if (len === 2) offset = 0
+        if (len === 0) offset = 0;
+        else if (len === 1) offset = 8;
+        else if (len === 2) offset = 0;
       }
     } else if (w >= 992) {
-      hiddenIndex = 1
+      hiddenIndex = 1;
       if (isOpen) {
-        if (formLength % 2 === 0) offset = 12
+        if (formLength % 2 === 0) offset = 12;
       }
     } else {
-      hiddenIndex = 1
+      hiddenIndex = 1;
     }
     if (formLength <= hiddenIndex) {
-      showOpen = false
+      showOpen = false;
     }
   }
 
@@ -165,38 +164,38 @@ const getResult = (formLength, isOpen, mode) => {
     lg,
     xl,
     w,
-  }
-}
+  };
+};
 // 添加防抖，防止resize重复调用
-function debounce (method, delay, immediate) {
-  let timer = null
+function debounce(method, delay, immediate) {
+  let timer = null;
   if (immediate) {
-    method && method()
+    method && method();
   }
   return function () {
-    const self = this
-    const args = arguments
-    timer && clearTimeout(timer)
+    const self = this;
+    const args = arguments;
+    timer && clearTimeout(timer);
     timer = setTimeout(function () {
-      method.apply(self, args)
-    }, delay)
-  }
+      method.apply(self, args);
+    }, delay);
+  };
 }
 export default {
   name: 'SearchForm',
   props: {
     inline: {
       type: String || Boolean,
-      default () {
-        return 'flex'
-      }
+      default() {
+        return 'flex';
+      },
     }, // true为行内，grid为栅格，flex为左右布局
     type: String, // 当设置为dialog时，说明QueryForm在dialog中使用，会调整QueryForm背景色
     json: Array, // 表单JSON对象
     model: Object, // 默认v-model参数
   },
   components: { FormItem },
-  data () {
+  data() {
     return {
       value: { ...this.model }, // 初始化表单值
       md: 12, // 992-1200 , 默认加载两列
@@ -207,18 +206,18 @@ export default {
       hiddenIndex: 0, // 需要隐藏的索引
       offset: 0, // 偏移的列数
       screenWidth: 0, // 当前屏幕可用宽度
-    }
+    };
   },
-  mounted () {
-    window.onresize = debounce(this.handleLayout, 500, true)
+  mounted() {
+    window.onresize = debounce(this.handleLayout, 500, true);
   },
   methods: {
     /**
      * 触发自定义事件
      * @callback(val,values,model)当前值/所有值/当前model
      */
-    handleInput (item, val) {
-      const { action } = item
+    handleInput(item, val) {
+      const { action } = item;
       /**
        * type: 'reset' 重置对应表单
        * model: 'all' 重置所有表单
@@ -226,120 +225,122 @@ export default {
        * 重置也可以通过change事件进行重置
        */
       if (action && action.type === 'reset') {
-        const modelList = action.model
+        const modelList = action.model;
         // 重置所有表单
         if (modelList === 'all') {
-          this.handleReset()
-          this.value[item.model] = val
+          this.handleReset();
+          this.value[item.model] = val;
         } else if (modelList) {
           // 重置部分表单
-          modelList.map(key => {
+          modelList.map((key) => {
             if (Array.isArray(this.value[key])) {
-              this.value[key] = []
+              this.value[key] = [];
             } else {
-              this.value[key] = undefined
+              this.value[key] = undefined;
             }
-            return key
-          })
+            return key;
+          });
         }
       }
       if (typeof item.change === 'function') {
-        item.change(val, this.value, item.model)
+        item.change(val, this.value, item.model);
       }
       // 把日期数组拆解为两个字段，方便前端使用
       if (
         ['daterange', 'monthrange', 'datetimerange'].includes(item.type) &&
         item.export
       ) {
-        if (!Array.isArray(item.export)) { throw Error('item.export must be a Array') }
+        if (!Array.isArray(item.export)) {
+          throw Error('item.export must be a Array');
+        }
         this.value = {
           ...this.value,
           [item.model]: val || '',
           [item.export[0] || 'startTime']: val ? val[0] : '',
           [item.export[1] || 'endTime']: val ? val[1] : '',
-        }
+        };
       } else {
-        this.value = { ...this.value, [item.model]: val }
+        this.value = { ...this.value, [item.model]: val };
       }
     },
     /**
      * 表单重置
      * 外部也可通过$refs进行内部API调用
      */
-    handleReset () {
-      this.$refs.searchForm.resetFields()
-      this.$emit('update:model', { ...this.value })
-      this.$emit('handleReset', 1)
+    handleReset() {
+      this.$refs.searchForm.resetFields();
+      this.$emit('update:model', { ...this.value });
+      this.$emit('handleReset', 1);
     },
     /**
      * 点击查询，回传数据，重置页码
      */
-    handleQuery () {
-      this.$emit('update:model', { ...this.value })
-      this.$emit('handleQuery', 1)
+    handleQuery() {
+      this.$emit('update:model', { ...this.value });
+      this.$emit('handleQuery', 1);
     },
     /**
      * 点击展开/收起
      */
-    handleOpen () {
-      this.isOpen = !this.isOpen
-      const res = getResult(this.json.length, this.isOpen, this.mode)
-      this.hiddenIndex = res.hiddenIndex
-      this.offset = res.offset
-      this.md = res.md
-      this.lg = res.lg
-      this.xl = res.xl
+    handleOpen() {
+      this.isOpen = !this.isOpen;
+      const res = getResult(this.json.length, this.isOpen, this.mode);
+      this.hiddenIndex = res.hiddenIndex;
+      this.offset = res.offset;
+      this.md = res.md;
+      this.lg = res.lg;
+      this.xl = res.xl;
     },
     /**
      * 监听resize事件，并通过防抖控制重复触发
      */
-    handleLayout () {
+    handleLayout() {
       // 根据当前屏幕尺寸，计算需要展示的列数以及隐藏列数
       const { hiddenIndex, offset, showOpen, md, lg, xl, w } = getResult(
         this.json.length,
         this.isOpen,
-        this.mode
-      )
-      this.hiddenIndex = hiddenIndex
-      this.offset = offset
-      this.showOpen = showOpen
-      this.md = md
-      this.lg = lg
-      this.xl = xl
-      this.screenWidth = w
+        this.mode,
+      );
+      this.hiddenIndex = hiddenIndex;
+      this.offset = offset;
+      this.showOpen = showOpen;
+      this.md = md;
+      this.lg = lg;
+      this.xl = xl;
+      this.screenWidth = w;
     },
   },
   /**
    * 销毁全局事件
    */
-  unmounted () {
-    window.onresize = null
+  unmounted() {
+    window.onresize = null;
   },
   /**
    * 当父组件修改model时，需要同步修改子组件
    */
   watch: {
     model: function (val) {
-      this.value = { ...val }
-    }
-  }
-}
+      this.value = { ...val };
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 // 默认为白色背景，当在弹框中时为灰色背景
 .rr-search-form {
-  &.rr-search-flex{
+  &.rr-search-flex {
     display: flex;
     justify-content: space-between;
-    .rr-form-item{
-      flex:1;
+    .rr-form-item {
+      flex: 1;
     }
-    .rr-action{
-      width:200px;
+    .rr-action {
+      width: 200px;
       text-align: right;
     }
   }
-  .text-right{
+  .text-right {
     text-align: right;
   }
   &.dialog {

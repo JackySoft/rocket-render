@@ -16,7 +16,7 @@
     <template v-for="item in json.list">
       <el-descriptions-item
         :key="item.label"
-        :label="item.label"
+        v-bind="item"
         v-if="item.type == 'slot'"
       >
         <template slot="label" v-if="item.slotLabelName">
@@ -29,7 +29,7 @@
           {{ values[item.prop] }}
         </template>
       </el-descriptions-item>
-      <el-descriptions-item :key="item.label" :label="item.label" v-else>
+      <el-descriptions-item :key="item.label" v-bind="item" v-else>
         {{ values[item.prop] }}
       </el-descriptions-item>
     </template>

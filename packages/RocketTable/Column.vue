@@ -3,20 +3,36 @@
   <el-table-column
     v-bind="item"
     :align="item.align || 'center'"
-    :show-overflow-tooltip="item.showOverflowTooltip === undefined?true:item.showOverflowTooltip"
+    :show-overflow-tooltip="
+      item.showOverflowTooltip === undefined ? true : item.showOverflowTooltip
+    "
   >
     <template slot="header" v-if="item.tips">
       <el-tooltip :content="item.tips" placement="top">
-        <span>{{item.label}}<i class="el-icon-info" style="margin-left:3px;"></i></span>
+        <span
+          >{{ item.label }}<i class="el-icon-info" style="margin-left: 3px"></i
+        ></span>
       </el-tooltip>
     </template>
     <!-- 自定义单元格 -->
     <template slot-scope="scope">
-      <div v-if="item.type === 'index'">{{scope.$index+1}}</div>
+      <div v-if="item.type === 'index'">{{ scope.$index + 1 }}</div>
       <!-- 单个cell点击,通过prop可以获取是哪列触发的点击 -->
       <template v-if="item.type === 'click'">
-        <span v-if="!formatText(item,scope.row) || formatText(item,scope.row) === item.empty || formatText(item,scope.row) === '--'">{{ formatText(item,scope.row) }}</span>
-        <span class="btn-link" @click="handleCellClick(scope.row,item.prop)" v-else>{{ formatText(item,scope.row) }}</span>
+        <span
+          v-if="
+            !formatText(item, scope.row) ||
+            formatText(item, scope.row) === item.empty ||
+            formatText(item, scope.row) === '--'
+          "
+          >{{ formatText(item, scope.row) }}</span
+        >
+        <span
+          class="btn-link"
+          @click="handleCellClick(scope.row, item.prop)"
+          v-else
+          >{{ formatText(item, scope.row) }}</span
+        >
       </template>
       <!-- 单个cell点击,通过prop可以获取是哪列触发的点击 -->
       <template v-if="item.type === 'html'">
@@ -29,25 +45,43 @@
             width: ((item.image && item.image.width) || 60) + 'px',
             height: ((item.image && item.image.height) || 40) + 'px',
           }"
-          :src="item.image && item.image.type === 'list'?scope.row[item.prop][0]:scope.row[item.prop]"
-          :preview-src-list="item.image && item.image.type === 'list' ?scope.row[item.prop]:[scope.row[item.prop]]"
+          :src="
+            item.image && item.image.type === 'list'
+              ? scope.row[item.prop][0]
+              : scope.row[item.prop]
+          "
+          :preview-src-list="
+            item.image && item.image.type === 'list'
+              ? scope.row[item.prop]
+              : [scope.row[item.prop]]
+          "
         >
         </el-image>
       </div>
       <!-- 增加链接渲染 -->
-      <a class="btn-link" :href="scope.row[item.prop]" target="_blank" v-if="item.type === 'url'">{{ String(item.formatter ? item.formatter(scope.row) : scope.row[item.prop]) || '--' }}</a>
+      <a
+        class="btn-link"
+        :href="scope.row[item.prop]"
+        target="_blank"
+        v-if="item.type === 'url'"
+        >{{
+          String(
+            item.formatter ? item.formatter(scope.row) : scope.row[item.prop],
+          ) || '--'
+        }}</a
+      >
       <!-- 单个cell包含多个链接 -->
-      <div v-else-if="item.type ==='link'">
+      <div v-else-if="item.type === 'link'">
         <span
           v-for="(link, index) in linkList(scope.row)"
           :key="index"
-          style="margin-right:5px;"
+          style="margin-right: 5px"
         >
           <el-button
             type="text"
             @click="handleCellClick(scope.row, item.prop, link)"
           >
-           {{ formatLink(item,scope.row,link) }}
+            {{ formatLink(item, scope.row, link) }}
           </el-button>
           &nbsp;
         </span>
@@ -59,7 +93,9 @@
         >
           <i v-if="!scope.row.showMore" class="el-icon-caret-bottom"></i>
           <i v-else class="el-icon-caret-top"></i>
-          <span class="text">{{ scope.row.showMore ? "收起" : "显示更多" }}</span>
+          <span class="text">{{
+            scope.row.showMore ? '收起' : '显示更多'
+          }}</span>
         </div>
       </div>
       <!-- 操作列表（新增、编辑、删除） -->
@@ -68,15 +104,16 @@
           <!-- 需要根据返回状态动态渲染按钮 -->
           <el-button
             :type="btn.type || 'text'"
-            v-if="btn.permission !==false && btn.prop"
+            v-if="btn.permission !== false && btn.prop"
             :class="[btn.val[scope.row[btn.prop]].color]"
-            @click="handleAction(key, scope.row, btn.val[scope.row[btn.prop]].type)"
+            @click="
+              handleAction(key, scope.row, btn.val[scope.row[btn.prop]].type)
+            "
             :key="`action-${key}`"
             :disabled="btn.val[scope.row[btn.prop]].disabled"
           >
             {{
-              btn.val[scope.row[btn.prop]].text ||
-              btn.val[scope.row[btn.prop]]
+              btn.val[scope.row[btn.prop]].text || btn.val[scope.row[btn.prop]]
             }}
           </el-button>
           <!-- 普通操作按钮 -->
@@ -104,10 +141,10 @@
           class="item"
           :type="item.badge.state[scope.row[item.badge.id]]"
         ></el-badge>
-        {{ formatText(item,scope.row) }}
+        {{ formatText(item, scope.row) }}
       </div>
       <template v-else-if="!item.type">
-        {{ formatText(item,scope.row) }}
+        {{ formatText(item, scope.row) }}
       </template>
     </template>
   </el-table-column>
@@ -118,21 +155,21 @@ export default {
   name: 'Column',
   props: ['item'],
   computed: {
-    linkList () {
+    linkList() {
       return (row) => {
-        const data = row[this.item.prop]
-        const limit = this.item.link.limit
+        const data = row[this.item.prop];
+        const limit = this.item.link.limit;
         if (data && data.length > limit) {
           // 展开所有
           if (row.showMore) {
-            return data
+            return data;
           }
           // 显示limit条数
-          return data.slice(0, limit)
+          return data.slice(0, limit);
         }
-        return data || []
-      }
-    }
+        return data || [];
+      };
+    },
   },
   methods: {
     /**
@@ -141,8 +178,8 @@ export default {
      * @param {prop} 点击列属性
      * @param {link} 遍历的当前link对象
      */
-    handleCellClick (row, prop, link) {
-      this.$emit('handleCellClick', { row, prop, link })
+    handleCellClick(row, prop, link) {
+      this.$emit('handleCellClick', { row, prop, link });
     },
     /**
      * 操作区域-多按钮点击
@@ -150,46 +187,46 @@ export default {
      * @param {row} 行数据
      * @param {type} 增加type，用于区分按钮
      */
-    handleAction (index, row, type) {
+    handleAction(index, row, type) {
       // row解构目的是防止一些响应式数据被带过去引起一些副作用
-      this.$emit('handleAction', { index, row: { ...row }, type })
+      this.$emit('handleAction', { index, row: { ...row }, type });
     },
     /**
      * 更多折叠功能
      * @param {item} 折叠数据列表
      */
-    toggleShowMore (item) {
-      this.$set(item, 'showMore', !item.showMore)
+    toggleShowMore(item) {
+      this.$set(item, 'showMore', !item.showMore);
     },
     /**
      * 文本内容格式化
      * @param {Object} item 当前列对象
      * @param {Object} row  当前行数据
      */
-    formatText (item, row) {
-      let text = ''
-      if (item.formatter) return item.formatter(row)
-      text = row[item.prop]
-      if (text || text * 1 === 0) return text
-      if (typeof item.empty !== 'undefined') return item.empty
-      return '--'
+    formatText(item, row) {
+      let text = '';
+      if (item.formatter) return item.formatter(row);
+      text = row[item.prop];
+      if (text || text * 1 === 0) return text;
+      if (typeof item.empty !== 'undefined') return item.empty;
+      return '--';
     },
     /**
      * Link文本内容格式化
      * @param {item} 当前列对象
      * @param {row}  当前行数据
      */
-    formatLink (item, row, link) {
-      let text
+    formatLink(item, row, link) {
+      let text;
       if (item.formatter) {
-        text = item.formatter(row, link)
+        text = item.formatter(row, link);
       } else {
-        text = link[item.link.prop]
+        text = link[item.link.prop];
       }
-      if (text) return text
-      if (item.empty) return item.empty
-      return '--'
-    }
+      if (text) return text;
+      if (item.empty) return item.empty;
+      return '--';
+    },
   },
-}
+};
 </script>
