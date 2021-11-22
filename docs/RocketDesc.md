@@ -2,7 +2,17 @@
 
 RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实现一个具有描述的功能。
 
-> RocketDesc 支持所有的 el-descriptions 功能，只有少数自定义属性，整体开发方式跟表格类似，支持 formatter。
+> RocketDesc 支持所有的 el-descriptions 功能，只有少数自定义属性，整体开发方式跟表格类似。
+
+## 支持的功能列表
+
+1. 无边框/有边框详情
+2. 通过 span 跨列展示，支持垂直和水平布局。
+3. 标签和值支持 class 和 style。
+4. 支持标题、extra、label、value 等插槽功能。
+5. 支持链式调用，比如：{ prop:"user.name", label:"用户名" }。
+6. 支持文本框链式赋值。
+7. 支持一键切换为编辑模式。JSON 对象中，设置 edit:true 即可。
 
 ## 基本用法 - 不带边框
 
@@ -108,7 +118,7 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
 
 :::
 
-## 基本用法 - 垂直分布
+## 基本用法 - 垂直分布、formatter 格式化、链式调用
 
 :::demo
 
@@ -137,9 +147,10 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
                 return userSex == '未知' ? '泰国人妖' : userSex;
               },
             },
+            // 链式调用
             {
               label: '用户年龄',
-              prop: 'userName',
+              prop: 'user.age',
             },
             {
               label: '用户职业',
@@ -157,7 +168,10 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
         },
         values3: {
           userName: '杰克',
-          userAge: 30,
+          // 值为链式对象
+          user: {
+            age: 30,
+          },
           userSex: '未知',
           userJob: '前端工程师',
           userSalary: '20万',
@@ -320,7 +334,6 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
         json2: {
           title: '标题自定义插槽',
           border: true,
-          type: 'slot',
           list: [
             {
               label: '用户名称',
@@ -402,6 +415,98 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
 
 :::
 
+## 基本用法 - 切换为编辑模式
+
+:::demo
+
+```html
+<rocket-desc :json="json" :values="values" class="mt20">
+  <template slot="extra">
+    <el-button type="primary" size="small" @click="handleAction">
+      {{json.type == 'edit'?'提交':'编辑'}}
+    </el-button>
+  </template>
+</rocket-desc>
+<script>
+  export default {
+    data() {
+      return {
+        json: {
+          border: true,
+          type: '',
+          list: [
+            {
+              label: '用户名称',
+              prop: 'userName',
+              // 下面为切换到编辑模式时需要的属性
+              type: 'text',
+              placeholder: '请输入用户名称',
+              rules: [
+                {
+                  required: true,
+                  message: '请输入用户名称',
+                  trigger: 'blur',
+                },
+              ],
+            },
+            {
+              label: '用户性别',
+              prop: 'userSex',
+              // 下面为切换到编辑模式时需要的属性
+              type: 'select',
+              placeholder: '请选择用户性别',
+              options: [
+                { label: '男', value: 1 },
+                { label: '女', value: 2 },
+              ],
+              rules: [
+                {
+                  required: true,
+                  message: '请选择用户性别',
+                  trigger: 'blur',
+                },
+              ],
+            },
+            {
+              label: '用户年龄',
+              prop: 'user.age',
+              // 下面为切换到编辑模式时需要的属性
+              type: 'text',
+              placeholder: '请输入用户名称',
+              rules: [
+                {
+                  required: true,
+                  message: '请输入用户名称',
+                  trigger: 'blur',
+                },
+              ],
+            },
+          ],
+        },
+        values: {
+          userName: '杰克',
+          user: {
+            age: 30,
+          },
+          userSex: '未知',
+          userJob: '前端工程师',
+          userSalary: '20万',
+          address: '上海市浦东新区东方明珠',
+        },
+      };
+    },
+    methods: {
+      handleAction() {
+        if (!this.json.type) this.json.type = 'edit';
+        // 调用提交接口
+      },
+    },
+  };
+</script>
+```
+
+:::
+
 ## 组件属性
 
 | 参数   | 说明             | 类型   | 可选值 | 默认值 |
@@ -411,16 +516,17 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
 
 ## json 参数
 
-> 所有的属性和 ElementUI 同步，下表只列自定义的属性
-
-| 参数 | 说明                                          | 类型   | 可选值 | 默认值 |
-| :--- | :-------------------------------------------- | :----- | :----- | :----: |
-| type | 类型，目前只支持 slot，用于标题、内容的自定义 | String | slot   |  slot  |
-| list | 动态循环 label 的列表对象                     | Array  | 无     |   无   |
+> 所有的属性和 ElementUI 同步，下表只列自定义的属性；
+> | 参数 | 说明 | 类型 | 可选值 | 默认值 |
+> | :--- | :--------------------------- | :----- | :------------------ | :----: |
+> | type | 目前支持 edit，一键可切换为编辑模式 | String | edit | slot |
+> | list | 动态循环 label 的列表对象 | Array | 无 | 无 |
 
 ## json - list 参数
 
-> list 对象
+> list 对象，type 支持 label 和 value 的插槽定义，同时详情页面支持一键切换为编辑模式，因此 type 支持所有控件类型，用法同 rocket-form，不同的是，props 代替了 model 对象。
+
+> 支持链式调用，比如：prop:"user.name"
 
 | 参数          | 说明                                    | 类型     | 可选值 | 默认值 |
 | :------------ | :-------------------------------------- | :------- | :----- | :----: |
@@ -429,4 +535,4 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
 | prop          | 需要渲染的接口字段                      | Any      | 无     |   无   |
 | slotLabelName | 标签插槽名称                            | String   | 无     |   无   |
 | slotValueName | 值插槽名称                              | String   | 无     |   无   |
-| formatter     | 数据格式化                              | Function | 无     |   无   |
+| formatter     | 数据格式化，参数为整个详情对象          | Function | 无     |   无   |

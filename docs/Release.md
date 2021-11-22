@@ -1,5 +1,14 @@
 # 版本说明
 
+## v2.1.11
+
+1. rocket-desc 支持一键切换为编辑模式。（详情转编辑福利）
+2. rocket-desc 支持链式调用，formatter 格式化等。
+
+## v2.1.10
+
+1. 新增 rocket-desc 组件，快速构建详情页面，100%支持 el-descriptions 组件功能
+
 ## v2.1.9
 
 1. rocket-form 增加插槽功能，当实现不了的时候，可以自定义插槽。
