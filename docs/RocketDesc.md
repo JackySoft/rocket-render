@@ -2,7 +2,7 @@
 
 RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实现一个具有描述的功能。
 
-> RocketDesc 支持所有的 el-descriptions 功能，只有少数自定义属性。
+> RocketDesc 支持所有的 el-descriptions 功能，只有少数自定义属性，整体开发方式跟表格类似，支持 formatter。
 
 ## 基本用法 - 不带边框
 
@@ -133,6 +133,9 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
             {
               label: '用户性别',
               prop: 'userSex',
+              formatter({ userSex }) {
+                return userSex == '未知' ? '泰国人妖' : userSex;
+              },
             },
             {
               label: '用户年龄',
@@ -419,10 +422,11 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
 
 > list 对象
 
-| 参数          | 说明                                    | 类型   | 可选值 | 默认值 |
-| :------------ | :-------------------------------------- | :----- | :----- | :----: |
-| type          | 类型，目前只支持 slot，用于内容的自定义 | String | slot   |  slot  |
-| label         | 显示的文本                              | String | 无     |   无   |
-| prop          | 需要渲染的接口字段                      | Any    | 无     |   无   |
-| slotLabelName | 标签插槽名称                            | String | 无     |   无   |
-| slotValueName | 值插槽名称                              | String | 无     |   无   |
+| 参数          | 说明                                    | 类型     | 可选值 | 默认值 |
+| :------------ | :-------------------------------------- | :------- | :----- | :----: |
+| type          | 类型，目前只支持 slot，用于内容的自定义 | String   | slot   |  slot  |
+| label         | 显示的文本                              | String   | 无     |   无   |
+| prop          | 需要渲染的接口字段                      | Any      | 无     |   无   |
+| slotLabelName | 标签插槽名称                            | String   | 无     |   无   |
+| slotValueName | 值插槽名称                              | String   | 无     |   无   |
+| formatter     | 数据格式化                              | Function | 无     |   无   |

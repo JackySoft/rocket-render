@@ -26,11 +26,11 @@
           <slot :name="item.slotValueName"></slot>
         </template>
         <template v-else>
-          {{ values[item.prop] }}
+          {{ item.formatter ? item.formatter(values) : values[item.prop] }}
         </template>
       </el-descriptions-item>
       <el-descriptions-item :key="item.label" v-bind="item" v-else>
-        {{ values[item.prop] }}
+        {{ item.formatter ? item.formatter(values) : values[item.prop] }}
       </el-descriptions-item>
     </template>
   </el-descriptions>

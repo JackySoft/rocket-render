@@ -7466,15 +7466,10 @@ prepend-http@^2.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
-"prettier@^1.18.2 || ^2.0.0":
+"prettier@^1.18.2 || ^2.0.0", prettier@^2.4.1:
   version "2.4.1"
   resolved "https://registry.nlark.com/prettier/download/prettier-2.4.1.tgz?cache=0&sync_timestamp=1631777167012&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fprettier%2Fdownload%2Fprettier-2.4.1.tgz#671e11c89c14a4cfc876ce564106c4a6726c9f5c"
   integrity sha1-Zx4RyJwUpM/Ids5WQQbEpnJsn1w=
-
-prettier@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.4.1.tgz#671e11c89c14a4cfc876ce564106c4a6726c9f5c"
-  integrity sha512-9fbDAXSBcc6Bs1mZrDYb3XKzDLm4EXXL9sC1LqKP5rZkT6KRr/rf9amVUcODVXgguK/isJz0d0hP72WeaKWsvA==
 
 pretty-error@^2.0.2:
   version "2.1.2"
@@ -7997,6 +7992,17 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+rocket-render@^2.1.9:
+  version "2.1.9"
+  resolved "https://registry.yarnpkg.com/rocket-render/-/rocket-render-2.1.9.tgz#814bc491363497056be563e280dd80853fe15882"
+  integrity sha512-MOOFaqoQXHcgpj9SgUTzXaKLhkfeBm7kUi6aV3QQX7lJlJiDdjBn7+93cPRDSFDjbibKTtd2xcXVnSargK0gAA==
+  dependencies:
+    axios "^0.24.0"
+    core-js "^3.19.0"
+    element-ui "^2.15.6"
+    vue "^2.6.11"
+    vue-router "^3.5.3"
 
 run-async@^2.4.0:
   version "2.4.1"

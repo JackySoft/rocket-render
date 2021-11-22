@@ -7,11 +7,13 @@ import './plugins/element.js';
 import api from './api';
 import request from './utils/request';
 import components from './components';
-import Rocket from './../packages/index';
+import RocketRender from './../packages/index';
+// import RocketRender from 'rocket-render';
+// import 'rocket-render/lib/rocket-render.css';
 
 // 注册components下的组件为全局组件
 Vue.use(components);
-Vue.use(Rocket);
+Vue.use(RocketRender);
 
 // 挂载统一管理的api
 Vue.prototype.$api = api;
