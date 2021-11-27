@@ -62,7 +62,7 @@
              * model 当前表单对象
              */
             change(val, values, model) {
-              // 重置query_field
+              // 重置query_field、修改其它表单值等，不过对于查询表单而言，我们有专门的重置按钮
               values.query_field = 0;
             },
           },
@@ -89,12 +89,13 @@
     data() {
       return {
         queryForm: {
-          user_status: [1, 2],
+          userStatus: [1, 2],
+          userName:'tom'
         },
         form: [
           {
             type: 'select',
-            model: 'user_status',
+            model: 'userStatus',
             label: '用户状态',
             multiple: true, // 支持多选
             filterable: true, //支持输入过滤
@@ -107,9 +108,25 @@
               { label: '新用户', value: 3 },
             ],
           },
+          {
+            type:'text',
+            model:'userName',
+            placeholder:'请输入用户名'
+          }
         ],
       };
     },
+    methods:{
+      getSelectList(val,values){
+        // 此处可调用接口、修改form对象等
+        this.form[0].options.push({
+          label:'测试',
+          value: Math.floor(Math.random()*100)
+        })
+        // 修改用户名
+        values.userName = 'jack'
+      }
+    }
   };
 </script>
 ```
@@ -140,6 +157,10 @@
             type: 'daterange',
             model: 'login_time',
             label: '日期范围',
+            // 对于日期范围控件来说，一般接口需要拆分为两个字段，通过export可以很方便的实现字段拆分
+            export:['startTime','endTime'],
+            // 日期换换为时间戳单位
+            valueFormat: 'timestamp',
           },
           {
             type: 'datetime',
@@ -151,6 +172,8 @@
             type: 'datetimerange',
             label: '时间范围',
             model: 'register_datetime_range',
+            // 对于日期范围控件来说，一般接口需要拆分为两个字段，通过export可以很方便的实现字段拆分
+            export:['startTime','endTime'],
             shortcuts: true,
           },
         ],
@@ -445,7 +468,7 @@
 
 > 当`type=table`时，支持表单嵌套表格，表格所具备功能同 rocket-table，添加 table 属性即可。
 
-> 需要注意的是：表格所拥有的事件不能定义，需要在 table 中添加 handleAction/handleCellClick/handleChange/selectionChange/sortChange 等方法进行接收
+> 需要注意的是：表格所拥有的事件不能定义，需要在 table 中添加 handleAction/handleCellClick/handleChange/selectionChange/sortChange 等方法进行接收。table只能用在RocketForm中，不能用在SearchForm
 
 > 表格中需要的数据 data，请再 v-model 对象里面传递，不要在 table 中添加 data
 
@@ -478,6 +501,7 @@
               model: 'userList',
               table: {
                 border: true,
+                toolbar:false,
                 handleAction() {
                   // 接受操作按钮点击
                 },

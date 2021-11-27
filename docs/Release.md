@@ -1,5 +1,10 @@
 # 版本说明
 
+## v2.1.12
+
+1. 优化 rocket-desc 组件，rocket-form 的日期范围组件增加 export 属性。
+2. 扩展上传功能，listType 支持 text/picture/picture-card/avatar/upload 等
+
 ## v2.1.11
 
 1. rocket-desc 支持一键切换为编辑模式。（详情转编辑福利）

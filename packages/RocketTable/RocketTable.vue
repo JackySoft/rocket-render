@@ -220,7 +220,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .rocket-table {
   border-radius: 2px;
   background: #ffffff;

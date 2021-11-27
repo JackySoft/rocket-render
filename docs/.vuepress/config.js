@@ -34,6 +34,7 @@ module.exports = {
           '/',
           './guide',
           './FormType',
+          './Upload',
           './SearchForm',
           './RocketTable',
           './RocketForm',

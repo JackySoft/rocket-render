@@ -15,15 +15,28 @@
   <el-upload
     v-if="item.httpRequest"
     v-bind="$attrs"
+    :drag="item.listType == 'upload'"
     :before-upload="(file) => onBeforeUpload(file, item)"
     :on-remove="handleFileRemove"
     :on-exceed="onFileExceed"
     :http-request="(info) => item.httpRequest(info, fileList)"
   >
     <template>
+      <!-- 设置隐藏域，专门保存图片地址 -->
+      <input type="hidden" :value="value" />
       <!-- 默认卡片格式-->
-      <template v-if="!item.listType || item.listType === 'picture-card'">
+      <template v-if="item.listType === 'picture-card'">
         <i class="el-icon-plus"></i>
+      </template>
+      <template v-else-if="item.listType == 'upload'">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      </template>
+      <template v-else-if="item.listType === 'avatar'">
+        <div class="el-upload-wrap">
+          <img v-if="url" :src="url" class="avatar" />
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </div>
       </template>
       <template v-else>
         <el-button size="small" type="primary">点击上传</el-button>
@@ -33,6 +46,7 @@
   <el-upload
     v-else
     v-bind="$attrs"
+    :drag="item.listType == 'upload'"
     :file-list="fileList"
     :before-upload="(file) => onBeforeUpload(file, item)"
     :on-remove="handleFileRemove"
@@ -45,8 +59,18 @@
       <!-- 设置隐藏域，专门保存图片地址 -->
       <input type="hidden" :value="value" />
       <!-- 默认卡片格式-->
-      <template v-if="!item.listType || item.listType === 'picture-card'">
+      <template v-if="item.listType === 'picture-card'">
         <i class="el-icon-plus"></i>
+      </template>
+      <template v-else-if="item.listType == 'upload'">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      </template>
+      <template v-else-if="item.listType === 'avatar'">
+        <div class="el-upload-wrap">
+          <img v-if="url" :src="url" class="avatar" />
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </div>
       </template>
       <template v-else>
         <el-button size="small" type="primary">点击上传</el-button>
@@ -59,9 +83,19 @@ export default {
   name: 'OUpload',
   props: ['item', 'value'],
   data() {
-    return {
-      fileList: this.value, // 上传文件列表
-    };
+    return {};
+  },
+  computed: {
+    fileList() {
+      console.log('value:', this.value);
+      return this.value || [];
+    },
+    url() {
+      let file = this.fileList[0] || {};
+      if (file.url)
+        return this.item.domain ? this.item.domain + file.url : file.url;
+      return '';
+    },
   },
   methods: {
     // 数据回传
@@ -138,24 +172,28 @@ export default {
         data = 'data',
         msg = 'msg',
         codeVal = 0,
+        name = 'fileName',
+        url = 'url',
       } = this.item.response || {};
       const result = response ? res[response] : res;
-      fileList.pop();
       // 保存上传内容到隐藏域
-      const arr = fileList.slice();
-      if (result[code] === codeVal || result[code] === 200) {
-        const { name = '', url = '' } = result[data];
-        arr.push({
-          name,
-          url,
+      const list = fileList.slice();
+      if (result[code] === codeVal) {
+        const imgList = Array.isArray(result[data])
+          ? result[data]
+          : [result[data]];
+        imgList.map((item) => {
+          list.push({
+            name: item[name],
+            url: item[url],
+          });
         });
+        this.$emit('input', list);
       } else {
         // 报错后，需要移出
         this.fileList.pop();
         this.$message.error(result[msg]);
       }
-      this.fileList = arr;
-      this.$emit('input', arr);
     },
     // 文件超出个数限制
     onFileExceed() {
@@ -164,3 +202,24 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.el-upload-wrap {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  width: 178px;
+  height: 178px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    line-height: 178px;
+    text-align: center;
+  }
+}
+</style>

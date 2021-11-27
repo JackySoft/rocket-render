@@ -628,7 +628,7 @@
               label: '普通上传-text',
               model: 'user_image',
               listType: 'text', //展示类型：text/picture/picture-card
-              action: 'http://yapi.web.2345.cn/mock/437/upload', //上传接口
+              action: '/mock/437/upload', //上传接口
               token: '', //如果接口需要token，就设置一下
               fileType: ['image/jpg', 'image/jpeg', 'image/png'], //文件格式校验
               fileSize: 1 * 1024, //校验大小，单位为K
@@ -649,7 +649,7 @@
               label: '列表上传-card',
               model: 'user_image',
               listType: 'picture-card', //展示类型：text/picture/picture-card
-              action: 'http://yapi.web.2345.cn/mock/437/upload', //上传接口
+              action: '/mock/437/upload', //上传接口
               token: '', //如果接口需要token，就设置一下
               fileType: ['image/jpg', 'image/jpeg', 'image/png'], //文件格式校验
               fileSize: 1 * 1024, //校验大小，单位为K
@@ -677,21 +677,21 @@
               label: '列表上传-picture',
               model: 'user_image',
               listType: 'picture', //展示类型：text/picture/picture-card
-              action: 'http://yapi.web.2345.cn/mock/437/upload', //上传接口
+              action: '/mock/437/upload', //上传接口
               token: '', //如果接口需要token，就设置一下
               fileType: ['image/jpg', 'image/jpeg', 'image/png'], //文件格式校验
               fileSize: 1 * 1024, //校验大小，单位为K
               limit: 3, //上传个数限制
               multiple: false, // 单个上传活批量上传
               tips: '只能上传jpg/png文件，且不超过500kb', //上传提示语
+              //设置返回数据结构，每个接口定义可能不同
               response: {
-                response: '',
                 code: 'code',
                 data: 'data',
                 msg: 'msg',
                 codeVal: 0,
                 dataVal: 'url',
-              }, //设置返回数据结构，每个接口定义可能不同
+              },
             },
           ],
         },

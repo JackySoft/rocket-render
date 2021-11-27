@@ -204,7 +204,7 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
     <el-button type="primary" @click="handleClose">确定</el-button>
   </span>
 </el-dialog>
-<rocket-desc :json="json3" :values="values3" />
+<rocket-desc :json="json4" :values="values" />
 
 <script>
   export default {
@@ -417,10 +417,12 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
 
 ## 基本用法 - 切换为编辑模式
 
+> 编辑模式下，values 一定要添加 sync 修饰符
+
 :::demo
 
 ```html
-<rocket-desc :json="json" :values="values" class="mt20">
+<rocket-desc :json="json" :values.sync="values" class="mt20">
   <template slot="extra">
     <el-button type="primary" size="small" @click="handleAction">
       {{json.type == 'edit'?'提交':'编辑'}}
@@ -434,6 +436,7 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
         json: {
           border: true,
           type: '',
+          column: 1,
           list: [
             {
               label: '用户名称',
@@ -481,6 +484,20 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
                 },
               ],
             },
+            {
+              label: '注册时间',
+              prop: 'createTime',
+              // 下面为切换到编辑模式时需要的属性
+              type: 'date',
+              placeholder: '注册时间',
+              rules: [
+                {
+                  required: true,
+                  message: '请输入用户名称',
+                  trigger: 'blur',
+                },
+              ],
+            },
           ],
         },
         values: {
@@ -492,6 +509,7 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
           userJob: '前端工程师',
           userSalary: '20万',
           address: '上海市浦东新区东方明珠',
+          createTime: '2021-12-01',
         },
       };
     },
@@ -509,10 +527,10 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
 
 ## 组件属性
 
-| 参数   | 说明             | 类型   | 可选值 | 默认值 |
-| :----- | :--------------- | :----- | :----- | :----: |
-| json   | 描述组件整体配置 | Object | 无     |
-| values | 渲染的值         | Object | 无     |   无   |
+| 参数   | 说明                      | 类型   | 可选值 | 默认值 |
+| :----- | :------------------------ | :----- | :----- | :----: |
+| json   | 描述组件整体配置          | Object | 无     |        |
+| values | 渲染的值，一定要添加.sync | Object | 无     |   无   |
 
 ## json 参数
 

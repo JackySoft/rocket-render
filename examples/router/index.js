@@ -95,6 +95,11 @@ export const routes = [
             name: '插槽描述',
             component: () => import('./../views/desc/SlotDesc.vue'),
           },
+          {
+            path: 'edit',
+            name: '切换编辑',
+            component: () => import('./../views/desc/DescEdit.vue'),
+          },
         ],
       },
     ],

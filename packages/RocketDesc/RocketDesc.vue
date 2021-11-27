@@ -23,7 +23,7 @@
           <slot :name="item.slotValueName"></slot>
         </template>
         <!-- 编辑模式下，值为表单控件 -->
-        <el-form :model="values" :inline="true" v-if="json.type == 'edit'">
+        <el-form :model="values" :inline="true" v-else-if="json.type == 'edit'">
           <FormItem
             :item="{ ...item, model: item.prop }"
             v-bind="{ ...item, model: item.prop, label: null }"
@@ -71,12 +71,23 @@ export default {
       if (item.prop.indexOf('.') > -1) {
         return eval(`this.values.${item.prop}`);
       }
+      if (item.type == 'date') {
+        return new Date(this.values[item.prop]);
+      }
+      if (item.type == 'daterange') {
+        if (item.export) {
+          return [
+            new Date(this.values[item.export[0]]),
+            new Date(this.values[item.export[1]]),
+          ];
+        }
+        return [new Date(item.prop[0]), new Date(item.prop[1])];
+      }
       return this.values[item.prop];
     },
     handleData(item) {
       if (item.formatter) {
-        item.formatter(this.values);
-        return;
+        return item.formatter(this.values);
       }
       if (item.prop.indexOf('.') > -1) {
         return eval(`this.values.${item.prop}`);
@@ -91,7 +102,23 @@ export default {
         });
         return;
       }
-      this.$emit('update:values', { ...this.values, [item.prop]: val });
+      // 把日期数组拆解为两个字段，方便前端使用
+      if (
+        ['daterange', 'monthrange', 'datetimerange'].includes(item.type) &&
+        item.export
+      ) {
+        if (!Array.isArray(item.export))
+          throw Error('item.export must be a Array');
+        this.$emit('update:values', {
+          ...this.values,
+          [item.prop]: val || '',
+          [item.export[0] || 'startTime']: val ? val[0] : '',
+          [item.export[1] || 'endTime']: val ? val[1] : '',
+        });
+      } else {
+        this.$emit('update:values', { ...this.values, [item.prop]: val });
+      }
+      // this.$emit('update:values', { ...this.values, [item.prop]: val });
     },
   },
 };

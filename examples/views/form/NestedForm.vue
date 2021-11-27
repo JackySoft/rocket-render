@@ -18,9 +18,12 @@
         @handleChange="getTableList"
       >
         <template v-slot:action>
-          <el-button type="primary" @click="showModal1 = true"
-            >动态创建三</el-button
-          >
+          <el-button type="primary" @click="showModal1 = true">
+            嵌套表单
+          </el-button>
+          <el-button type="primary" @click="showModal2 = true">
+            表单嵌套表格
+          </el-button>
         </template>
       </rocket-table>
     </div>
@@ -37,6 +40,20 @@
         :json="rocketConfig"
         @handleClose="handleClose()"
         v-model="userInfo"
+      ></rocket-form>
+    </el-dialog>
+    <!-- 页内弹框 -->
+    <el-dialog
+      title="表单嵌套表格"
+      :visible.sync="showModal2"
+      width="50%"
+      @close="$refs.dialogForm.handleReset()"
+    >
+      <rocket-form
+        ref="dialogForm"
+        :json="formConfig"
+        @handleClose="handleClose()"
+        v-model="userInfo2"
       ></rocket-form>
     </el-dialog>
   </wrapper>
@@ -193,6 +210,81 @@ export default {
         a3: 1,
         list: [{ a7: '', a8: '' }],
         checked: [],
+      },
+      showModal2: false,
+      formConfig: {
+        formList: [
+          {
+            type: 'text',
+            model: 'userName',
+            label: '老师',
+          },
+          {
+            type: 'table',
+            model: 'userList',
+            label: '学生列表',
+            table: {
+              border: true,
+              pager: false,
+              toolbar: false,
+              column: [
+                {
+                  prop: 'id',
+                  label: '学生编号',
+                },
+                {
+                  prop: 'name',
+                  label: '学生名称',
+                },
+                {
+                  prop: 'age',
+                  label: '学生年龄',
+                },
+                {
+                  prop: 'score',
+                  label: '学生分数',
+                },
+                {
+                  prop: '',
+                  label: '操作',
+                  type: 'action',
+                  list: [{ text: '编辑' }, { text: '删除' }],
+                },
+              ],
+              handleAction({ index, row }) {
+                console.log(index, row);
+                if (index == 0) {
+                  this.$message.success('触发编辑功能');
+                } else if (index == 0) {
+                  this.$message.success('触发删除功能');
+                }
+              },
+            },
+          },
+        ],
+      },
+      userInfo2: {
+        userName: '河畔老师',
+        userList: [
+          {
+            id: '1001',
+            name: '张三',
+            age: 20,
+            score: 90,
+          },
+          {
+            id: '1002',
+            name: '李四',
+            age: 30,
+            score: 100,
+          },
+          {
+            id: '1003',
+            name: '王五',
+            age: 26,
+            score: 70,
+          },
+        ],
       },
     };
   },

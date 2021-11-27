@@ -120,9 +120,10 @@
           <el-button
             :type="btn.type || 'text'"
             v-else-if="
-              btn.permission === 'undefined' ||
+              btn.permission === undefined ||
               btn.permission === true ||
-              (btn.permission.show &&
+              (btn.permission &&
+                btn.permission.show &&
                 btn.permission.show[scope.row[btn.permission.prop]])
             "
             :class="[btn.color]"
