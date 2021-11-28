@@ -25,7 +25,7 @@
         <!-- 编辑模式下，值为表单控件 -->
         <el-form :model="values" :inline="true" v-else-if="json.type == 'edit'">
           <FormItem
-            :item="{ ...item, model: item.prop }"
+            :item="{ ...item, model: item.prop, label: null }"
             v-bind="{ ...item, model: item.prop, label: null }"
             :value="handleObject(item)"
             @input="(val) => handleInput(val, item)"
