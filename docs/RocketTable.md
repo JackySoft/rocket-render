@@ -27,7 +27,6 @@
   :data="list"
   :pagination.sync="pagination"
   @handleChange="getTableList"
-  @handleAction="handleAction"
   @handleCellClick="handleCellClick"
   @selection-change="handleSelectionChange"
 >
