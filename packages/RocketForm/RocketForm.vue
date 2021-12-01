@@ -199,7 +199,7 @@ export default {
         }
       }
       if (typeof item.change === 'function') {
-        item.change(val, this.value, item.model, this.config);
+        item.change(val, this.value, item.model, this.json);
       }
       // 把日期数组拆解为两个字段，方便前端使用
       if (

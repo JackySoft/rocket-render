@@ -104,34 +104,12 @@
           <!-- 需要根据返回状态动态渲染按钮 -->
           <el-button
             :type="btn.type || 'text'"
-            v-if="btn.permission !== false && btn.prop"
-            :class="[btn.val[scope.row[btn.prop]].color]"
-            @click="
-              handleAction(key, scope.row, btn.val[scope.row[btn.prop]].type)
-            "
+            v-if="isShowAction(btn, scope.row)"
+            @click="handleAction(key, scope.row, btn)"
             :key="`action-${key}`"
-            :disabled="btn.val[scope.row[btn.prop]].disabled"
+            v-bind="bindBtnAttrs(btn, scope.row)"
           >
-            {{
-              btn.val[scope.row[btn.prop]].text || btn.val[scope.row[btn.prop]]
-            }}
-          </el-button>
-          <!-- 普通操作按钮 -->
-          <el-button
-            :type="btn.type || 'text'"
-            v-else-if="
-              btn.permission === undefined ||
-              btn.permission === true ||
-              (btn.permission &&
-                btn.permission.show &&
-                btn.permission.show[scope.row[btn.permission.prop]])
-            "
-            :class="[btn.color]"
-            @click="handleAction(key, scope.row, btn.type)"
-            :key="key"
-            :disabled="btn.disabled"
-          >
-            {{ btn.text }}
+            {{ showBtnText(btn, scope.row) }}
           </el-button>
         </template>
       </div>
@@ -173,6 +151,46 @@ export default {
     },
   },
   methods: {
+    // 控制操作栏按钮是否显示
+    isShowAction(btn = {}, row) {
+      // 明确标明显示
+      if (btn.permission == true) return true;
+      // 默认为显示
+      if (typeof btn.permission == 'undefined') return true;
+      // 明确标明不显示
+      if (btn.permission == false) return false;
+      // 结合返回数据来判断是否展示
+      if (btn.permission) {
+        let val = row[btn.permission.prop];
+        if (btn.permission.show && btn.permission.show[val]) return true;
+      }
+      return false;
+    },
+    // 按钮文本
+    showBtnText(btn, row) {
+      if (btn.text) return btn.text;
+      if (btn.prop) {
+        let txt = btn.val[row[btn.prop]] || '';
+        if (typeof txt == 'object') return txt.text;
+        return txt;
+      }
+    },
+    // 绑定按钮属性
+    bindBtnAttrs(btn, row) {
+      if (btn.prop) {
+        let val = btn.val[row[btn.prop]] || {
+          disabled: false,
+          style: {},
+        };
+        if (typeof val == 'string') return null;
+        return val;
+      }
+      return {
+        ...btn,
+        text: null,
+        permission: null,
+      };
+    },
     /**
      * 单元格-文本点击事件
      * @param {row} 行数据
@@ -186,11 +204,12 @@ export default {
      * 操作区域-多按钮点击
      * @param {action} 行为索引
      * @param {row} 行数据
-     * @param {type} 增加type，用于区分按钮
+     * @param {text} 增加按钮名称text，用于区分带有数据权限的按钮
      */
-    handleAction(index, row, type) {
+    handleAction(index, row, btn) {
+      let text = this.showBtnText(btn, row);
       // row解构目的是防止一些响应式数据被带过去引起一些副作用
-      this.$emit('handleAction', { index, row: { ...row }, type });
+      this.$emit('handleAction', { index, row: { ...row }, text });
     },
     /**
      * 更多折叠功能
@@ -210,7 +229,7 @@ export default {
       text = row[item.prop];
       if (text || text * 1 === 0) return text;
       if (typeof item.empty !== 'undefined') return item.empty;
-      return '--';
+      return '-';
     },
     /**
      * Link文本内容格式化
@@ -226,7 +245,7 @@ export default {
       }
       if (text) return text;
       if (item.empty) return item.empty;
-      return '--';
+      return '-';
     },
   },
 };

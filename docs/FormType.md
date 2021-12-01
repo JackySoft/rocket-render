@@ -90,7 +90,7 @@
       return {
         queryForm: {
           userStatus: [1, 2],
-          userName:'tom'
+          userName: 'tom',
         },
         form: [
           {
@@ -109,24 +109,24 @@
             ],
           },
           {
-            type:'text',
-            model:'userName',
-            placeholder:'请输入用户名'
-          }
+            type: 'text',
+            model: 'userName',
+            placeholder: '请输入用户名',
+          },
         ],
       };
     },
-    methods:{
-      getSelectList(val,values){
+    methods: {
+      getSelectList(val, values) {
         // 此处可调用接口、修改form对象等
         this.form[0].options.push({
-          label:'测试',
-          value: Math.floor(Math.random()*100)
-        })
+          label: '测试',
+          value: Math.floor(Math.random() * 100),
+        });
         // 修改用户名
-        values.userName = 'jack'
-      }
-    }
+        values.userName = 'jack';
+      },
+    },
   };
 </script>
 ```
@@ -158,7 +158,7 @@
             model: 'login_time',
             label: '日期范围',
             // 对于日期范围控件来说，一般接口需要拆分为两个字段，通过export可以很方便的实现字段拆分
-            export:['startTime','endTime'],
+            export: ['startTime', 'endTime'],
             // 日期换换为时间戳单位
             valueFormat: 'timestamp',
           },
@@ -173,7 +173,7 @@
             label: '时间范围',
             model: 'register_datetime_range',
             // 对于日期范围控件来说，一般接口需要拆分为两个字段，通过export可以很方便的实现字段拆分
-            export:['startTime','endTime'],
+            export: ['startTime', 'endTime'],
             shortcuts: true,
           },
         ],
@@ -468,7 +468,7 @@
 
 > 当`type=table`时，支持表单嵌套表格，表格所具备功能同 rocket-table，添加 table 属性即可。
 
-> 需要注意的是：表格所拥有的事件不能定义，需要在 table 中添加 handleAction/handleCellClick/handleChange/selectionChange/sortChange 等方法进行接收。table只能用在RocketForm中，不能用在SearchForm
+> 需要注意的是：表格所拥有的事件不能定义，需要在 table 中添加 handleAction/handleCellClick/handleChange/selectionChange/sortChange 等方法进行接收。table 只能用在 RocketForm 中，不能用在 SearchForm
 
 > 表格中需要的数据 data，请再 v-model 对象里面传递，不要在 table 中添加 data
 
@@ -501,7 +501,7 @@
               model: 'userList',
               table: {
                 border: true,
-                toolbar:false,
+                toolbar: false,
                 handleAction() {
                   // 接受操作按钮点击
                 },
@@ -549,4 +549,4 @@
 | :----- | :--------------------------------------- | :--- | :----- | :----: |
 | change | 所有表单均暴露 change 事件，可做业务处理 | fn   | 无     |   无   |
 
-> change 事件返回三个参数 fn(val,values,model)，分别为当前组件值，当前表单所有值和当前组件 model
+> change 事件返回三个参数 fn(val,values,model,json)，分别为当前组件值、当前表单所有值、当前组件 model 和当前 json 配置
