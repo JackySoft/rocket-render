@@ -1,7 +1,7 @@
 {
   "name": "rocket-render",
   "description": "基于Vue2+ElementUI开发的低代码插件,通过JSON可快速搭建中后台项目.",
-  "version": "2.1.13",
+  "version": "2.1.14",
   "license": "MIT",
   "private": false,
   "author": {
