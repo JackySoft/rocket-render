@@ -269,6 +269,21 @@ export default {
      */
     handleReset() {
       this.$refs.searchForm.resetFields();
+      this.json.map((item) => {
+        if (
+          ['daterange', 'monthrange', 'datetimerange'].includes(item.type) &&
+          item.export
+        ) {
+          let dateRange = this.value[item.model];
+          if (dateRange) {
+            this.value[item.export[0]] = dateRange[0];
+            this.value[item.export[1]] = dateRange[1];
+          } else {
+            delete this.value[item.export[0]];
+            delete this.value[item.export[1]];
+          }
+        }
+      });
       this.$emit('update:model', { ...this.value });
       this.$emit('handleReset', 1);
     },

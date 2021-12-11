@@ -689,19 +689,23 @@
 
 ## RocketTable - column 对象
 
-| 参数       | 说明                           | 类型    | 可选值           | 默认值 |
-| :--------- | :----------------------------- | :------ | :--------------- | :----: | ------- | --- |
-| prop       | 列属性                         | String  | 无               |   无   |
-| label      | 列头                           | String  | 无               |   无   |
-| width      | 设置列宽度                     | Number  | 无               |   无   |
-| type       | 列特殊类型显示                 | String  | 参考 column-type |   无   |
-| list       | 显示操作列表                   | Array   | 参考 column-list |   无   |
-| sortable   | 是否排序                       | Boolean | `true            | false  | custom` | 无  |
-| sortOrders | 设置排序方式                   | Array   | 参考 Element     |   无   |
-| span       | 多级表头                       | Array   | 参考示例         |   无   |
-| empty      | 当返回空的时候，设置默认显示值 | String  | `--`             |   无   |
-| tips       | 表头增加提示语                 | String  | `--`             |   无   |
-| formatter  | 数据格式化，同官方             | String  | `--`             |   无   |
+| 参数                | 说明                           | 类型    | 可选值           | 默认值 |
+| :------------------ | :----------------------------- | :------ | :--------------- | :----: | ------- | --- |
+| prop                | 列属性                         | String  | 无               |   无   |
+| label               | 列头                           | String  | 无               |   无   |
+| width               | 设置列宽度                     | Number  | 无               |   无   |
+| type                | 列特殊类型显示                 | String  | 参考 column-type |   无   |
+| list                | 显示操作列表                   | Array   | 参考 column-list |   无   |
+| sortable            | 是否排序                       | Boolean | `true            | false  | custom` | 无  |
+| sortOrders          | 设置排序方式                   | Array   | 参考 Element     |   无   |
+| span                | 多级表头                       | Array   | 参考示例         |   无   |
+| empty               | 当返回空的时候，设置默认显示值 | String  | `--`             |   无   |
+| tips                | 表头增加提示语                 | String  | `--`             |   无   |
+| formatter           | 数据格式化，同官方             | String  | `--`             |   无   |
+| showOverflowTooltip | 当内容过长被隐藏时显示 tooltip | Boolean | true             | flase  | true    |
+
+> showOverflowTooltip 官方默认为关闭，为了表格体验，统一开启，也可以手动关闭
+> type=action 时，只有设置了 width 才会关闭 tool-tip，否则也会开启。
 
 ## pagination
 

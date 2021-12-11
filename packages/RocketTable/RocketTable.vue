@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="rocket-table"
-    :class="{ auto: isFullScreen }"
-    id="rocketBaseTable"
-  >
+  <div class="rocket-table" :class="{ auto: isFullScreen }" :id="createTableId">
     <div class="action-header" v-if="$slots.title || $slots.action || toolbar">
       <!-- 表格上方标题 -->
       <div class="title">
@@ -24,7 +20,7 @@
           v-if="toolbar"
           :column="$attrs.column"
           :toolbar="$attrs.toolbar"
-          :id="$attrs.id"
+          :id="createTableId"
           @handleReload="handleReload"
           @handleDensity="handleDensity"
           @handleColumn="handleColumn"
@@ -51,7 +47,6 @@
             type="selection"
             v-bind="item"
             align="center"
-            :width="50"
           >
           </el-table-column>
           <!-- 保留slot功能 -->
@@ -167,6 +162,11 @@ export default {
     };
   },
   components: { ToolBar, Column },
+  mounted() {
+    this.createTableId = Number(
+      Math.random().toString().substr(3, 3) + Date.now(),
+    ).toString(36);
+  },
   methods: {
     /**
      * 表格数据刷新

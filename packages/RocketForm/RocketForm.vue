@@ -22,10 +22,7 @@
           "
         >
           <template v-if="item.type === 'inline'">
-            <el-form-item
-              v-bind="{ ...item, list: null, labelSuffix: '' }"
-              style="margin-bottom: 0"
-            >
+            <el-form-item v-bind="{ ...item, list: null, labelSuffix: '' }">
               <template v-for="(subItem, index) in item.list">
                 <!-- 设置gutter后，此处会有padding值，导致无法对齐-->
                 <el-col
@@ -45,10 +42,7 @@
             </el-form-item>
           </template>
           <template v-else-if="item.type === 'group'">
-            <el-form-item
-              v-bind="{ ...item, list: null }"
-              style="margin-bottom: 0"
-            ></el-form-item>
+            <el-form-item v-bind="{ ...item, list: null }"></el-form-item>
             <el-form-item>
               <el-row
                 v-bind="json.layout"

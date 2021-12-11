@@ -3,9 +3,7 @@
   <el-table-column
     v-bind="item"
     :align="item.align || 'center'"
-    :show-overflow-tooltip="
-      item.showOverflowTooltip === undefined ? true : item.showOverflowTooltip
-    "
+    :show-overflow-tooltip="handleToolTip(item)"
   >
     <template slot="header" v-if="item.tips">
       <el-tooltip :content="item.tips" placement="top">
@@ -151,6 +149,17 @@ export default {
     },
   },
   methods: {
+    /**
+     * 控制tool-tip的显示
+     * 默认清空下，展示tool-tip，除非手动关闭
+     * 当是action列的时候，如果设置了宽度，就不显示tool-tip，因为既然设置了宽度，说明宽度足够用
+     */
+    handleToolTip(item) {
+      if (item.type == 'action' && item.width) return false;
+      return item.showOverflowTooltip === undefined
+        ? true
+        : item.showOverflowTooltip;
+    },
     // 控制操作栏按钮是否显示
     isShowAction(btn = {}, row) {
       // 明确标明显示
@@ -162,7 +171,10 @@ export default {
       // 结合返回数据来判断是否展示
       if (btn.permission) {
         let val = row[btn.permission.prop];
+        // show来控制字段显示
         if (btn.permission.show && btn.permission.show[val]) return true;
+        // hide来控制字段隐藏
+        if (btn.permission.hide && !btn.permission.hide[val]) return true;
       }
       return false;
     },

@@ -18,7 +18,8 @@
     :drag="item.listType == 'upload'"
     :before-upload="(file) => onBeforeUpload(file, item)"
     :on-remove="handleFileRemove"
-    :on-exceed="onFileExceed"
+    :on-preview="onPreview"
+    :on-exceed="onExceed"
     :http-request="(info) => item.httpRequest(info, fileList)"
   >
     <template>
@@ -53,7 +54,8 @@
     :on-success="
       (response, file, fileList) => onUploadSuccess(response, file, fileList)
     "
-    :on-exceed="onFileExceed"
+    :on-preview="onPreview"
+    :on-exceed="onExceed"
   >
     <template>
       <!-- 设置隐藏域，专门保存图片地址 -->
@@ -163,6 +165,10 @@ export default {
     handleFileRemove(file, fileList) {
       this.$emit('input', fileList);
     },
+    // 文件预览
+    onPreview(file) {
+      if (this.item.onPreview) this.item.onPreview(file);
+    },
     // 图片上传结果处理
     onUploadSuccess(res, file, fileList) {
       // 设置接口返回数据结构
@@ -196,8 +202,9 @@ export default {
       }
     },
     // 文件超出个数限制
-    onFileExceed() {
-      this.$message.error('文件上传数量超出限制');
+    onExceed(files, fileList) {
+      if (this.item.onExceed) this.item.onExceed(files, fileList);
+      else this.$message.error('文件上传数量超出限制');
     },
   },
 };
