@@ -41,7 +41,8 @@
     "lib": "vue-cli-service build --target lib --name rocket-render --dest lib packages/index.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "format": "prettier --write \"examples/**/*.{js,ts,jsx,tsx}\" \"examples/**/*.vue\" ./**/*.{js,ts} "
+    "format": "prettier --write \"examples/**/*.{js,ts,jsx,tsx}\" \"examples/**/*.vue\" ./**/*.{js,ts} ",
+    "update:version": "npm version patch"
   },
   "dependencies": {
     "axios": "^0.24.0",
