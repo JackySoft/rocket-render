@@ -46,6 +46,7 @@
 </template>
 <script>
 import FormItem from './../components/FormItem';
+import { formatMoney, formatDate } from './../utils/util';
 export default {
   name: 'RocketDesc',
   props: {
@@ -87,12 +88,23 @@ export default {
     },
     handleData(item) {
       if (item.formatter) {
-        return item.formatter(this.values);
+        return item.formatter(this.values) || '-';
+      }
+      if (!item.prop) return;
+      let val = this.values[item.prop];
+      if (item.filter) {
+        if (item.filter == 'money') {
+          return formatMoney(val) || '-';
+        } else if (item.filter == 'date') {
+          return formatDate(val, 'yyyy-MM-dd ') || '-';
+        } else if (item.filter == 'datetime') {
+          return formatDate(val) || '-';
+        }
       }
       if (item.prop.indexOf('.') > -1) {
-        return eval(`this.values.${item.prop}`);
+        return eval(`this.values.${item.prop}`) || '-';
       }
-      return this.values[item.prop];
+      return val || '-';
     },
     handleInput(val, item) {
       if (item.prop.indexOf('.') > -1) {

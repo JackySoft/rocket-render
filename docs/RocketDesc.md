@@ -546,11 +546,12 @@ RocketDesc 基于 ElementUI 的 el-descriptions 封装，基于 json 快速实�
 
 > 支持链式调用，比如：prop:"user.name"
 
-| 参数          | 说明                                    | 类型     | 可选值 | 默认值 |
-| :------------ | :-------------------------------------- | :------- | :----- | :----: |
-| type          | 类型，目前只支持 slot，用于内容的自定义 | String   | slot   |  slot  |
-| label         | 显示的文本                              | String   | 无     |   无   |
-| prop          | 需要渲染的接口字段                      | Any      | 无     |   无   |
-| slotLabelName | 标签插槽名称                            | String   | 无     |   无   |
-| slotValueName | 值插槽名称                              | String   | 无     |   无   |
-| formatter     | 数据格式化，参数为整个详情对象          | Function | 无     |   无   |
+| 参数          | 说明                                    | 类型     | 可选值                | 默认值 |
+| :------------ | :-------------------------------------- | :------- | :-------------------- | :----: |
+| type          | 类型，目前只支持 slot，用于内容的自定义 | String   | slot                  |  slot  |
+| label         | 显示的文本                              | String   | 无                    |   无   |
+| prop          | 需要渲染的接口字段                      | Any      | 无                    |   无   |
+| slotLabelName | 标签插槽名称                            | String   | 无                    |   无   |
+| slotValueName | 值插槽名称                              | String   | 无                    |   无   |
+| formatter     | 数据格式化，参数为整个详情对象          | Function | 无                    |   无   |
+| filter        | 过滤器，用来处理日期和金额              | String   | 'money/date/datetime' |   无   |

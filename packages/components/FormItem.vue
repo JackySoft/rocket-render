@@ -88,7 +88,7 @@
       v-on="$listeners"
       :value-format="item.valueFormat || 'yyyy-MM-dd'"
       :start-placeholder="item.startPlaceholder || '开始日期'"
-      :end-placeholder="item.startPlaceholder || '结束日期'"
+      :end-placeholder="item.endPlaceholder || '结束日期'"
       :picker-options="{
         ...item.pickerOptions,
         ...(item.shortcuts
