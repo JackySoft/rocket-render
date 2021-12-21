@@ -1,5 +1,30 @@
 # 版本说明
 
+## v2.2.1
+
+1. 表格增加过滤器，日期和金额格式化
+
+```js
+// 时间格式化
+{
+  prop:'login_time',
+  label:'登录日期'
+  filter:'datetime'
+}
+// 日期格式化
+{
+  prop:'login_time',
+  label:'登录日期'
+  filter:'date'
+}
+// 金额格式化（千分位+2位小数）
+{
+  prop:'amount',
+  label:'收入'
+  filter:'money'
+}
+```
+
 ## v2.2.0
 
 1. 强化上传功能，尽可能满足官方所有功能。

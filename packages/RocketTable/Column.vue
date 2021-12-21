@@ -128,6 +128,7 @@
 </template>
 
 <script>
+import { formatMoney, formatDate } from './../utils/util';
 export default {
   name: 'Column',
   props: ['item'],
@@ -236,9 +237,17 @@ export default {
      * @param {Object} row  当前行数据
      */
     formatText(item, row) {
-      let text = '';
+      let text = row[item.prop];
       if (item.formatter) return item.formatter(row);
-      text = row[item.prop];
+      if (item.filter) {
+        if (item.filter == 'money') {
+          return formatMoney(text) || '-';
+        } else if (item.filter == 'date') {
+          return formatDate(text, 'yyyy-MM-dd ') || '-';
+        } else if (item.filter == 'datetime') {
+          return formatDate(text) || '-';
+        }
+      }
       if (text || text * 1 === 0) return text;
       if (typeof item.empty !== 'undefined') return item.empty;
       return '-';

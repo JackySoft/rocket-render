@@ -243,7 +243,7 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .rocket-form {
   .form-tip {
     font-size: 14px;

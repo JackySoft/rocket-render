@@ -678,31 +678,32 @@
 ## RocketTable 参数
 
 | 参数        | 说明                          | 类型          | 可选值       | 默认值 |
-| :---------- | :---------------------------- | :------------ | :----------- | :----: | ---- |
-| loading     | 表格请求过程显示 loading 效果 | Boolean       | `true        | false` | 无   |
+| :---------- | :---------------------------- | :------------ | :----------- | :----: |
+| loading     | 表格请求过程显示 loading 效果 | Boolean       | `true/false` |   无   |
 | column      | 表格表头对象,需要添加 sync    | Array(Object) | 参考下文     |   无   |
 | data        | 表格数据渲染对象              | Array(Object) | 参考下文     |   无   |
 | pagination  | 表格分页对象,需要添加 sync    | Object        | pagination   |   无   |
-| pager       | 显示分页控件                  | Boolean       | `true        | false` | true |
-| toolbar     | 显示工具条                    | Boolean       | `true        | false` | true |
+| pager       | 显示分页控件                  | Boolean       | `true/false` |  true  |
+| toolbar     | 显示工具条                    | Boolean       | `true/false` |  true  |
 | span-method | 数据跨行处理                  | fn()          | 参考 Element |   无   |
 
 ## RocketTable - column 对象
 
-| 参数                | 说明                           | 类型    | 可选值           | 默认值 |
-| :------------------ | :----------------------------- | :------ | :--------------- | :----: | ------- | --- |
-| prop                | 列属性                         | String  | 无               |   无   |
-| label               | 列头                           | String  | 无               |   无   |
-| width               | 设置列宽度                     | Number  | 无               |   无   |
-| type                | 列特殊类型显示                 | String  | 参考 column-type |   无   |
-| list                | 显示操作列表                   | Array   | 参考 column-list |   无   |
-| sortable            | 是否排序                       | Boolean | `true            | false  | custom` | 无  |
-| sortOrders          | 设置排序方式                   | Array   | 参考 Element     |   无   |
-| span                | 多级表头                       | Array   | 参考示例         |   无   |
-| empty               | 当返回空的时候，设置默认显示值 | String  | `--`             |   无   |
-| tips                | 表头增加提示语                 | String  | `--`             |   无   |
-| formatter           | 数据格式化，同官方             | String  | `--`             |   无   |
-| showOverflowTooltip | 当内容过长被隐藏时显示 tooltip | Boolean | true             | flase  | true    |
+| 参数                | 说明                           | 类型    | 可选值                |   默认值   |
+| :------------------ | :----------------------------- | :------ | :-------------------- | :--------: |
+| prop                | 列属性                         | String  | 无                    |     无     |
+| label               | 列头                           | String  | 无                    |     无     |
+| width               | 设置列宽度                     | Number  | 无                    |     无     |
+| type                | 列特殊类型显示                 | String  | 参考 column-type      |     无     |
+| list                | 显示操作列表                   | Array   | 参考 column-list      |     无     |
+| sortable            | 是否排序                       | Boolean | `true/false/custom`   |     无     |
+| sortOrders          | 设置排序方式                   | Array   | 参考 Element          |     无     |
+| span                | 多级表头                       | Array   | 参考示例              |     无     |
+| empty               | 当返回空的时候，设置默认显示值 | String  | `--`                  |     无     |
+| tips                | 表头增加提示语                 | String  | `--`                  |     无     |
+| formatter           | 数据格式化，同官方             | String  | `--`                  |     无     |
+| filter              | 过滤器，用来处理日期和金额     | String  | 'money/date/datetime' |     无     |
+| showOverflowTooltip | 当内容过长被隐藏时显示 tooltip | Boolean | true                  | flase/true |
 
 > showOverflowTooltip 官方默认为关闭，为了表格体验，统一开启，也可以手动关闭
 > type=action 时，只有设置了 width 才会关闭 tool-tip，否则也会开启。
