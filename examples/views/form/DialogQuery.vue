@@ -8,21 +8,23 @@
         @handleQuery="getTableList"
       />
     </search-box>
-    <!-- 列表区域 -->
-    <rocket-table
-      class="table-box"
-      border
-      :loading="showLoading"
-      :column.sync="mainColumn"
-      :data="mainData"
-      :pagination.sync="pagination"
-      @handleChange="getTableList"
-    >
-      <template v-slot:action>
-        <el-button type="primary" @click="openUserModal()">查看用户</el-button>
-      </template>
-    </rocket-table>
-
+    <div class="table-box">
+      <!-- 列表区域 -->
+      <rocket-table
+        border
+        :loading="showLoading"
+        :column.sync="mainColumn"
+        :data="mainData"
+        :pagination.sync="pagination"
+        @handleChange="getTableList"
+      >
+        <template v-slot:action>
+          <el-button type="primary" @click="openUserModal()"
+            >查看用户</el-button
+          >
+        </template>
+      </rocket-table>
+    </div>
     <!-- 页内弹框:查询表单+表格 -->
     <el-dialog
       title="用户信息"

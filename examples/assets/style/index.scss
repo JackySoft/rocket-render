@@ -1,52 +1,55 @@
-*:not([class^='el-']) {box-sizing: border-box;}
-html, body {
+*:not([class^='el-']) {
+  box-sizing: border-box;
+}
+html,
+body {
   height: 100%;
   width: 100%;
 }
-.white{
+.white {
   background-color: #ffffff;
 }
-a{
+a {
   text-decoration: none;
 }
-.gray{
+.gray {
   background-color: #eef0f3;
 }
-.mr20{
+.mr20 {
   margin-right: 20px;
 }
-.mb20{
+.mb20 {
   margin-bottom: 20px;
 }
-.mt20{
+.mt20 {
   margin-top: 20px;
 }
-.p20{
+.p20 {
   padding: 20px;
 }
-.pl20{
+.pl20 {
   padding-left: 20px;
 }
-.text-right{
+.text-right {
   text-align: right;
 }
-.fr{
+.fr {
   float: right;
 }
-.flex{
+.flex {
   display: flex;
 }
-.flex-between{
+.flex-between {
   display: flex;
   justify-content: space-between;
 }
-.flex-center{
+.flex-center {
   display: flex;
   justify-content: center;
 }
 
 // 抽屉添加滚动支持
-.el-drawer__body{
+.el-drawer__body {
   overflow-y: auto;
 }
 
@@ -55,4 +58,14 @@ a{
   flex: 1;
   padding: 20px;
   background: #eef0f3;
+}
+
+.search-box {
+  border-radius: 10px;
+}
+.table-box {
+  margin-top: 16px;
+  background: #ffffff;
+  padding: 0 22px 24px;
+  border-radius: 10px;
 }

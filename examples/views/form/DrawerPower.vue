@@ -1,29 +1,28 @@
 <template>
   <wrapper>
-    <search-box>
-      <!-- 表单查询区 -->
-      <search-form
-        :json="form"
-        :model.sync="queryForm"
-        @handleQuery="getTableList"
-      />
-    </search-box>
-    <!-- 列表区域 -->
-    <rocket-table
-      class="table-box"
-      border
-      :showLoading="showLoading"
-      :column.sync="mainColumn"
-      :data="mainData"
-      :pagination.sync="pagination"
-      @handleChange="getTableList"
-      @handleAction="handleAction"
-    >
-      <template v-slot:action>
-        <el-button type="primary" @click="openModal">打开</el-button>
-      </template>
-    </rocket-table>
-
+    <!-- 表单查询区 -->
+    <search-form
+      class="search-box"
+      :json="form"
+      :model.sync="queryForm"
+      @handleQuery="getTableList"
+    />
+    <div class="table-box">
+      <!-- 列表区域 -->
+      <rocket-table
+        border
+        :showLoading="showLoading"
+        :column.sync="mainColumn"
+        :data="mainData"
+        :pagination.sync="pagination"
+        @handleChange="getTableList"
+        @handleAction="handleAction"
+      >
+        <template v-slot:action>
+          <el-button type="primary" @click="openModal">打开</el-button>
+        </template>
+      </rocket-table>
+    </div>
     <el-drawer
       title="我是标题"
       size="60%"

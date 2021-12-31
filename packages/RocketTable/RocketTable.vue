@@ -129,7 +129,7 @@ export default {
     border: {
       type: Boolean,
       default() {
-        return !!(false || this.$attrs['span-method']);
+        return true;
       },
     },
     pagination: {
@@ -172,9 +172,9 @@ export default {
      * 表格数据刷新
      */
     handleReload() {
-      const page = this.pagination.page;
+      const pageNum = this.pagination.pageNum;
       // 刷新时，需要保留当前分页参数
-      this.$emit('handleChange', page);
+      this.$emit('handleChange', pageNum);
     },
     /**
      * 表格密度调整
@@ -198,8 +198,8 @@ export default {
       // 同步分页数据给父组件
       this.$emit('update:pagination', {
         pageSize: val,
-        page: 1,
-        total_count: this.pagination.total_count,
+        pageNum: 1,
+        total: this.pagination.total,
       });
       this.$emit('handleChange', 1);
     },
@@ -211,8 +211,8 @@ export default {
       // 同步分页数据给父组件
       this.$emit('update:pagination', {
         pageSize: this.pageSize || this.pagination.pageSize,
-        page: val,
-        total_count: this.pagination.total_count,
+        pageNum: val,
+        total: this.pagination.total,
       });
       this.$emit('handleChange', val);
     },
