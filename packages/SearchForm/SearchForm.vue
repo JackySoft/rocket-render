@@ -37,8 +37,8 @@
         :offset="offset"
         class="text-right mb20"
       >
-        <el-button @click="handleReset">重置</el-button>
         <el-button type="primary" @click="handleQuery">查询</el-button>
+        <el-button @click="handleReset">重置</el-button>
         <el-button type="text" v-if="showOpen" @click="handleOpen" size="medium"
           >{{ isOpen ? '收起' : '展开'
           }}<i :class="[isOpen ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i
@@ -59,8 +59,8 @@
         </template>
       </div>
       <div class="rr-action">
-        <el-button @click="handleReset">重置</el-button>
         <el-button type="primary" @click="handleQuery">查询</el-button>
+        <el-button @click="handleReset">重置</el-button>
       </div>
     </template>
     <!-- 行内布局-->
@@ -75,8 +75,8 @@
         />
       </template>
       <el-form-item>
-        <el-button @click="handleReset">重置</el-button>
         <el-button type="primary" @click="handleQuery">查询</el-button>
+        <el-button @click="handleReset">重置</el-button>
       </el-form-item>
     </template>
   </el-form>

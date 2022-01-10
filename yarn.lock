@@ -8004,6 +8004,18 @@ rocket-render@^2.1.9:
     vue "^2.6.11"
     vue-router "^3.5.3"
 
+rocket-render@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/rocket-render/-/rocket-render-2.2.4.tgz#3ba4dd6cacd8a351e683ae0f46de79a38cf6d6ac"
+  integrity sha512-F20bdoAdpXJ2H0WHkxjLiqROJ5IKnQEPdj4FfgrzZnaC0RihqbV44LiCoHZcw5ih5a0UtqprA0bV0fZnqWr/wA==
+  dependencies:
+    axios "^0.24.0"
+    core-js "^3.19.0"
+    element-ui "^2.15.6"
+    rocket-render "^2.1.9"
+    vue "^2.6.11"
+    vue-router "^3.5.3"
+
 run-async@^2.4.0:
   version "2.4.1"
   resolved "https://registry.npm.taobao.org/run-async/download/run-async-2.4.1.tgz#8440eccf99ea3e70bd409d49aab88e10c189a455"

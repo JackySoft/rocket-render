@@ -107,13 +107,14 @@
       <el-pagination
         v-if="pager"
         background
+        layout="total,sizes, prev, pager, next,jumper"
+        :page-sizes="[10, 20, 50]"
+        :page-size="pagination[field.pageSize] || 20"
+        :current-page="pagination[field.pageNum] || 1"
+        :total="+pagination[field.total] || 0"
         v-bind="$attrs"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :page-sizes="[10, 20, 50]"
-        :page-size="pagination.pageSize || 20"
-        :current-page="pagination.pageNum || 1"
-        :total="+pagination.total || 0"
       ></el-pagination>
     </div>
   </div>
@@ -130,6 +131,17 @@ export default {
       type: Boolean,
       default() {
         return true;
+      },
+    },
+    // 分页结构
+    field: {
+      type: Object,
+      default() {
+        return {
+          pageNum: 'pageNum',
+          pageSize: 'pageSize',
+          total: 'total',
+        };
       },
     },
     pagination: {
@@ -161,18 +173,20 @@ export default {
       isFullScreen: false,
     };
   },
-  components: { ToolBar, Column },
-  mounted() {
-    this.createTableId = Number(
-      Math.random().toString().substr(3, 3) + Date.now(),
-    ).toString(36);
+  computed: {
+    createTableId() {
+      return Number(
+        Math.random().toString().substr(3, 3) + Date.now(),
+      ).toString(36);
+    },
   },
+  components: { ToolBar, Column },
   methods: {
     /**
      * 表格数据刷新
      */
     handleReload() {
-      const pageNum = this.pagination.pageNum;
+      const pageNum = this.pagination[this.field.pageNum];
       // 刷新时，需要保留当前分页参数
       this.$emit('handleChange', pageNum);
     },
@@ -197,9 +211,9 @@ export default {
       this.pageSize = val;
       // 同步分页数据给父组件
       this.$emit('update:pagination', {
-        pageSize: val,
-        pageNum: 1,
-        total: this.pagination.total,
+        [this.field.pageSize]: val,
+        [this.field.pageNum]: 1,
+        [this.field.total]: this.pagination.total,
       });
       this.$emit('handleChange', 1);
     },
@@ -210,9 +224,10 @@ export default {
     handleCurrentChange(val) {
       // 同步分页数据给父组件
       this.$emit('update:pagination', {
-        pageSize: this.pageSize || this.pagination.pageSize,
-        pageNum: val,
-        total: this.pagination.total,
+        [this.field.pageSize]:
+          this.pageSize || this.pagination[this.field.pageSize],
+        [this.field.pageNum]: val,
+        [this.field.total]: this.pagination[this.field.total],
       });
       this.$emit('handleChange', val);
     },

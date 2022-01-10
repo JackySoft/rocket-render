@@ -16,6 +16,7 @@
       v-if="['input', 'text', 'textarea', 'number'].includes(item.type)"
       :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
       :class="[item.arrow === false ? 'disable-arrow' : '']"
+      clearable
       v-bind="$attrs"
       v-on="$listeners"
     >
@@ -35,6 +36,7 @@
     <el-select
       v-else-if="item.type === 'select'"
       :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
+      clearable
       v-bind="$attrs"
       v-on="$listeners"
     >
@@ -177,6 +179,7 @@
     <el-cascader
       v-else-if="item.type === 'cascader'"
       :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
+      clearable
       v-bind="$attrs"
       v-on="$listeners"
     />

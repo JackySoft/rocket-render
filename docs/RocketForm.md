@@ -456,19 +456,8 @@
               prepend: 'https://', // 前缀
               append: '.com', // 后缀
               prefixIcon: 'el-icon-search', //前缀icon
-              prependConfig: {
-                //支持文本带下拉
-                type: 'select',
-                model: 'query_field',
-                label: '',
-                width: '90px',
-                options: [
-                  { label: '全部', value: 0 },
-                  { label: '已注销', value: 1 },
-                  { label: '老用户', value: 2 },
-                  { label: '新用户', value: 3 },
-                ],
-              },
+              prependConfig: 'https://',
+              append: '.com',
               change(val, values, model) {
                 // 可获取所有值，也可直接重置修改其它字段
                 values.query_field = 2;

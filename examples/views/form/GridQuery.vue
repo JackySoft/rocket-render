@@ -16,6 +16,7 @@
         :loading.sync="showLoading"
         :column.sync="mainColumn"
         :data="mainData"
+        :field="{ pageNum: 'pageNo', pageSize: 'size', total: 'totalCount' }"
         :pagination.sync="pagination"
         @handleChange="getTableList"
       >
@@ -79,6 +80,7 @@ export default {
           label: '用户状态',
           multiple: true, // 支持多选
           filterable: true, // 支持输入过滤
+          clearable: false,
           options: [
             { label: '全部', value: 0 },
             { label: '已注销', value: 1 },
@@ -232,11 +234,11 @@ export default {
         },
       ],
       mainData: [],
-      // 分页对象
+      // 测试，自定义分页字段，分页对象
       pagination: {
-        pageNum: 1,
-        pageSize: 20,
-        total: 0,
+        pageNo: 1,
+        size: 5,
+        totalCount: 0,
       },
     };
   },
@@ -247,7 +249,8 @@ export default {
     // 首页列表查询,page为子组件传递的页码，默认为1
     getTableList(pageNum = 1) {
       this.showLoading = true;
-      this.pagination.pageNum = pageNum;
+      // 因为查询的时候，无法在插件内部更新页码
+      this.pagination.pageNo = pageNum;
       const data = {
         ...this.queryForm, // 查询表单数据
         ...this.pagination, // 默认分页数据
@@ -255,7 +258,7 @@ export default {
       this.$api.getBasicList(data).then((res) => {
         this.mainData = res.list;
         this.showLoading = false;
-        this.pagination.total_count = res.total_count;
+        this.pagination.totalCount = res.total;
       });
     },
   },

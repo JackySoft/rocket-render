@@ -686,6 +686,7 @@
 | pager       | 显示分页控件                  | Boolean       | `true/false` |  true  |
 | toolbar     | 显示工具条                    | Boolean       | `true/false` |  true  |
 | span-method | 数据跨行处理                  | fn()          | 参考 Element |   无   |
+| field       | 自定义分页字段                | Object        | 参考下文     |   无   |
 
 ## RocketTable - column 对象
 
@@ -707,6 +708,17 @@
 
 > showOverflowTooltip 官方默认为关闭，为了表格体验，统一开启，也可以手动关闭
 > type=action 时，只有设置了 width 才会关闭 tool-tip，否则也会开启。
+
+## field
+
+> 分页字段结构映射，作用不是很大，建议大家安装 pagination 结构传参
+> 比如页码默认是 pageNum，如果你不想用 pageNum，可以通过 field 做映射
+
+| 参数     | 说明     | 类型   | 可选值 |  默认值  |
+| :------- | :------- | :----- | :----- | :------: |
+| pageNum  | 当前页码 | String | 无     | pageNum  |
+| pageSize | 每页条数 | String | 无     | pageSize |
+| total    | 总条数   | String | 无     |  total   |
 
 ## pagination
 

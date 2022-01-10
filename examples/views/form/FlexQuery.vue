@@ -96,6 +96,28 @@ export default {
             values.user_name = 'tom';
           },
         },
+        {
+          type: 'date',
+          model: 'register_date1',
+          label: '注册日期',
+          shortcuts: true,
+          width: '150px',
+          change(val, values) {
+            console.log(val, values);
+            values.user_name = 'tom';
+          },
+        },
+        {
+          type: 'date',
+          model: 'register_date2',
+          label: '注册日期',
+          shortcuts: true,
+          width: '150px',
+          change(val, values) {
+            console.log(val, values);
+            values.user_name = 'tom';
+          },
+        },
       ],
       mainColumn: [
         {
