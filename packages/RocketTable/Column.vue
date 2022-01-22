@@ -241,14 +241,16 @@ export default {
       if (item.formatter) return item.formatter(row);
       if (item.filter) {
         if (item.filter == 'money') {
-          return formatMoney(text) || '-';
+          return formatMoney(text) || item.empty || '-';
         } else if (item.filter == 'date') {
-          return formatDate(text, 'yyyy-MM-dd ') || '-';
+          return formatDate(text, 'yyyy-MM-dd ') || item.empty || '-';
         } else if (item.filter == 'datetime') {
-          return formatDate(text) || '-';
+          return formatDate(text) || item.empty || '-';
         }
       }
-      if (text || text * 1 === 0) return text;
+      if (text == null || text == undefined) return item.empty || '-';
+      if (Number(text) == 0) return text;
+      if (text) return text;
       if (typeof item.empty !== 'undefined') return item.empty;
       return '-';
     },
