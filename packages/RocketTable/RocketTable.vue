@@ -52,7 +52,7 @@
           <!-- 保留slot功能 -->
           <el-table-column
             v-else-if="item.type === 'slot'"
-            :key="`col-${item.prop}`"
+            :key="`col-${item.prop}-${i}`"
             v-bind="item"
             type=""
             :align="item.align || 'center'"
@@ -80,7 +80,7 @@
           <!-- 多级表头 -->
           <template v-else-if="item.span">
             <el-table-column
-              :key="`col-${item.label}`"
+              :key="`col-${item.label}-${i}`"
               v-bind="item"
               type=""
               :align="item.align || 'center'"
@@ -98,7 +98,7 @@
           <Column
             v-else
             :item="item"
-            :key="`col-${item.prop}`"
+            :key="`col-${item.prop}-${i}`"
             v-on="$listeners"
           />
         </template>

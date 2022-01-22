@@ -370,7 +370,9 @@
 
 > 用法同 ElementUI
 
-## Select 事件回调
+## type = select
+
+> `filterable` 和 `clearable` 默认为 true
 
 :::demo
 

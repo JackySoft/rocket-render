@@ -37,6 +37,7 @@
       v-else-if="item.type === 'select'"
       :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
       clearable
+      filterable
       v-bind="$attrs"
       v-on="$listeners"
     >
