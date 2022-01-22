@@ -2,6 +2,29 @@
 
 ## v2.2.7
 
+1. 下拉框支持结构映射，默认为 label/value
+
+```js
+{
+  type: 'select',
+  model: 'user_status',
+  label: '用户状态',
+  // 结构转换
+  field: {
+    label: 'name',
+    value: 'id',
+  },
+  options: [
+    { name: '全部', id: 0 },
+    { name: '已注销', id: 1 },
+    { name: '老用户', id: 2 },
+    { name: '新用户', id: 3 },
+  ],
+}
+```
+
+## v2.2.7
+
 1. 优化表格列的 key，防止因为重复 key 导致 warning
 2. 下拉框、文本框默认添加可删除属性，下拉框默认可搜索
 

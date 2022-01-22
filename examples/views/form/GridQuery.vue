@@ -81,11 +81,16 @@ export default {
           multiple: true, // 支持多选
           filterable: true, // 支持输入过滤
           clearable: false,
+          // 结构转换
+          field: {
+            label: 'name',
+            value: 'id',
+          },
           options: [
-            { label: '全部', value: 0 },
-            { label: '已注销', value: 1 },
-            { label: '老用户', value: 2 },
-            { label: '新用户', value: 3 },
+            { name: '全部', id: 0 },
+            { name: '已注销', id: 1 },
+            { name: '老用户', id: 2 },
+            { name: '新用户', id: 3 },
           ],
         },
         {

@@ -44,8 +44,8 @@
       <el-option
         v-for="option in item.options"
         :key="option.value"
-        :label="option.label"
-        :value="option.value"
+        :label="option[item.field ? item.field.label : 'label']"
+        :value="option[item.field ? item.field.value : 'value']"
         :disabled="option.disabled"
       >
       </el-option>

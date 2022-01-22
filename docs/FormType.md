@@ -372,7 +372,9 @@
 
 ## type = select
 
-> `filterable` 和 `clearable` 默认为 true
+> `filterable` 和 `clearable` 默认为 true，增加字段转换
+
+field
 
 :::demo
 
@@ -428,6 +430,12 @@
 ```
 
 :::
+
+| 参数       | 说明     | 类型    | 可选值     |            默认值             |
+| :--------- | :------- | :------ | :--------- | :---------------------------: |
+| filterable | 是否过滤 | Boolean | true/false |             true              |
+| clearable  | 是否清楚 | Boolean | true/false |             true              |
+| field      | 结构映射 | Object  | 无         | {label:'label',value:'value'} |
 
 ## TimeSelect
 
