@@ -456,8 +456,6 @@
               prepend: 'https://', // 前缀
               append: '.com', // 后缀
               prefixIcon: 'el-icon-search', //前缀icon
-              prependConfig: 'https://',
-              append: '.com',
               change(val, values, model) {
                 // 可获取所有值，也可直接重置修改其它字段
                 values.query_field = 2;

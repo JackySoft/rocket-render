@@ -99,7 +99,7 @@ Vue.use(RocketRender)
               // 可获取所有值，也可直接重置修改其它字段
               values.use_status = 2;
             },
-            prependConfig: 'https://',
+            prepend: 'https://',
             append: '.com',
           },
           {
@@ -315,13 +315,8 @@ Vue.use(RocketRender)
       },
       getSelectList(val, values, model) {
         this.$request.get('/select/list').then((res) => {
-          // 此处通过数组方法进行动态修改，不可以使用索引修改：this.form[3].options = res;
-          this.form.splice(3, 1, {
-            type: 'select',
-            model: 'user_list',
-            label: '用户列表',
-            options: res,
-          });
+          // 动态设置options数组
+          this.form[3].options = res;
         });
       },
       handleTime(val) {

@@ -58,18 +58,6 @@ export default {
             // 可获取所有值，也可直接重置修改其它字段
             values.use_status = 2;
           },
-          prependConfig: {
-            type: 'select',
-            model: 'query_field',
-            label: '',
-            width: '90px',
-            options: [
-              { label: '全部', value: 0 },
-              { label: '已注销', value: 1 },
-              { label: '老用户', value: 2 },
-              { label: '新用户', value: 3 },
-            ],
-          },
         },
         {
           type: 'select',

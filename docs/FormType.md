@@ -75,7 +75,7 @@
 
 :::
 
-> input 组件配置废除 prependConfig，可通过独立的 select 配置来增加下拉选项
+> input 组件配置废除 prepend，可通过独立的 select 配置来增加下拉选项
 
 ## Select 组件
 

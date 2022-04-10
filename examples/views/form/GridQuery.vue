@@ -51,18 +51,6 @@ export default {
           model: 'user_name',
           label: '用户',
           placeholder: '请输入用户名称',
-          prependConfig: {
-            type: 'select',
-            model: 'query_field',
-            label: '',
-            width: '90px',
-            options: [
-              { label: '全部', value: 0 },
-              { label: '已注销', value: 1 },
-              { label: '老用户', value: 2 },
-              { label: '新用户', value: 3 },
-            ],
-          },
         },
         {
           type: 'radio',
