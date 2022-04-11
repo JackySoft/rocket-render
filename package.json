@@ -48,7 +48,6 @@
     "axios": "^0.24.0",
     "core-js": "^3.19.0",
     "element-ui": "^2.15.6",
-    "rocket-render": "^2.2.4",
     "vue": "^2.6.11",
     "vue-router": "^3.5.3"
   },
