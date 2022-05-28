@@ -248,8 +248,9 @@ export default {
           return formatDate(text) || item.empty || '-';
         }
       }
-      if (text == null || text == undefined) return item.empty || '-';
-      if (Number(text) == 0) return text;
+      if (text == null || text == undefined || text === '')
+        return item.empty || '-';
+      if (typeof text === 'number') return text;
       if (text) return text;
       if (typeof item.empty !== 'undefined') return item.empty;
       return '-';

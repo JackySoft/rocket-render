@@ -37,7 +37,7 @@ export default {
       showLoading: false,
       // 保存查询条件
       queryForm: {
-        user_name: 'jack',
+        user_name: '',
         user_status: [1, 2],
         register_date: '2020-11-20',
         login_time: ['2020-11-01', '2020-11-20'],
@@ -270,6 +270,7 @@ export default {
       this.$api.getBasicList(data).then((res) => {
         this.mainData = res.list;
         this.showLoading = false;
+        this.queryForm.user_name = 'alice';
         this.pagination.total = res.total;
       });
     },

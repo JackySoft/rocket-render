@@ -79,24 +79,24 @@
                 "
                 @handleChange="
                   (data) => {
-                    item.tablehandleChange && item.tablehandleChange(data);
+                    item.table.handleChange && item.table.handleChange(data);
                   }
                 "
                 @handleCellClick="
                   (data) => {
-                    item.tablehandleCellClick &&
-                      item.tablehandleCellClick(data);
+                    item.table.handleCellClick &&
+                      item.table.handleCellClick(data);
                   }
                 "
                 @selection-change="
                   (data) => {
-                    item.tableselectionChange &&
-                      item.tableselectionChange(data);
+                    item.table.selectionChange &&
+                      item.table.selectionChange(data);
                   }
                 "
                 @sort-change="
                   (data) => {
-                    item.tablesortChange && item.tablesortChange(data);
+                    item.table.sortChange && item.table.sortChange(data);
                   }
                 "
               >

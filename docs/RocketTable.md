@@ -462,6 +462,16 @@
                 },
                 permission: true, //权限控制，根据后台返回动态设置
               },
+              // 第三种 动态控制权限，当status=10时，显示添加按钮
+              {
+                text: '添加',
+                permission: {
+                  prop: 'status',
+                  show: {
+                    10: true,
+                  },
+                },
+              },
             ],
           },
         ],

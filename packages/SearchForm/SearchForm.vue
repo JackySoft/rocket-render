@@ -335,8 +335,11 @@ export default {
    * 当父组件修改model时，需要同步修改子组件
    */
   watch: {
-    model: function (val) {
-      this.value = { ...val };
+    model: {
+      handler: function (val) {
+        this.value = { ...val };
+      },
+      deep: true,
     },
   },
 };
