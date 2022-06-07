@@ -7,6 +7,7 @@
       @validate="$emit('validate')"
       v-bind="{
         ...json,
+        size: json.size || $rocket.size,
         formList: null,
         layout: null,
         labelWidth: json.labelWidth || '100px',

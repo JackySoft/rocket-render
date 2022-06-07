@@ -1,14 +1,14 @@
 <template>
   <el-form
     class="rr-search-form"
-    :class="{ dialog: type === 'dialog', 'rr-search-flex': inline == 'flex' }"
+    :class="{ dialog: type === 'dialog', 'rr-search-flex': mode == 'flex' }"
     ref="searchForm"
     :model="value"
     :inline="true"
     @submit.native.prevent="handleQuery"
   >
     <!-- 固定栅格布局-->
-    <el-row type="flex" :gutter="20" v-if="inline == 'grid'">
+    <el-row type="flex" :gutter="20" v-if="mode == 'grid'">
       <template v-for="(item, index) in json">
         <el-col
           :key="index"
@@ -46,7 +46,7 @@
       </el-col>
     </el-row>
     <!-- flex布局-->
-    <template v-else-if="inline == 'flex'">
+    <template v-else-if="mode == 'flex'">
       <div class="rr-form-item">
         <template v-for="(item, index) in json">
           <FormItem
@@ -64,7 +64,7 @@
       </div>
     </template>
     <!-- 行内布局-->
-    <template v-else-if="inline == 'inline'">
+    <template v-else-if="mode == 'inline'">
       <template v-for="(item, index) in json">
         <FormItem
           :key="index"
@@ -184,12 +184,7 @@ function debounce(method, delay, immediate) {
 export default {
   name: 'SearchForm',
   props: {
-    inline: {
-      type: String || Boolean,
-      default() {
-        return 'flex';
-      },
-    }, // true为行内，grid为栅格，flex为左右布局
+    inline: String,
     type: String, // 当设置为dialog时，说明QueryForm在dialog中使用，会调整QueryForm背景色
     json: Array, // 表单JSON对象
     model: Object, // 默认v-model参数
@@ -207,6 +202,12 @@ export default {
       offset: 0, // 偏移的列数
       screenWidth: 0, // 当前屏幕可用宽度
     };
+  },
+  computed: {
+    // true为行内，grid为栅格，flex为左右布局
+    mode() {
+      return this.inline || this.$rocket.searchForm.inline || 'flex';
+    },
   },
   mounted() {
     window.onresize = debounce(this.handleLayout, 500, true);

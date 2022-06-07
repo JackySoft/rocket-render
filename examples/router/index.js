@@ -78,6 +78,11 @@ export const routes = [
             name: '高级表格',
             component: () => import('./../views/table/HighTable.vue'),
           },
+          {
+            path: 'json',
+            name: '全新配置表格',
+            component: () => import('./../views/table/JsonTable.vue'),
+          },
         ],
       },
       {

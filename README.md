@@ -57,15 +57,7 @@ Vue.use(RocketRender)
       />
     </div>
     <!-- 列表区域，支撑各种场景的列显示以及自定义列 -->
-    <rocket-table
-      border
-      :loading.sync="showLoading"
-      :column.sync="mainColumn"
-      :data="mainData"
-      :pagination.sync="pagination"
-      @handleChange="getTableList"
-    >
-    </rocket-table>
+    <rocket-table :json="tableJson" @handleChange="getTableList" />
   </div>
 </template>
 
@@ -227,71 +219,75 @@ Vue.use(RocketRender)
             label: '是否校验',
           },
         ],
-        // 表格列头
-        mainColumn: [
-          {
-            prop: 'selection',
-            type: 'selection',
-            label: '选框',
-          },
-          {
-            prop: 'index',
-            type: 'index',
-            label: '序号',
-          },
-          {
-            prop: 'uid',
-            label: '用户ID',
-            align: 'left',
-          },
-          {
-            prop: 'cname',
-            label: '用户名称',
-            align: 'left',
-          },
-          {
-            prop: 'user_img',
-            label: '头像',
-            width: 240,
-            type: 'image',
-            image: {
-              type: 'single',
+        tableJson: {
+          title: '用户列表',
+          actionList: [{ text: '新增' }],
+          // 表格列头
+          columns: [
+            {
+              prop: 'selection',
+              type: 'selection',
+              label: '选框',
             },
-          },
-          {
-            prop: 'use_status',
-            label: '当前状态',
-            formatter(row) {
-              return {
-                1: '在线',
-                2: '离线',
-              }[row.use_status];
+            {
+              prop: 'index',
+              type: 'index',
+              label: '序号',
             },
+            {
+              prop: 'uid',
+              label: '用户ID',
+              align: 'left',
+            },
+            {
+              prop: 'cname',
+              label: '用户名称',
+              align: 'left',
+            },
+            {
+              prop: 'user_img',
+              label: '头像',
+              width: 240,
+              type: 'image',
+              image: {
+                type: 'single',
+              },
+            },
+            {
+              prop: 'use_status',
+              label: '当前状态',
+              formatter(row) {
+                return {
+                  1: '在线',
+                  2: '离线',
+                }[row.use_status];
+              },
+            },
+            {
+              prop: 'user_email',
+              label: '邮箱',
+            },
+            {
+              prop: 'user_status_name',
+              label: '用户状态',
+            },
+            {
+              prop: 'intrest_name',
+              label: '兴趣',
+              width: 70,
+            },
+            {
+              prop: 'register_date',
+              label: '注册时间',
+            },
+          ],
+          data: [],
+          // 分页对象，此结构目前固定
+          pagination: {
+            pageNum: 1,
+            pageSize: 20,
+            total: 0,
           },
-          {
-            prop: 'user_email',
-            label: '邮箱',
-          },
-          {
-            prop: 'user_status_name',
-            label: '用户状态',
-          },
-          {
-            prop: 'intrest_name',
-            label: '兴趣',
-            width: 70,
-          },
-          {
-            prop: 'register_date',
-            label: '注册时间',
-          },
-        ],
-        mainData: [],
-        // 分页对象，此结构目前固定
-        pagination: {
-          pageNum: 1,
-          pageSize: 20,
-          total: 0,
         },
       };
     },
@@ -301,16 +297,16 @@ Vue.use(RocketRender)
     methods: {
       // 首页列表查询,page为子组件传递的页码，默认为1
       getTableList(page = 1) {
-        this.showLoading = true;
-        this.pagination.page = page;
+        this.tableJson.showLoading = true;
+        this.tableJson.pagination.page = page;
         const data = {
           ...this.queryForm, // 查询表单数据
-          ...this.pagination, // 默认分页数据
+          ...this.tableJson.pagination, // 默认分页数据
         };
         this.$api.getBasicList(data).then((res) => {
-          this.mainData = res.list;
-          this.showLoading = false;
-          this.pagination.total = res.total_count;
+          this.tableJson.data = res.list;
+          this.tableJson.showLoading = false;
+          this.tableJson.pagination.total = res.total_count;
         });
       },
       getSelectList(val, values, model) {

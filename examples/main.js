@@ -13,7 +13,18 @@ import RocketRender from './../packages/index';
 
 // 注册components下的组件为全局组件
 Vue.use(components);
-Vue.use(RocketRender);
+Vue.use(RocketRender, {
+  size: 'small',
+  empty: '-',
+  inline: 'flex',
+  toolbar: true,
+  align: 'center',
+  stripe: true,
+  border: false,
+  pager: true,
+  pageSize: 20,
+  emptyText: '暂无数据',
+});
 
 // 挂载统一管理的api
 Vue.prototype.$api = api;

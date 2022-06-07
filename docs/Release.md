@@ -1,5 +1,116 @@
 # 版本说明
 
+## v2.2.16
+
+1. 重构 RocketTable，简化使用方式；
+
+```html
+<rocket-table
+  :json.sync="tableJson"
+  @handleOperate="handleOperate"
+  @handleChange="getTableList"
+  @handleAction="handleAction"
+/>
+<script>
+  export default {
+    data(){
+      return {
+        tableJson: {
+        title: 'JSON配置表格',
+        actionList: [
+          {
+            type: 'primary',
+            text: '新增',
+          }
+        ],
+        columns: [
+          {
+            prop: 'selection',
+            type: 'selection',
+            label: '选框',
+          },
+          {
+            prop: 'index',
+            type: 'index',
+            label: '序号',
+          },
+          {
+            prop: 'uid',
+            label: '用户ID',
+            align: 'left',
+          },
+          {
+            prop: 'use_status',
+            label: '当前状态',
+            type: 'click',
+            formatter(row) {
+              if (row.use_status > 2) {
+                return '--';
+              }
+              return {
+                1: '在线',
+                2: '离线',
+              }[row.use_status];
+            },
+          },
+          {
+            prop: '',
+            label: '操作',
+            type: 'action',
+            width: '200px',
+            fixed: 'right',
+            list: [
+              {
+                prop: 'status',
+                val: {
+                  2: '启用',
+                  1: {
+                    text: '禁用',
+                    color: 'danger',
+                  },
+                },
+                permission: true,
+              },
+              {
+                text: '编辑',
+                permission: true,
+              },
+              {
+                text: '删除',
+                color: 'danger',
+                permission: true,
+              },
+            ],
+          },
+        ],
+        data: [],
+        pagination: {
+          pageNum: 1,
+          total: 0,
+        },
+      }
+    }
+  }
+</script>
+```
+
+2. 增加全局配置
+
+```js
+Vue.use(RocketRender, {
+  size: 'small',
+  empty: '-',
+  inline: 'flex',
+  toolbar: true,
+  align: 'center',
+  stripe: true,
+  border: false,
+  pager: true,
+  pageSize: 20,
+  emptyText: '暂无数据',
+});
+```
+
 ## v2.2.15
 
 1. 修复 RocketTable 列表为空的问题，当字段返回空字符串时，显示-

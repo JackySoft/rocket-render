@@ -200,7 +200,7 @@ export default {
           },
         },
         {
-          prop: 'site_url',
+          prop: 'user_site',
           label: '网址',
           type: 'url',
           showOverflowTooltip: false,

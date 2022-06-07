@@ -2,9 +2,16 @@
   <!-- 常规列处理：点击/图片/操作按钮/link/url/badge -->
   <el-table-column
     v-bind="item"
-    :align="item.align || 'center'"
+    :align="item.align || $rocket.rocketTable.align"
     :show-overflow-tooltip="handleToolTip(item)"
   >
+    <template v-if="item.span">
+      <Column
+        v-for="(item, index) in item.span"
+        :key="index"
+        :item="item"
+      ></Column>
+    </template>
     <template slot="header" v-if="item.tips">
       <el-tooltip :content="item.tips" placement="top">
         <span
@@ -241,19 +248,22 @@ export default {
       if (item.formatter) return item.formatter(row);
       if (item.filter) {
         if (item.filter == 'money') {
-          return formatMoney(text) || item.empty || '-';
+          let money = formatMoney(text);
+          if (money == 0) return 0;
+          return money || item.empty || this.$rocket.empty;
         } else if (item.filter == 'date') {
-          return formatDate(text, 'yyyy-MM-dd ') || item.empty || '-';
+          return (
+            formatDate(text, 'yyyy-MM-dd ') || item.empty || this.$rocket.empty
+          );
         } else if (item.filter == 'datetime') {
-          return formatDate(text) || item.empty || '-';
+          return formatDate(text) || item.empty || this.$rocket.empty;
         }
       }
-      if (text == null || text == undefined || text === '')
-        return item.empty || '-';
-      if (typeof text === 'number') return text;
+      if (text === null || text == undefined || text === '')
+        return item.empty || this.$rocket.empty;
+      if (Number(text) == 0) return text;
       if (text) return text;
-      if (typeof item.empty !== 'undefined') return item.empty;
-      return '-';
+      return this.$rocket.empty;
     },
     /**
      * Link文本内容格式化
@@ -269,7 +279,7 @@ export default {
       }
       if (text) return text;
       if (item.empty) return item.empty;
-      return '-';
+      return this.$rocket.empty;
     },
   },
 };

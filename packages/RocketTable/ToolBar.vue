@@ -220,6 +220,7 @@ export default {
 <style lang="scss" scoped>
 .tool-bar {
   margin-left: 15px;
+  z-index: 5;
   svg {
     cursor: pointer;
     width: 18px;

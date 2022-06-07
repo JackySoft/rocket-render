@@ -18,6 +18,7 @@
         :pagination.sync="pagination"
         @handleChange="getTableList"
       >
+        <template v-slot:title>用户列表</template>
         <template v-slot:action>
           <el-button type="primary" @click="openUserModal()"
             >查看用户</el-button
@@ -172,7 +173,7 @@ export default {
       mainData: [],
       // 分页对象
       pagination: {
-        total_count: 0,
+        total: 0,
       },
       // 用户数据
       showLoading1: false,
@@ -180,7 +181,7 @@ export default {
       userParams: {},
       userData: [],
       pagination1: {
-        total_count: 0,
+        total: 0,
       },
       userForm: [
         {
@@ -238,9 +239,9 @@ export default {
   },
   methods: {
     // 首页列表查询,page为子组件传递的页码，默认为1
-    getTableList(page = 1) {
+    getTableList(pageNum = 1) {
       this.showLoading = true;
-      this.pagination.page = page;
+      this.pagination.pageNum = pageNum;
       const data = {
         ...this.queryParams, // 查询表单数据
         ...this.pagination, // 默认分页数据
@@ -248,13 +249,13 @@ export default {
       this.$api.getBasicList(data).then((res) => {
         this.showLoading = false;
         this.mainData = res.list;
-        this.pagination.total_count = res.total_count;
+        this.pagination.total = res.total;
       });
     },
     // 用户数据查看
-    getUserDataList(page = 1) {
+    getUserDataList(pageNum = 1) {
       this.showLoading1 = true;
-      this.pagination1.page = page;
+      this.pagination1.pageNum = pageNum;
       const data = {
         ...this.userParams, // 查询表单数据
         ...this.pagination1, // 默认分页数据
@@ -262,7 +263,7 @@ export default {
       this.$api.getBasicList(data).then((res) => {
         this.showLoading1 = false;
         this.userData = res.list;
-        this.pagination1.total_count = res.total_count;
+        this.pagination1.total = res.total;
       });
     },
     // 打开用户数据弹框

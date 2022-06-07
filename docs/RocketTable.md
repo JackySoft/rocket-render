@@ -21,23 +21,30 @@
 :::demo
 
 ```html
-<search-form :json="form" :model.sync="queryForm" @handleQuery="getTableList" />
-<rocket-table
-  :column.sync="columns"
-  :data="list"
-  :pagination.sync="pagination"
-  @handleChange="getTableList"
-  @handleCellClick="handleCellClick"
-  @selection-change="handleSelectionChange"
->
-</rocket-table>
+<div class="search-box">
+  <search-form
+    :json="searchJson"
+    :model.sync="queryForm"
+    @handleQuery="getTableList"
+  />
+</div>
+<!-- 列表区域 -->
+<div class="table-box">
+  <rocket-table
+    :json.sync="tableJson"
+    @handleCellClick="handleCellClick"
+    @handleOperate="handleOperate"
+    @handleChange="getTableList"
+    @handleAction="handleAction"
+  />
+</div>
 <script>
   export default {
     data() {
       return {
         // 保存查询条件
         queryForm: {},
-        form: [
+        searchJson: [
           {
             type: 'text',
             model: 'user_name',
@@ -45,61 +52,118 @@
             placeholder: '请输入用户名称',
           },
         ],
-        columns: [
-          {
-            prop: 'selection',
-            type: 'selection',
-            label: '选框',
-          },
-          {
-            prop: 'uid',
-            label: '用户ID',
-            align: 'left',
-            type: 'click',
-          },
-          {
-            prop: 'user_img',
-            label: '头像',
-            type: 'image',
-            image: {
-              type: 'single',
+        tableJson: {
+          title: 'JSON配置表格',
+          actionList: [
+            {
+              type: 'primary',
+              text: '新增',
             },
-          },
-          {
-            prop: 'use_status',
-            label: '当前状态',
-            formatter(row) {
-              return {
-                1: '在线',
-                2: '离线',
-              }[row.use_status];
+            {
+              type: 'danger',
+              text: '删除',
             },
-          },
-          {
-            prop: 'user_status_name',
-            label: '用户状态',
-            type: 'badge',
-            badge: {
-              id: 'user_status', //渲染的字段
-              state: {
-                1: 'warning', //设置颜色
-                2: 'primary',
-                3: 'danger',
-                4: 'info',
+          ],
+          columns: [
+            {
+              prop: 'selection',
+              type: 'selection',
+              label: '选框',
+            },
+            {
+              prop: 'index',
+              type: 'index',
+              label: '序号',
+            },
+            {
+              prop: 'uid',
+              type: 'click',
+              label: '用户ID',
+              align: 'left',
+            },
+            {
+              prop: 'cname',
+              label: '用户名称',
+              align: 'left',
+            },
+            {
+              prop: 'user_img',
+              label: '头像',
+              showOverflowTooltip: false,
+              type: 'image',
+              image: {
+                type: 'single', // single/list 支持单张图片和批量图片
+                width: 60, // 设置图片宽度
+                height: 40, // 设置图片高度
               },
             },
+            {
+              prop: 'user_site',
+              label: '网址',
+              type: 'url',
+              showOverflowTooltip: false,
+            },
+            {
+              prop: 'use_status',
+              label: '当前状态',
+              type: 'click',
+              formatter(row) {
+                if (row.use_status > 2) {
+                  return '--';
+                }
+                return {
+                  1: '在线',
+                  2: '离线',
+                }[row.use_status];
+              },
+            },
+            {
+              prop: 'user_email',
+              label: '邮箱',
+            },
+            {
+              prop: 'user_status_name',
+              label: '用户状态',
+            },
+            {
+              prop: 'register_date',
+              label: '注册时间',
+            },
+            {
+              prop: '',
+              label: '操作',
+              type: 'action',
+              width: '200px',
+              fixed: 'right',
+              list: [
+                {
+                  prop: 'status',
+                  val: {
+                    2: '启用',
+                    1: {
+                      text: '禁用',
+                      color: 'danger',
+                    },
+                  },
+                  permission: true,
+                },
+                {
+                  text: '编辑',
+                  permission: true,
+                },
+                {
+                  text: '删除',
+                  color: 'danger',
+                  permission: true,
+                },
+              ],
+            },
+          ],
+          data: [],
+          pagination: {
+            pageNum: 1,
+            total: 0,
           },
-          {
-            prop: 'register_date',
-            label: '注册时间',
-          },
-        ],
-        list: [],
-        // 分页对象
-        pagination: {
-          pageNum: 1,
-          pageSize: 20,
-          total: 0,
         },
       };
     },
@@ -109,14 +173,14 @@
     methods: {
       // 首页列表查询,page为子组件传递的页码，默认为1
       getTableList(pageNum = 1) {
-        this.pagination.pageNum = pageNum;
+        this.tableJson.pagination.pageNum = pageNum;
         const data = {
           ...this.queryForm, // 查询表单数据
           ...this.pagination, // 默认分页数据
         };
         this.$request.get('/basic/list', data).then((res) => {
-          this.list = res.list.slice(0, 5);
-          this.pagination.total = res.total;
+          this.tableJson.data = res.list.slice(0, 5);
+          this.tableJson.pagination.total = res.total;
         });
       },
       /**
@@ -134,6 +198,25 @@
       handleSelectionChange(rows) {
         this.$message.success('勾选项id为' + rows.map((item) => item.id));
       },
+      // 表格上操作按钮
+      handleOperate({ text, index }) {
+        if (index === 0) {
+          this.$message.success('你点击第一个操作按钮');
+        } else if (index === 1) {
+          this.$message.success('你点击了第二个操作按钮');
+        }
+      },
+      // action为点击的按钮索引，row为当前行的数据
+      handleAction({ index, row }) {
+        if (index === 0) {
+          this.$message.success('你选择了第一个按钮');
+        } else if (index === 1) {
+          this.$message.success('你选择了第二个按钮');
+        } else {
+          this.$message.success('你选择了第三个按钮');
+        }
+        console.log(row);
+      },
     },
   };
 </script>
@@ -148,42 +231,37 @@
 :::demo
 
 ```html
-<rocket-table
-  :column.sync="columns"
-  :data="list"
-  :pagination.sync="pagination"
-  @handleChange="getTableList"
->
-  <!-- 此处插槽固定为title -->
-  <template v-slot:title>用户列表</template>
-  <!-- 此处插槽固定为action -->
-  <template v-slot:action>
-    <el-button type="primary" @click="showModal1 = true">操作按钮</el-button>
-  </template>
-</rocket-table>
+<rocket-table :json.sync="tableJson" @handleChange="getTableList" />
 <script>
   export default {
     data() {
       return {
-        showModal1: false,
-        columns: [
-          {
-            prop: 'selection',
-            type: 'selection',
-            label: '选框',
+        tableJson: {
+          title: '用户列表',
+          actionList: [
+            {
+              type: 'primary',
+              text: '操作按钮',
+            },
+          ],
+          columns: [
+            {
+              prop: 'uid',
+              label: '用户ID',
+              align: 'left',
+            },
+            {
+              prop: 'user_email',
+              label: '邮箱',
+            },
+          ],
+          data: [],
+          // 分页对象
+          pagination: {
+            pageNum: 1,
+            pageSize: 20,
+            total: 0,
           },
-          {
-            prop: 'uid',
-            label: '用户ID',
-            align: 'left',
-          },
-        ],
-        list: [],
-        // 分页对象
-        pagination: {
-          pageNum: 1,
-          pageSize: 20,
-          total: 0,
         },
       };
     },
@@ -193,14 +271,14 @@
     methods: {
       // 首页列表查询,page为子组件传递的页码，默认为1
       getTableList(pageNum = 1) {
-        this.pagination.pageNum = pageNum;
+        this.tableJson.pagination.pageNum = pageNum;
         const data = {
           ...this.queryForm, // 查询表单数据
-          ...this.pagination, // 默认分页数据
+          ...this.tableJson.pagination, // 默认分页数据
         };
         this.$request.get('/basic/list', data).then((res) => {
-          this.list = res.list.slice(0, 5);
-          this.pagination.total = res.total;
+          this.tableJson.data = res.list.slice(0, 5);
+          this.tableJson.pagination.total = res.total;
         });
       },
     },
@@ -215,37 +293,40 @@
 :::demo 通过 span 控制数据跨行
 
 ```html
-<rocket-table :column.sync="columns" :data="list"> </rocket-table>
+<rocket-table :json="tableJson" />
 <script>
   export default {
     data() {
       return {
-        columns: [
-          {
-            prop: 'user_info',
-            label: '用户信息',
-            align: 'center',
-            span: [
-              // 多级表头
-              {
-                prop: 'cname',
-                label: '用户名称', // 普通列渲染
-                showOverflowTooltip: true, // true/false/不填，默认为true
-              },
-              {
-                prop: 'intrest_name',
-                label: '兴趣',
-                width: 70, // 可调整列宽度
-              },
-            ],
-          },
-          {
-            prop: 'uid',
-            label: '用户ID',
-          },
-        ],
-        list: [], // 表格渲染数据
-        pagination: { page: 1 },
+        tableJson: {
+          title: '用户列表',
+          columns: [
+            {
+              prop: 'user_info',
+              label: '用户信息',
+              align: 'center',
+              span: [
+                // 多级表头
+                {
+                  prop: 'cname',
+                  label: '用户名称', // 普通列渲染
+                  showOverflowTooltip: true, // true/false/不填，默认为true
+                },
+                {
+                  prop: 'intrest_name',
+                  label: '兴趣',
+                  width: 70, // 可调整列宽度
+                },
+              ],
+            },
+            {
+              prop: 'uid',
+              label: '用户ID',
+            },
+          ],
+          data: [],
+          pagination: { page: 1 },
+        },
       };
     },
     mounted() {
@@ -254,13 +335,13 @@
     methods: {
       // 首页列表查询,page为子组件传递的页码，默认为1
       getTableList(page = 1) {
-        this.pagination.page = page;
+        this.tableJson.pagination.page = page;
         const data = {
           ...this.queryForm, // 查询表单数据
-          ...this.pagination, // 默认分页数据
+          ...this.tableJson.pagination, // 默认分页数据
         };
         this.$request.get('/basic/list', data).then((res) => {
-          this.list = res.list.slice(0, 5);
+          this.tableJson.data = res.list.slice(0, 5);
         });
       },
     },
@@ -277,32 +358,30 @@
 :::demo 动态绑定 span-method 可实现数据跨行
 
 ```html
-<rocket-table :column.sync="columns" :data="list" :span-method="span.callback">
-</rocket-table>
+<rocket-table :json="tableJson" />
 <script>
   export default {
     data() {
       return {
-        columns: [
-          {
-            prop: 'uid',
-            label: '用户ID',
-            type: 'click', //此列可点击
-          },
-          {
-            prop: 'cname',
-            label: '用户名称', // 普通列渲染
-            showOverflowTooltip: true, // true/false/不填，默认为true
-          },
-          {
-            prop: 'intrest_name',
-            label: '兴趣',
-          },
-        ],
-        list: [], // 表格渲染数据
-        pagination: { page: 1 },
-        span: {
-          callback({ row, column, rowIndex, columnIndex }) {
+        tableJson: {
+          columns: [
+            {
+              prop: 'uid',
+              label: '用户ID',
+              type: 'click', //此列可点击
+            },
+            {
+              prop: 'cname',
+              label: '用户名称', // 普通列渲染
+              showOverflowTooltip: true, // true/false/不填，默认为true
+            },
+            {
+              prop: 'intrest_name',
+              label: '兴趣',
+            },
+          ],
+          data: [], // 表格渲染数据
+          spanMethod: ({ row, column, rowIndex, columnIndex }) => {
             if (columnIndex < 1) {
               if (rowIndex % 2 === 0) {
                 return {
@@ -312,6 +391,7 @@
               }
             }
           },
+          pagination: { pageNum: 1 },
         },
       };
     },
@@ -320,14 +400,14 @@
     },
     methods: {
       // 首页列表查询,page为子组件传递的页码，默认为1
-      getTableList(page = 1) {
-        this.pagination.page = page;
+      getTableList(pageNum = 1) {
+        this.tableJson.pagination.pageNum = pageNum;
         const data = {
           ...this.queryForm, // 查询表单数据
-          ...this.pagination, // 默认分页数据
+          ...this.tableJson.pagination, // 默认分页数据
         };
         this.$request.get('/basic/list', data).then((res) => {
-          this.list = res.list.slice(0, 5);
+          this.tableJson.data = res.list.slice(0, 5);
         });
       },
     },
@@ -344,41 +424,43 @@
 :::demo 通过 type 可设置渲染类型
 
 ```html
-<rocket-table :column.sync="columns" :data="list"> </rocket-table>
+<rocket-table :json="tableJson" />
 <script>
   export default {
     data() {
       return {
-        columns: [
-          {
-            prop: 'user_img_list', //如果接口返回单张，需要设置type='single'
-            label: '头像',
-            showOverflowTooltip: false,
-            type: 'image',
-            image: {
-              type: 'single', // single/list 支持单张图片和批量图片
-              width: 60, // 设置图片宽度
-              height: 40, // 设置图片高度
+        tableJson: {
+          columns: [
+            {
+              prop: 'user_img_list', //如果接口返回单张，需要设置type='single'
+              label: '头像',
+              showOverflowTooltip: false,
+              type: 'image',
+              image: {
+                type: 'single', // single/list 支持单张图片和批量图片
+                width: 60, // 设置图片宽度
+                height: 40, // 设置图片高度
+              },
             },
-          },
-          {
-            prop: 'site_url', // 网址渲染，默认新开窗口
-            label: '网址',
-            type: 'url', //支持打开url地址
-            showOverflowTooltip: false,
-          },
-          {
-            prop: 'user_link',
-            label: '产品列表',
-            type: 'link', //需要渲染成多个可点击按钮
-            link: {
-              prop: 'name', //渲染的字段
-              limit: 3, //默认渲染个数，支持展开和关闭
+            {
+              prop: 'user_site', // 网址渲染，默认新开窗口
+              label: '网址',
+              type: 'url', //支持打开url地址
+              showOverflowTooltip: false,
             },
-          },
-        ],
-        list: [], // 表格渲染数据
-        pagination: { page: 1 },
+            {
+              prop: 'user_link',
+              label: '产品列表',
+              type: 'link', //需要渲染成多个可点击按钮
+              link: {
+                prop: 'name', //渲染的字段
+                limit: 3, //默认渲染个数，支持展开和关闭
+              },
+            },
+          ],
+          data: [], // 表格渲染数据
+          pagination: { page: 1 },
+        },
       };
     },
     mounted() {
@@ -386,14 +468,14 @@
     },
     methods: {
       // 首页列表查询,page为子组件传递的页码，默认为1
-      getTableList(page = 1) {
-        this.pagination.page = page;
+      getTableList(pageNum = 1) {
+        this.tableJson.pagination.pageNum = pageNum;
         const data = {
           ...this.queryForm, // 查询表单数据
-          ...this.pagination, // 默认分页数据
+          ...this.tableJson.pagination, // 默认分页数据
         };
         this.$request.get('/basic/list', data).then((res) => {
-          this.list = res.list.slice(0, 5);
+          this.tableJson.data = res.list.slice(0, 5);
         });
       },
     },
@@ -408,78 +490,75 @@
 :::demo 通过 type 可设置渲染类型
 
 ```html
-<rocket-table
-  :column.sync="columns"
-  :data="list"
-  @handleCellClick="handleCellClick"
->
-</rocket-table>
+<rocket-table :json="tableJson" @handleCellClick="handleCellClick" />
 <script>
   export default {
     data() {
       return {
-        columns: [
-          {
-            prop: 'uid',
-            label: '用户ID',
-            type: 'click', // 此列可点击
-            sortable: true, // 支持排序
-          },
-          {
-            prop: 'cname',
-            label: '用户名称',
-            type: 'click', // 此列可点击
-            showOverflowTooltip: true, // true/false/不填，默认为true
-          },
-          {
-            prop: '', // 操作项prop不用填
-            label: '操作',
-            width: '200px',
-            type: 'action', // 标记此列为操作按钮
-            list: [
-              // 第一种：常规用法，通过text显示按钮名称
-              {
-                text: '编辑',
-                permission: true, // 默认显示，可不填，一般我们通过permission来做按钮权限，控制显示和隐藏
-              },
-              //  //支持style/class等相关属性，所有el-button支持的属性，都可以添加
-              {
-                text: '删除',
-                permission: true,
-                style: { color: 'red' },
-                class: 'txt',
-              },
-              // 第二种：支持根据返回值动态显示不同按钮名称
-              {
-                prop: 'status', //显示的按钮需要根据此状态动态控制
-                val: {
-                  2: '启用', // status为2，显示启用
-                  1: {
-                    // status为1，显示禁用，同时设置按钮颜色
-                    text: '禁用',
-                    disabled: true, //按钮禁用
+        tableJson: {
+          columns: [
+            {
+              prop: 'uid',
+              label: '用户ID',
+              type: 'click', // 此列可点击
+              sortable: true, // 支持排序
+            },
+            {
+              prop: 'cname',
+              label: '用户名称',
+              type: 'click', // 此列可点击
+              showOverflowTooltip: true, // true/false/不填，默认为true
+            },
+            {
+              prop: '', // 操作项prop不用填
+              label: '操作',
+              width: '200px',
+              type: 'action', // 标记此列为操作按钮
+              list: [
+                // 第一种：常规用法，通过text显示按钮名称
+                {
+                  text: '编辑',
+                  permission: true, // 默认显示，可不填，一般我们通过permission来做按钮权限，控制显示和隐藏
+                },
+                //  //支持style/class等相关属性，所有el-button支持的属性，都可以添加
+                {
+                  text: '删除',
+                  permission: true,
+                  style: { color: 'red' },
+                  class: 'txt',
+                },
+                // 第二种：支持根据返回值动态显示不同按钮名称
+                {
+                  prop: 'status', //显示的按钮需要根据此状态动态控制
+                  val: {
+                    2: '启用', // status为2，显示启用
+                    1: {
+                      // status为1，显示禁用，同时设置按钮颜色
+                      text: '禁用',
+                      disabled: true, //按钮禁用
+                    },
+                  },
+                  permission: true, //权限控制，根据后台返回动态设置
+                },
+                // 第三种 动态控制权限，当status=10时，显示添加按钮
+                {
+                  text: '添加',
+                  permission: {
+                    prop: 'status',
+                    show: {
+                      10: true,
+                    },
                   },
                 },
-                permission: true, //权限控制，根据后台返回动态设置
-              },
-              // 第三种 动态控制权限，当status=10时，显示添加按钮
-              {
-                text: '添加',
-                permission: {
-                  prop: 'status',
-                  show: {
-                    10: true,
-                  },
-                },
-              },
-            ],
-          },
-        ],
-        list: [
-          { uid: 1001, cname: 'jack', status: 1 },
-          { uid: 1002, cname: 'tom', status: 2 },
-        ], // 表格渲染数据
-        pagination: { page: 1 },
+              ],
+            },
+          ],
+          data: [
+            { uid: 1001, cname: 'jack', status: 1 },
+            { uid: 1002, cname: 'tom', status: 2 },
+          ], // 表格渲染数据
+          pagination: { page: 1 },
+        },
       };
     },
     mounted() {
@@ -507,7 +586,7 @@
 :::demo 通过 type 可设置当前列为自定义列
 
 ```html
-<rocket-table :column.sync="columns" :data="list">
+<rocket-table :json="tableJson">
   <template v-slot:copy="scope">
     <el-button
       type="text"
@@ -522,21 +601,23 @@
   export default {
     data() {
       return {
-        columns: [
-          {
-            prop: 'uid',
-            label: '用户ID',
-            type: 'slot', //此列作为自定义列
-            slotName: 'copy', //slot的插槽名称
-          },
-          {
-            prop: 'cname',
-            label: '用户名称', // 普通列渲染
-            showOverflowTooltip: true, // true/false/不填，默认为true
-          },
-        ],
-        list: [], // 表格渲染数据
-        pagination: { page: 1 },
+        tableJson: {
+          columns: [
+            {
+              prop: 'uid',
+              label: '用户ID',
+              type: 'slot', //此列作为自定义列
+              slotName: 'copy', //slot的插槽名称
+            },
+            {
+              prop: 'cname',
+              label: '用户名称', // 普通列渲染
+              showOverflowTooltip: true, // true/false/不填，默认为true
+            },
+          ],
+          data: [], // 表格渲染数据
+          pagination: { page: 1 },
+        },
       };
     },
     mounted() {
@@ -545,13 +626,13 @@
     methods: {
       // 首页列表查询,page为子组件传递的页码，默认为1
       getTableList(page = 1) {
-        this.pagination.page = page;
+        this.tableJson.pagination.page = page;
         const data = {
           ...this.queryForm, // 查询表单数据
-          ...this.pagination, // 默认分页数据
+          ...this.tableJson.pagination, // 默认分页数据
         };
         this.$request.get('/basic/list', data).then((res) => {
-          this.list = res.list.slice(0, 5);
+          this.tableJson.data = res.list.slice(0, 5);
         });
       },
       // 模拟复制功能
@@ -585,10 +666,12 @@
 :::demo
 
 ```html
-<rocket-table :column.sync="columns" :data="list" :toolbar="false">
-  <template v-slot:title> 用户列表 </template>
+<!-- 使用配置方式 -->
+<rocket-table :json="tableJson" />
+<!-- 使用插槽方式 -->
+<rocket-table :json="tableJson">
   <template v-slot:action>
-    <el-button type="primary" v-if="isCreate">创建用户</el-button>
+    <el-button type="primary" v-if="showCreate">创建用户</el-button>
   </template>
 </rocket-table>
 <script>
@@ -596,22 +679,29 @@
     data() {
       return {
         // 此处大家根据接口返回的按钮权限来赋值即可。推荐使用指令的方式来修改按钮权限
-        isCreate: true,
-        columns: [
-          {
-            prop: 'uid',
-            label: '用户ID',
-          },
-        ],
-        list: [], // 表格渲染数据
-        pagination: { page: 1 },
+        showCreate: true,
+        tableJson: {
+          title: '用户列表',
+          // 通过permission来控制显示和隐藏,permission默认不传为true
+          actionList: [{ text: '创建用户', permission: true }],
+          columns: [
+            {
+              prop: 'uid',
+              label: '用户ID',
+            },
+          ],
+          data: [], // 表格渲染数据
+          pagination: { page: 1 },
+        },
       };
     },
     mounted() {
       this.getTableList();
     },
     methods: {
-      getTableList(page = 1) {},
+      getTableList(page = 1) {
+        this.showCreate = true;
+      },
     },
   };
 </script>
@@ -624,53 +714,51 @@
 :::demo 根据状态来判断是否显示
 
 ```html
-<rocket-table :column.sync="columns" :data="list" :toolbar="false">
-  <template v-slot:title> 用户列表 </template>
-  <template v-slot:action>
-    <el-button type="primary" v-if="isCreate">创建用户</el-button>
-  </template>
-</rocket-table>
+<rocket-table :json="tableJson" />
 <script>
   export default {
     data() {
       return {
-        // 此处大家根据接口返回的按钮权限来赋值即可。推荐使用指令的方式来修改按钮权限
-        isCreate: true,
-        columns: [
-          {
-            prop: 'uid',
-            label: '用户ID',
-          },
-          {
-            prop: '',
-            label: '操作',
-            type: 'action',
-            list: [
-              {
-                text: '编辑',
-                // 当uid=1的时候，显示
-                permission: {
-                  prop: 'uid',
-                  show: {
-                    1: true,
+        tableJson: {
+          title: '用户列表',
+          // 通过permission来控制显示和隐藏
+          actionList: [{ text: '创建用户' }],
+          columns: [
+            {
+              prop: 'uid',
+              label: '用户ID',
+            },
+            {
+              prop: '',
+              label: '操作',
+              type: 'action',
+              list: [
+                {
+                  text: '编辑',
+                  // 当uid=1的时候，显示
+                  permission: {
+                    prop: 'uid',
+                    show: {
+                      1: true,
+                    },
                   },
                 },
-              },
-              {
-                text: '删除',
-                // 当uid=2的时候，显示
-                permission: {
-                  prop: 'uid',
-                  show: {
-                    2: true,
+                {
+                  text: '删除',
+                  // 当uid=2的时候，显示
+                  permission: {
+                    prop: 'uid',
+                    show: {
+                      2: true,
+                    },
                   },
                 },
-              },
-            ],
-          },
-        ],
-        list: [{ uid: 1 }, { uid: 2 }], // 表格渲染数据
-        pagination: { page: 1 },
+              ],
+            },
+          ],
+          data: [{ uid: 1 }, { uid: 2 }], // 表格渲染数据
+          pagination: { page: 1 },
+        },
       };
     },
     mounted() {
@@ -685,20 +773,19 @@
 
 :::
 
-## RocketTable 参数
+## RocketTable - json 参数
 
-| 参数        | 说明                          | 类型          | 可选值       | 默认值 |
-| :---------- | :---------------------------- | :------------ | :----------- | :----: |
-| loading     | 表格请求过程显示 loading 效果 | Boolean       | `true/false` |   无   |
-| column      | 表格表头对象,需要添加 sync    | Array(Object) | 参考下文     |   无   |
-| data        | 表格数据渲染对象              | Array(Object) | 参考下文     |   无   |
-| pagination  | 表格分页对象,需要添加 sync    | Object        | pagination   |   无   |
-| pager       | 显示分页控件                  | Boolean       | `true/false` |  true  |
-| toolbar     | 显示工具条                    | Boolean       | `true/false` |  true  |
-| span-method | 数据跨行处理                  | fn()          | 参考 Element |   无   |
-| field       | 自定义分页字段                | Object        | 参考下文     |   无   |
+| 参数       | 说明                          | 类型          | 可选值       | 默认值 |
+| :--------- | :---------------------------- | :------------ | :----------- | :----: |
+| loading    | 表格请求过程显示 loading 效果 | Boolean       | `true/false` |   无   |
+| columns    | 表格表头对象,需要添加 sync    | Array(Object) | 参考下文     |   无   |
+| data       | 表格数据渲染对象              | Array(Object) | 参考下文     |   无   |
+| pagination | 表格分页对象,需要添加 sync    | Object        | pagination   |   无   |
+| pager      | 显示分页控件                  | Boolean       | `true/false` |  true  |
+| toolbar    | 显示工具条                    | Boolean       | `true/false` |  true  |
+| spanMethod | 数据跨行处理                  | fn()          | 参考 Element |   无   |
 
-## RocketTable - column 对象
+## RocketTable - json - columns 对象
 
 | 参数                | 说明                           | 类型    | 可选值                |   默认值   |
 | :------------------ | :----------------------------- | :------ | :-------------------- | :--------: |
@@ -718,17 +805,6 @@
 
 > showOverflowTooltip 官方默认为关闭，为了表格体验，统一开启，也可以手动关闭
 > type=action 时，只有设置了 width 才会关闭 tool-tip，否则也会开启。
-
-## field
-
-> 分页字段结构映射，作用不是很大，建议大家安装 pagination 结构传参
-> 比如页码默认是 pageNum，如果你不想用 pageNum，可以通过 field 做映射
-
-| 参数     | 说明     | 类型   | 可选值 |  默认值  |
-| :------- | :------- | :----- | :----- | :------: |
-| pageNum  | 当前页码 | String | 无     | pageNum  |
-| pageSize | 每页条数 | String | 无     | pageSize |
-| total    | 总条数   | String | 无     |  total   |
 
 ## pagination
 

@@ -1,25 +1,69 @@
 <template>
   <div class="rocket-table" :class="{ auto: isFullScreen }" :id="createTableId">
-    <div class="action-header" v-if="$slots.title || $slots.action || toolbar">
+    <div
+      class="action-header"
+      v-if="
+        config.title || $slots.action || config.actionList || config.toolbar
+      "
+    >
       <!-- 表格上方标题 -->
       <div class="title">
-        <div class="action" v-if="$slots.title">
-          <slot name="title"></slot>
+        <div class="action" v-if="config.title">
+          <!-- 支持标题插槽 -->
+          <template v-if="$slots.title">
+            <slot name="title"></slot>
+          </template>
+          <!-- 通过配置直接传文本 -->
+          <template v-else>
+            {{ config.title }}
+          </template>
         </div>
-        <div class="action" v-else-if="$slots.action">
-          <slot name="action"></slot>
+        <div class="action" v-else-if="$slots.action || config.actionList">
+          <!-- 支持操作按钮自定义插槽 -->
+          <template v-if="$slots.action">
+            <slot name="action"></slot>
+          </template>
+          <!-- 通过配置解析按钮 -->
+          <template v-else-if="config.actionList">
+            <template v-for="(btn, index) in config.actionList">
+              <el-button
+                :key="btn.text"
+                :type="btn.type || 'primary'"
+                v-if="isShowAction(btn)"
+                @click="() => $emit('handleOperate', { ...btn, index })"
+                >{{ btn.text }}</el-button
+              >
+            </template>
+          </template>
         </div>
       </div>
       <div class="action-wrap">
-        <!-- 表格上方操作按钮 -->
-        <div class="action" v-if="$slots.title && $slots.action">
-          <slot name="action"></slot>
+        <!-- 表格上方操作按钮，如果有标题，则按钮靠右分布，如果无标题则按钮靠左分布 -->
+        <div
+          class="action"
+          v-if="config.title && ($slots.action || config.actionList)"
+        >
+          <!-- 支持操作按钮自定义插槽 -->
+          <template v-if="$slots.action">
+            <slot name="action"></slot>
+          </template>
+          <!-- 通过配置解析按钮 -->
+          <template v-else-if="config.actionList">
+            <template v-for="(btn, index) in config.actionList">
+              <el-button
+                :key="btn.text"
+                :type="btn.type || 'primary'"
+                v-if="isShowAction(btn)"
+                @click="() => $emit('handleOperate', { ...btn, index })"
+                >{{ btn.text }}</el-button
+              >
+            </template>
+          </template>
         </div>
         <!-- 工具条 -->
         <tool-bar
-          v-if="toolbar"
-          :column="$attrs.column"
-          :toolbar="$attrs.toolbar"
+          v-if="config.toolbar"
+          :column="config.columns"
           :id="createTableId"
           @handleReload="handleReload"
           @handleDensity="handleDensity"
@@ -32,14 +76,14 @@
     <div class="base-table">
       <el-table
         ref="baseTable"
-        v-loading="$attrs.loading"
+        v-loading="config.loading"
         :size="size"
-        :border="border"
+        :border="config.border"
         element-loading-text="加载中..."
-        v-bind="$attrs"
+        v-bind="config"
         v-on="$listeners"
       >
-        <template v-for="(item, i) in $attrs.column">
+        <template v-for="(item, i) in config.columns">
           <!-- 处理多选 -->
           <el-table-column
             v-if="item.type === 'selection'"
@@ -105,14 +149,16 @@
       </el-table>
       <!-- 表格分页，可隐藏 -->
       <el-pagination
-        v-if="pager"
-        background
-        layout="total,sizes, prev, pager, next,jumper"
-        :page-sizes="[10, 20, 50]"
-        :page-size="pagination[field.pageSize] || 20"
-        :current-page="pagination[field.pageNum] || 1"
-        :total="+pagination[field.total] || 0"
-        v-bind="$attrs"
+        v-if="config.pager"
+        v-bind="config.pagination"
+        :layout="
+          config.pagination.layout || 'total,sizes, prev, pager, next,jumper'
+        "
+        :background="config.pagination.background || true"
+        :page-sizes="config.pagination.pageSizes || [5, 10, 20, 50]"
+        :page-size="config.pagination.pageSize"
+        :current-page="config.pagination.pageNum || 1"
+        :total="+config.pagination.total || 0"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       ></el-pagination>
@@ -127,50 +173,35 @@ export default {
   name: 'RocketTable',
   inheritAttrs: false,
   props: {
+    json: Object,
     border: {
       type: Boolean,
       default() {
-        return true;
+        return undefined;
       },
     },
-    // 分页结构
-    field: {
-      type: Object,
-      default() {
-        return {
-          pageNum: 'pageNum',
-          pageSize: 'pageSize',
-          total: 'total',
-        };
-      },
-    },
-    pagination: {
-      type: Object,
-      default() {
-        return {
-          pageNum: 1, // 当前页码
-          pageSize: 20, // 每页条数
-          total: 0, // 总条数
-        };
-      },
-    },
+    column: Array,
+    pagination: Object,
+    pageSizes: Array,
     pager: {
       type: Boolean,
       default() {
-        return true;
+        return undefined;
       },
     },
     toolbar: {
       type: Boolean,
       default() {
-        return true;
+        return undefined;
       },
     },
   },
   data() {
     return {
-      size: 'small',
+      size:
+        (this.json ? this.json.size : this.$attrs.size) || this.$rocket.size,
       isFullScreen: false,
+      pageSize: 0, // 缓存每页条数，只有在切换每页条数时使用
     };
   },
   computed: {
@@ -179,19 +210,66 @@ export default {
         Math.random().toString().substr(3, 3) + Date.now(),
       ).toString(36);
     },
+    config() {
+      let json = {};
+      // 判断是JSON方式还是传统方式
+      if (this.json) {
+        json = this.json;
+      } else {
+        json = {
+          ...this.$attrs,
+          border: this.border,
+          pagination: this.pagination,
+          pageSizes: this.pageSizes,
+          pager: this.pager,
+          toolbar: this.toolbar,
+          columns: this.column,
+        };
+      }
+      /**
+       * 处理全局配置
+       * boolean类型和非boolean类型处理有差异，因为false也是值，不能直接覆盖
+       */
+      let { toolbar, align, stripe, border, pager, pageSize, emptyText } =
+        this.$rocket.rocketTable;
+      if (typeof json.toolbar == 'undefined') json.toolbar = toolbar;
+      if (!json.align) json.align = align;
+      if (typeof json.stripe == 'undefined') json.stripe = stripe;
+      if (typeof json.border == 'undefined') json.border = border;
+      if (typeof json.pager == 'undefined') json.pager = pager;
+      if (!json.pagination) json.pagination = {};
+      if (!json.pagination.pageSize) json.pagination.pageSize = pageSize;
+      if (!json.emptyText) json.emptyText = emptyText;
+      return {
+        ...json,
+        // 表格上面标题
+        title: json.title || this.$slots.title,
+      };
+    },
   },
   components: { ToolBar, Column },
   methods: {
+    // 控制操作栏按钮是否显示
+    isShowAction(btn = {}) {
+      // 明确标明显示
+      if (btn.permission == true) return true;
+      // 默认为显示
+      if (typeof btn.permission == 'undefined') return true;
+      // 明确标明不显示
+      if (btn.permission == false) return false;
+      return false;
+    },
     /**
      * 表格数据刷新
      */
     handleReload() {
-      const pageNum = this.pagination[this.field.pageNum];
+      const pageNum = this.config.pagination.pageNum;
       // 刷新时，需要保留当前分页参数
       this.$emit('handleChange', pageNum);
     },
     /**
      * 表格密度调整
+     * 此属性由于一次性使用，不需要更新父对象
      */
     handleDensity(val) {
       this.size = val;
@@ -200,7 +278,14 @@ export default {
      * 表格数据过滤
      */
     handleColumn(list) {
-      this.$emit('update:column', list);
+      if (this.json) {
+        this.$emit('update:json', {
+          ...this.config,
+          columns: list,
+        });
+      } else {
+        this.$emit('update:column', list);
+      }
     },
     /**
      * 分页条数变化
@@ -211,9 +296,9 @@ export default {
       this.pageSize = val;
       // 同步分页数据给父组件
       this.$emit('update:pagination', {
-        [this.field.pageSize]: val,
-        [this.field.pageNum]: 1,
-        [this.field.total]: this.pagination.total,
+        pageSize: val,
+        pageNum: 1,
+        total: this.config.pagination.total,
       });
       this.$emit('handleChange', 1);
     },
@@ -222,13 +307,6 @@ export default {
      * @param {val} 页码
      */
     handleCurrentChange(val) {
-      // 同步分页数据给父组件
-      this.$emit('update:pagination', {
-        [this.field.pageSize]:
-          this.pageSize || this.pagination[this.field.pageSize],
-        [this.field.pageNum]: val,
-        [this.field.total]: this.pagination[this.field.total],
-      });
       this.$emit('handleChange', val);
     },
   },

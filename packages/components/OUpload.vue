@@ -89,7 +89,6 @@ export default {
   },
   computed: {
     fileList() {
-      console.log('value:', this.value);
       return this.value || [];
     },
     url() {
