@@ -28,12 +28,6 @@ yarn add rocket-render -S
 npm i rocket-render -S
 ```
 
-## WeChat
-
-> 可通过微信群解决大家遇到的问题，并共同推进 rocket-render 快速迭代。
-
-<img alt="Join Discusion Group" src="https://jackysoft.github.io/rocket-render/wechat.jpg" width="300">
-
 ## Usage
 
 1. main.js 中全局安装插件
