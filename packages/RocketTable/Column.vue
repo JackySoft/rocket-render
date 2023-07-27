@@ -177,12 +177,15 @@ export default {
       // 明确标明不显示
       if (btn.permission == false) return false;
       // 结合返回数据来判断是否展示
-      if (btn.permission) {
+      if (typeof btn.permission === 'object') {
         let val = row[btn.permission.prop];
         // show来控制字段显示
         if (btn.permission.show && btn.permission.show[val]) return true;
         // hide来控制字段隐藏
         if (btn.permission.hide && !btn.permission.hide[val]) return true;
+      }
+      if (typeof btn.permission === 'function') {
+        return btn.permission(row);
       }
       return false;
     },

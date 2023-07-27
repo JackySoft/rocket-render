@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import BasicLayout from '../components/layout/BasicLayout';
+import BasicLayout from '@/components/layout/BasicLayout';
 
 Vue.use(Router);
 
@@ -16,42 +16,42 @@ export const routes = [
           exemption: true,
         },
         name: '欢迎使用本系统',
-        component: () => import('../views/welcome/Welcome.vue'),
+        component: () => import('@/views/welcome/Welcome.vue'),
       },
       {
         path: '/form',
         name: '表单',
-        component: () => import('./../components/layout/BlankLayout.vue'),
+        component: () => import('@/components/layout/BlankLayout.vue'),
         children: [
           {
             path: 'grid',
             name: '栅格表单',
-            component: () => import('./../views/form/GridQuery.vue'),
+            component: () => import('@/views/form/GridQuery.vue'),
           },
           {
             path: 'flex',
             name: 'flex表单',
-            component: () => import('./../views/form/FlexQuery.vue'),
+            component: () => import('@/views/form/FlexQuery.vue'),
           },
           {
             path: 'inline',
             name: '行内表单',
-            component: () => import('./../views/form/InlineQuery.vue'),
+            component: () => import('@/views/form/InlineQuery.vue'),
           },
           {
             path: 'dialog',
             name: '弹框基础表单',
-            component: () => import('./../views/form/DialogQuery.vue'),
+            component: () => import('@/views/form/DialogQuery.vue'),
           },
           {
             path: 'power',
             name: '弹框动态表单',
-            component: () => import('./../views/form/DialogPower.vue'),
+            component: () => import('@/views/form/DialogPower.vue'),
           },
           {
             path: 'drawer',
             name: '抽屉表单',
-            component: () => import('./../views/form/DrawerPower.vue'),
+            component: () => import('@/views/form/DrawerPower.vue'),
           },
           {
             path: 'nested',
@@ -59,51 +59,41 @@ export const routes = [
             meta: {
               exemption: true,
             },
-            component: () => import('./../views/form/NestedForm.vue'),
+            component: () => import('@/views/form/NestedForm.vue'),
           },
         ],
       },
       {
         path: '/table',
         name: '表格',
-        component: () => import('./../components/layout/BlankLayout.vue'),
+        component: () => import('@/components/layout/BlankLayout.vue'),
         children: [
-          {
-            path: 'basic',
-            name: '基础表格',
-            component: () => import('./../views/table/BasicTable.vue'),
-          },
-          {
-            path: 'high',
-            name: '高级表格',
-            component: () => import('./../views/table/HighTable.vue'),
-          },
           {
             path: 'json',
             name: '全新配置表格',
-            component: () => import('./../views/table/JsonTable.vue'),
+            component: () => import('@/views/table/JsonTable.vue'),
           },
         ],
       },
       {
         path: '/desc',
         name: '描述',
-        component: () => import('./../components/layout/BlankLayout.vue'),
+        component: () => import('@/components/layout/BlankLayout.vue'),
         children: [
           {
             path: 'basic',
             name: '常规描述信息',
-            component: () => import('./../views/desc/BasicDesc.vue'),
+            component: () => import('@/views/desc/BasicDesc.vue'),
           },
           {
             path: 'high',
             name: '插槽描述',
-            component: () => import('./../views/desc/SlotDesc.vue'),
+            component: () => import('@/views/desc/SlotDesc.vue'),
           },
           {
             path: 'edit',
             name: '切换编辑',
-            component: () => import('./../views/desc/DescEdit.vue'),
+            component: () => import('@/views/desc/DescEdit.vue'),
           },
         ],
       },

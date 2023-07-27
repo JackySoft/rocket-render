@@ -62,6 +62,7 @@
 import config from './nested';
 export default {
   name: 'dialog-nested',
+  title: '嵌套表单',
   data() {
     return {
       showLoading: false,

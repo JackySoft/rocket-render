@@ -1,14 +1,14 @@
 <template>
   <wrapper>
-    <search-box>
-      <!-- 表单查询区 -->
-      <search-form
-        inline="flex"
-        :json="form"
-        :model.sync="queryForm"
-        @handleQuery="getTableList"
-      />
-    </search-box>
+    <!-- <search-box> -->
+    <!-- 表单查询区 -->
+    <search-form
+      inline="flex"
+      :json="form"
+      :model.sync="queryForm"
+      @handleQuery="getTableList"
+    />
+    <!-- </search-box> -->
     <div class="table-box">
       <!-- 列表区域 -->
       <rocket-table
@@ -32,6 +32,7 @@
 <script>
 export default {
   name: 'query',
+  title: 'Flex表单：左右分布',
   data() {
     return {
       showLoading: false,
@@ -54,6 +55,26 @@ export default {
           model: 'user_name',
           label: '用户',
           placeholder: '请输入用户名称',
+          change(val, values, model) {
+            // 可获取所有值，也可直接重置修改其它字段
+            values.use_status = 2;
+          },
+        },
+        {
+          type: 'text',
+          model: 'user_age',
+          label: '年龄',
+          placeholder: '请输入用户年龄',
+          change(val, values, model) {
+            // 可获取所有值，也可直接重置修改其它字段
+            values.use_status = 2;
+          },
+        },
+        {
+          type: 'text',
+          model: 'user_age',
+          label: '年龄',
+          placeholder: '请输入用户年龄',
           change(val, values, model) {
             // 可获取所有值，也可直接重置修改其它字段
             values.use_status = 2;

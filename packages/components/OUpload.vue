@@ -11,85 +11,104 @@
   data: POST提交的额外参数
   style: 特殊样式定制
 -->
-
-  <el-upload
-    v-if="item.httpRequest"
-    v-bind="$attrs"
-    :drag="item.listType == 'upload'"
-    :before-upload="(file) => onBeforeUpload(file, item)"
-    :on-remove="handleFileRemove"
-    :on-preview="onPreview"
-    :on-exceed="onExceed"
-    :http-request="(info) => item.httpRequest(info, fileList)"
-  >
-    <template>
-      <!-- 设置隐藏域，专门保存图片地址 -->
-      <input type="hidden" :value="value" />
-      <!-- 默认卡片格式-->
-      <template v-if="item.listType === 'picture-card'">
-        <i class="el-icon-plus"></i>
+  <div>
+    <el-upload
+      v-if="item.httpRequest"
+      v-bind="$attrs"
+      :drag="item.listType == 'upload'"
+      :before-upload="(file) => onBeforeUpload(file, item)"
+      :on-remove="handleFileRemove"
+      :on-preview="onPreview"
+      :on-exceed="onExceed"
+      :http-request="(info) => item.httpRequest(info, fileList)"
+    >
+      <template>
+        <!-- 设置隐藏域，专门保存图片地址 -->
+        <input type="hidden" :value="value" />
+        <!-- 默认卡片格式-->
+        <template v-if="item.listType === 'picture-card'">
+          <i class="el-icon-plus"></i>
+        </template>
+        <template v-else-if="item.listType == 'upload'">
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        </template>
+        <template v-else-if="item.listType === 'avatar'">
+          <div class="el-upload-wrap">
+            <img v-if="url" :src="url" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </div>
+        </template>
+        <template v-else>
+          <el-button size="small" type="primary">点击上传</el-button>
+        </template>
       </template>
-      <template v-else-if="item.listType == 'upload'">
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+    </el-upload>
+    <el-upload
+      v-else
+      v-bind="$attrs"
+      :drag="item.listType == 'upload'"
+      :file-list="fileList"
+      :before-upload="(file) => onBeforeUpload(file, item)"
+      :on-remove="handleFileRemove"
+      :on-success="
+        (response, file, fileList) => onUploadSuccess(response, file, fileList)
+      "
+      :on-preview="onPreview"
+      :on-exceed="onExceed"
+    >
+      <template>
+        <!-- 设置隐藏域，专门保存图片地址 -->
+        <input type="hidden" :value="value" />
+        <!-- 默认卡片格式-->
+        <template v-if="item.listType === 'picture-card'">
+          <i class="el-icon-plus"></i>
+        </template>
+        <template v-else-if="item.listType == 'upload'">
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        </template>
+        <template v-else-if="item.listType === 'avatar'">
+          <div class="el-upload-wrap">
+            <img v-if="url" :src="url" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </div>
+        </template>
+        <template v-else>
+          <el-button size="small" type="primary">点击上传</el-button>
+        </template>
       </template>
-      <template v-else-if="item.listType === 'avatar'">
-        <div class="el-upload-wrap">
-          <img v-if="url" :src="url" class="avatar" />
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </div>
-      </template>
-      <template v-else>
-        <el-button size="small" type="primary">点击上传</el-button>
-      </template>
-    </template>
-  </el-upload>
-  <el-upload
-    v-else
-    v-bind="$attrs"
-    :drag="item.listType == 'upload'"
-    :file-list="fileList"
-    :before-upload="(file) => onBeforeUpload(file, item)"
-    :on-remove="handleFileRemove"
-    :on-success="
-      (response, file, fileList) => onUploadSuccess(response, file, fileList)
-    "
-    :on-preview="onPreview"
-    :on-exceed="onExceed"
-  >
-    <template>
-      <!-- 设置隐藏域，专门保存图片地址 -->
-      <input type="hidden" :value="value" />
-      <!-- 默认卡片格式-->
-      <template v-if="item.listType === 'picture-card'">
-        <i class="el-icon-plus"></i>
-      </template>
-      <template v-else-if="item.listType == 'upload'">
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      </template>
-      <template v-else-if="item.listType === 'avatar'">
-        <div class="el-upload-wrap">
-          <img v-if="url" :src="url" class="avatar" />
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </div>
-      </template>
-      <template v-else>
-        <el-button size="small" type="primary">点击上传</el-button>
-      </template>
-    </template>
-  </el-upload>
+    </el-upload>
+    <image-viewer :url="imgUrl" ref="imageViewer" />
+  </div>
 </template>
 <script>
+import ImageViewer from './ImageViewer.vue';
 export default {
   name: 'OUpload',
   props: ['item', 'value'],
+  components: {
+    ImageViewer,
+  },
   data() {
-    return {};
+    return {
+      imgUrl: '',
+    };
   },
   computed: {
     fileList() {
-      return this.value || [];
+      return (
+        this.value?.map((item) => {
+          return {
+            name: item.fileName,
+            ...item,
+            url:
+              this.item.domain && !item.url?.startsWith('http')
+                ? this.item.domain + item.url
+                : item.url,
+          };
+        }) || []
+      );
     },
     url() {
       let file = this.fileList[0] || {};
@@ -166,7 +185,13 @@ export default {
     },
     // 文件预览
     onPreview(file) {
-      if (this.item.onPreview) this.item.onPreview(file);
+      const suffix = /.jpg|.jpeg|.png/g;
+      if (this.item.onPreview) {
+        this.item.onPreview(file);
+      } else if (suffix.test(file.name)) {
+        this.imgUrl = file.url;
+        this.$refs.imageViewer.onPreview();
+      }
     },
     // 图片上传结果处理
     onUploadSuccess(res, file, fileList) {
@@ -182,18 +207,27 @@ export default {
       } = this.item.response || {};
       const result = response ? res[response] : res;
       // 保存上传内容到隐藏域
-      const list = fileList.slice();
+      const list = [];
+      this.value && list.push(...this.value);
       if (result[code] === codeVal) {
         const imgList = Array.isArray(result[data])
           ? result[data]
           : [result[data]];
         imgList.map((item) => {
           list.push({
+            // fileName 兼容业务
+            fileName: item[name],
             name: item[name],
             url: item[url],
           });
         });
         this.$emit('input', list);
+        if (
+          this.item.successCallback &&
+          typeof this.item.successCallback === 'function'
+        ) {
+          this.item.successCallback(result[data]);
+        }
       } else {
         // 报错后，需要移出
         this.fileList.pop();

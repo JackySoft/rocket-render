@@ -1,5 +1,118 @@
 # 版本说明
 
+## v2.3.0
+
+开发一系列便捷功能：
+
+1. search-form 组件在 flex 模式下，增加展开和收缩按钮，对于表单项有很多时，非常管用，会隐藏过多表单，手动点击按钮，才会展开所有表单项。
+
+2. search-form 和 rocket-form 针对下拉组件，增加 fetchOptions 方法，可以快捷赋值，解决过去通过下标索引的方式赋值的笨重问题。
+
+```js
+{
+  type: 'select',
+  model: 'cityId',
+  placeholder: '请选择城市',
+  options:[],
+  field:{
+    label: 'name',
+    value: 'id'
+  },
+  fetchOptions: async ()=>{
+    return await this.$api.getCityList();
+  }
+}
+```
+
+> field 字段主要用于对返回的数组做字段映射的，因为下拉框组件只能使用 label 和 value 字段，如果接口返回的是其它字段，就可以使用 field 做映射。
+
+3. search-form 和 rocket-form 支持直接通过字段对象取值，过去使用数组下标取值。
+
+```js
+// search-form
+// 获取model=user字段的options数组。
+const list = this.queryJson.$user.options;
+
+// rocket-form
+// 获取model=user字段的options数组。
+this.formJson.formList.$user.options = list;
+```
+
+> 数组中的每一个表单项会自动注册到上层对象中，并使用$访问。
+
+4. rocket-form 表单项展示隐藏增加函数支持。
+
+```js
+// 这是过去写法，当type包含1、2、3时，显示此下拉框
+{
+  type: 'select',
+  label: '城市',
+  show: {
+    model: 'type',
+    val: [1,2,3]
+  },
+  model:'cityId'
+}
+
+// 支持函数写法
+{
+  type: 'select',
+  label: '城市',
+  show: (form)=>{
+    return form.type.includes(1,2,3);
+  },
+  model:'cityId'
+}
+```
+
+5. search-form 默认自带样式，过去 search-form 无背景色、无默认样式。
+
+```css
+.rr-search-form {
+  background-color: #fff;
+  padding: 20px 20px 0;
+  border-radius: 4px;
+  border: 1px solid #ebeef5;
+}
+```
+
+> 如果跟业务不符，需要自行覆盖该默认样式。
+
+6. rocket-table 操作列的权限判断，支持函数调用
+
+```js
+{
+    prop: '',
+    label: '操作',
+    type: 'action',
+    fixed: 'right',
+    list: [
+        {
+            text: '编辑',
+            permission: ({ authStatus, status }) => {
+                return authStatus === 4 && status === 0;
+            },
+        },
+    ]
+}
+```
+
+7. 下拉框、级联框、文本框支持手动关闭清除图标
+
+```js
+{
+  type: 'input',
+  model: 'userName',
+  clearable: true,
+}
+```
+
+> 过去文本框的清除功能，默认开启，但无法关闭，现在可以手动关闭，默认是开启状态。
+
+8. 上传组件支持图片预览功能。
+9. 表单验证返回了 promise，支持 await 调用。
+10. 表单中支持嵌套表格，只需要使用 type='table'即可。
+
 ## v2.2.16
 
 1. 重构 RocketTable，简化使用方式；

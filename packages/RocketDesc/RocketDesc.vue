@@ -13,7 +13,11 @@
     </template>
     <!-- 描述内容动态遍历 -->
     <template v-for="item in json.list">
-      <el-descriptions-item :key="item.label" v-bind="item">
+      <el-descriptions-item
+        :key="item.label"
+        v-bind="item"
+        v-if="calcItemShow(item, values)"
+      >
         <!-- label插槽 -->
         <template slot="label" v-if="item.slotLabelName">
           <slot :name="item.slotLabelName"></slot>
@@ -68,6 +72,17 @@ export default {
     return {};
   },
   methods: {
+    calcItemShow(item, value) {
+      if (!item.show) {
+        return true;
+      }
+      if (typeof item.show === 'object') {
+        return item.show.val.includes(value[item.show.model]);
+      }
+      if (typeof item.show === 'function') {
+        return item.show(value);
+      }
+    },
     handleObject(item) {
       if (item.prop.indexOf('.') > -1) {
         return eval(`this.values.${item.prop}`);
@@ -88,9 +103,12 @@ export default {
     },
     handleData(item) {
       if (item.formatter) {
-        return item.formatter(this.values) || '-';
+        return item.formatter(this.values);
       }
       if (!item.prop) return;
+      if (item.prop.indexOf('.') > -1) {
+        return eval(`this.values.${item.prop}`) || '-';
+      }
       let val = this.values[item.prop];
       if (item.filter) {
         if (item.filter == 'money') {
@@ -101,9 +119,8 @@ export default {
           return formatDate(val) || '-';
         }
       }
-      if (item.prop.indexOf('.') > -1) {
-        return eval(`this.values.${item.prop}`) || '-';
-      }
+      if (val === null || val == undefined || val === '') return '-';
+      if (Number(val) == 0) return val;
       return val || '-';
     },
     handleInput(val, item) {
@@ -130,7 +147,6 @@ export default {
       } else {
         this.$emit('update:values', { ...this.values, [item.prop]: val });
       }
-      // this.$emit('update:values', { ...this.values, [item.prop]: val });
     },
   },
 };

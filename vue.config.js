@@ -1,3 +1,4 @@
+const path = require('path');
 module.exports = {
   productionSourceMap: true,
   lintOnSave: true,
@@ -5,11 +6,11 @@ module.exports = {
     index: {
       entry: 'examples/main.js',
       template: 'public/index.html',
-      filename: 'index.html'
-    }
+      filename: 'index.html',
+    },
   },
-  outputDir:'dist/rocket-render',
-  publicPath:'/rocket-render',
+  outputDir: 'dist/rocket-render',
+  publicPath: '/rocket-render',
   // 开发运行相关配置
   devServer: {
     open: false, // 自动打开浏览器
@@ -17,7 +18,15 @@ module.exports = {
     // 浏览器 overlay（刷新） 同时显示eslint的警告和错误
     overlay: {
       warnings: true,
-      errors: true
-    }
-  }
-}
+      errors: true,
+    },
+  },
+  configureWebpack: {
+    resolve: {
+      extensions: ['.js', '.vue'],
+      alias: {
+        '@': path.resolve(__dirname, 'examples'),
+      },
+    },
+  },
+};

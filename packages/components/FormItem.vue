@@ -11,12 +11,21 @@
     :size="item.size"
     :class="['oc-form-item', item.class]"
   >
+    <!-- 全局注册自定义form-item -->
+    <component
+      v-if="include(item.type)"
+      :is="item.type"
+      :style="item.style || item.width ? `width:${item.width}` : ''"
+      v-bind="$attrs"
+      v-on="$listeners"
+    >
+    </component>
     <!-- text/textarea/number -->
     <el-input
-      v-if="['input', 'text', 'textarea', 'number'].includes(item.type)"
+      v-else-if="['input', 'text', 'textarea', 'number'].includes(item.type)"
       :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
       :class="[item.arrow === false ? 'disable-arrow' : '']"
-      clearable
+      :clearable="typeof item.clearable == 'undefined' ? true : item.clearable"
       v-bind="$attrs"
       v-on="$listeners"
     >
@@ -36,8 +45,10 @@
     <el-select
       v-else-if="item.type === 'select'"
       :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
-      clearable
-      filterable
+      :clearable="typeof item.clearable == 'undefined' ? true : item.clearable"
+      :filterable="
+        typeof item.filterable == 'undefined' ? true : item.filterable
+      "
       v-bind="$attrs"
       v-on="$listeners"
     >
@@ -180,7 +191,10 @@
     <el-cascader
       v-else-if="item.type === 'cascader'"
       :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
-      clearable
+      :clearable="typeof item.clearable == 'undefined' ? true : item.clearable"
+      :filterable="
+        typeof item.filterable == 'undefined' ? true : item.filterable
+      "
       v-bind="$attrs"
       v-on="$listeners"
     />
@@ -193,18 +207,21 @@
     />
     <!-- 文件上传 -->
     <OUpload
-      v-if="item.type === 'upload'"
+      v-else-if="item.type === 'upload'"
       :item="item"
       v-bind="$attrs"
       v-on="$listeners"
     />
     <!-- link -->
-    <el-link v-if="item.type === 'link'" v-bind="item.link" v-on="$listeners">{{
-      item.text
-    }}</el-link>
+    <el-link
+      v-else-if="item.type === 'link'"
+      v-bind="item.link"
+      v-on="$listeners"
+      >{{ item.text }}</el-link
+    >
     <!-- 按钮 -->
     <el-button
-      v-if="item.type === 'button'"
+      v-else-if="item.type === 'button'"
       :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
       v-bind="item.button"
       v-on="$listeners"
@@ -212,10 +229,10 @@
       {{ item.button.text }}
     </el-button>
     <!-- 纯文本 -->
-    <div v-if="item.type === 'label'" :style="item.style">
+    <div v-else-if="item.type === 'label'" :style="item.style">
       {{ item.text || $attrs.value }}
     </div>
-    <template v-if="item.tips || item.type === 'tips'">
+    <template v-else-if="item.tips || item.type === 'tips'">
       <!-- 默认tips在文本框下面-->
       <div class="form-tip" v-if="typeof item.tips === 'string'">
         {{ item.tips }}
@@ -236,10 +253,11 @@
 </template>
 <script>
 import OUpload from './OUpload';
-export default {
+let components = { OUpload };
+const options = {
   name: 'FormItem',
   props: ['item'],
-  components: { OUpload },
+  components,
   data() {
     return {
       pickerOptions: {
@@ -330,5 +348,22 @@ export default {
       },
     };
   },
+  created() {
+    if (this.item.fetchOptions) {
+      this.item.fetchOptions().then((res) => {
+        this.item.options = res;
+      });
+    }
+  },
+  methods: {
+    include(name) {
+      return components[name];
+    },
+  },
 };
+export function registFormItem(newcomponents) {
+  Object.assign(components, newcomponents);
+}
+
+export default options;
 </script>

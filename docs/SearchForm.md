@@ -2,7 +2,7 @@
 
 基础查询表单组件，可设置为栅格布局或行内布局，支持 ElementUI 上所有表单组件，语法与原生一致。
 
-> SearchForm 只能用于查询表单，更复杂的表单可使用 RocketForm。SearchForm 支撑三种布局类型：grid 布局、flex 布局和 inline 布局
+> SearchForm 只能用于查询表单，更复杂的表单可使用 RocketForm。SearchForm 支撑三种布局类型：grid 布局、flex 布局和 inline 布局，默认为 flex 模式（左右分布）。
 
 ## 基本用法 - 行内表单(inline=inline)
 

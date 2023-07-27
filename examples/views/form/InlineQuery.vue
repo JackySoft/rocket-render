@@ -1,14 +1,12 @@
 <template>
   <wrapper>
-    <search-box>
-      <!-- 表单查询区 -->
-      <search-form
-        inline="inline"
-        :json="form"
-        :model.sync="queryForm"
-        @handleQuery="getTableList"
-      />
-    </search-box>
+    <!-- 表单查询区 -->
+    <search-form
+      inline="inline"
+      :json="form"
+      :model.sync="queryForm"
+      @handleQuery="getTableList"
+    />
     <div class="table-box">
       <!-- 列表区域 -->
       <rocket-table
@@ -32,6 +30,7 @@
 <script>
 export default {
   name: 'query',
+  title: '行内表单',
   data() {
     return {
       showLoading: false,

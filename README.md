@@ -1,12 +1,16 @@
 ## rocket-render
 
-一款基于 Vue2.6 实现的表单、表格低代码插件
+一款基于 Vue2.6 实现的表单、表格低代码插件，支持查询表单、表单联动、表单显隐、表单异步赋值，动态表格能各项能力。组件文档可能更新不及时，大家可以查看 [Release 文档](https://jackysoft.github.io/rocket-render-doc/Release.html)。
 
 ## Document
 
 - 体验 DEMO：https://jackysoft.github.io/rocket-render/
 
 - 开发文档：https://jackysoft.github.io/rocket-render-doc
+
+- Release： [Release 文档](https://jackysoft.github.io/rocket-render-doc/Release.html)。
+
+> 2.3.0 做了重大调整，其中 Search-Form 组件增加了默认样式，可能会受影响，大家可以删除自己的样式或者从新覆盖 rocket-render 的样式。
 
 ## Features
 

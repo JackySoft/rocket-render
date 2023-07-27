@@ -17,10 +17,7 @@
         <el-col
           :span="item.span || 24"
           :key="index"
-          v-if="
-            (item.show && item.show.val.includes(value[item.show.model])) ||
-            !item.show
-          "
+          v-if="calcItemShow(item, value)"
         >
           <template v-if="item.type === 'inline'">
             <el-form-item v-bind="{ ...item, list: null, labelSuffix: '' }">
@@ -163,7 +160,21 @@ export default {
       refForm: this.json.ref || 'rocketForm',
     };
   },
+  created() {
+    this.setFastProp();
+  },
   methods: {
+    calcItemShow(item, value) {
+      if (!item.show) {
+        return true;
+      }
+      if (typeof item.show === 'object') {
+        return item.show.val.includes(value[item.show.model]);
+      }
+      if (typeof item.show === 'function') {
+        return item.show(value);
+      }
+    },
     /**
      * 触发自定义事件
      * change(val,values,item,json)当前值/所有值/当前item/所有配置
@@ -231,15 +242,36 @@ export default {
       });
     },
     // 自定义校验方法,回调参数为被校验的表单项 prop 值，表示校验是否通过
-    validate(fn) {
-      this.$refs[this.refForm].validate((valid) => {
-        typeof fn === 'function' && fn(valid);
-      });
+    validate(callback) {
+      // if no callback, return promise
+      if (typeof callback !== 'function' && window.Promise) {
+        return new window.Promise(async (resolve, reject) => {
+          this.$refs[this.refForm].validate((valid) => {
+            resolve(valid);
+          });
+        });
+      } else {
+        this.$refs[this.refForm].validate((valid) => {
+          typeof callback === 'function' && callback(valid);
+        });
+      }
     },
     handleClick(item) {
       if (typeof item.click === 'function') {
         item.click(this.value, this.config);
       }
+    },
+    setFastProp() {
+      this.json.formList.forEach((item) => {
+        const fastProp = `$${item.model}`;
+        if (item.model && !this.json.formList[fastProp]) {
+          Object.defineProperty(this.json.formList, fastProp, {
+            get() {
+              return item;
+            },
+          });
+        }
+      });
     },
   },
 };

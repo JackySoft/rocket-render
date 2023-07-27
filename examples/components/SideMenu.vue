@@ -11,7 +11,7 @@
         </template>
         <side-menu :menuList="menu.children" :prefix="prefix + menu.path" />
       </el-submenu>
-      <el-menu-item v-else :key="menu.name" :index="prefix + '/' + menu.path">
+      <el-menu-item v-else :key="menu.path" :index="prefix + '/' + menu.path">
         <span style="margin-left: 10px">{{ menu.name }}</span>
       </el-menu-item>
     </template>

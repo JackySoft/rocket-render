@@ -10,7 +10,7 @@
     >
       <!--  logo与名称  -->
       <div class="logo" @click="redirectToIndex">
-        <img src="../../assets/logo/logo.png" />
+        <img src="@/assets/logo/logo.png" />
         <p v-if="!isCollapse">Rocket</p>
       </div>
       <!--  展开收缩按钮  -->
@@ -26,14 +26,14 @@
       <!--  topbar  -->
       <div class="basic-layout-right-top">Rocket-Render</div>
       <!-- <BreadCrumb/> -->
-      <router-view class="basic-layout-right-main" />
+      <router-view class="wrapper" />
     </div>
   </div>
 </template>
 
 <script>
 import SideMenu from './../SideMenu.vue';
-import { routes } from './../../router/index';
+import { routes } from '@/router/index';
 export default {
   name: 'BasicLayout',
   components: { SideMenu },
@@ -42,9 +42,6 @@ export default {
       isCollapse: false, // 是否展示或隐藏
       menuList: routes[0].children,
     };
-  },
-  mounted() {
-    console.log(this.menuList);
   },
   methods: {
     redirectToIndex() {
@@ -129,7 +126,7 @@ export default {
   justify-content: flex-end;
 }
 
-.basic-layout-right-main {
+.wrapper {
   flex: 1;
   box-sizing: border-box;
   display: flex;

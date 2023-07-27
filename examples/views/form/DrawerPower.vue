@@ -46,6 +46,7 @@
 <script>
 export default {
   name: 'drawer-power',
+  title: '抽屉表单',
   data() {
     return {
       queryForm: {}, // v-model值

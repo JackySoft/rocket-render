@@ -2,9 +2,9 @@
   <Wrapper>
     <div class="welcome">
       <div class="welcome-desc">
-        <!-- TODO 初始化完成后可以替换这里的相关说明 -->
         <h1 class="welcome-inner-title">欢迎使用</h1>
         <p class="welcome-inner-content">Rocket-Render</p>
+        <p class="welcome-title-tip">使用JSON快速搭建中后台页面。</p>
         <p class="welcome-inner-tip">-- 河畔一角</p>
         <p class="wechat"><img src="wechat.jpg" alt="" /></p>
       </div>
@@ -49,6 +49,12 @@ export default {
         height: 100%;
       }
     }
+  }
+
+  .welcome-title-tip {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #151515;
   }
 
   .welcome-inner-tip {

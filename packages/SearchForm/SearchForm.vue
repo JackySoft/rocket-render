@@ -47,7 +47,13 @@
     </el-row>
     <!-- flex布局-->
     <template v-else-if="mode == 'flex'">
-      <div class="rr-form-item">
+      <div
+        class="rr-form-item"
+        :style="{
+          height: isOpen ? 'auto' : '51px',
+          overflow: isOpen ? 'auto' : 'hidden',
+        }"
+      >
         <template v-for="(item, index) in json">
           <FormItem
             :key="index"
@@ -57,8 +63,17 @@
             @input="(val) => handleInput(item, val)"
           />
         </template>
+        <div ref="expandFlag"></div>
       </div>
       <div class="rr-action">
+        <el-button
+          type="text"
+          v-if="showOpen"
+          @click="isOpen = !isOpen"
+          size="medium"
+          >{{ isOpen ? '收起' : '展开'
+          }}<i :class="[isOpen ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i
+        ></el-button>
         <el-button type="primary" @click="handleQuery">查询</el-button>
         <el-button @click="handleReset">重置</el-button>
       </div>
@@ -209,8 +224,13 @@ export default {
       return this.inline || this.$rocket.searchForm.inline || 'flex';
     },
   },
+  created() {
+    this.setFastProp();
+  },
   mounted() {
     window.onresize = debounce(this.handleLayout, 500, true);
+    // flex模式下，从新计算展开按钮是否显示
+    if (this.mode == 'flex') this.calcHeight();
   },
   methods: {
     /**
@@ -325,6 +345,23 @@ export default {
       this.xl = xl;
       this.screenWidth = w;
     },
+    setFastProp() {
+      this.json.forEach((item) => {
+        const fastProp = `$${item.model}`;
+        if (item.model && !this.json[fastProp]) {
+          Object.defineProperty(this.json, fastProp, {
+            get() {
+              return item;
+            },
+          });
+        }
+      });
+    },
+    // flex 布局模式下，计算是否有展开按钮
+    calcHeight() {
+      this.showOpen = false;
+      if (this.$refs.expandFlag.offsetTop > 60) this.showOpen = true;
+    },
   },
   /**
    * 销毁全局事件
@@ -348,10 +385,15 @@ export default {
 <style lang="scss" scoped>
 // 默认为白色背景，当在弹框中时为灰色背景
 .rr-search-form {
+  background-color: #fff;
+  padding: 20px 20px 0;
+  border-radius: 4px;
+  border: 1px solid #ebeef5;
   &.rr-search-flex {
     display: flex;
     justify-content: space-between;
     .rr-form-item {
+      position: relative;
       flex: 1;
     }
     .rr-action {

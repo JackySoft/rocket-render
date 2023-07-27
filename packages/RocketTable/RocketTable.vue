@@ -80,8 +80,17 @@
         :size="size"
         :border="config.border"
         element-loading-text="加载中..."
-        v-bind="config"
+        v-bind="{
+          ...config,
+          title: null,
+          columns: null,
+          pagination: null,
+          pager: null,
+          toolbar: null,
+          actionList: null,
+        }"
         v-on="$listeners"
+        :cell-style="getCellStyle"
       >
         <template v-for="(item, i) in config.columns">
           <!-- 处理多选 -->
@@ -115,10 +124,7 @@
               </el-tooltip>
             </template>
             <template slot-scope="scope">
-              <slot
-                :name="item.slotName"
-                v-bind:row="{ $index: scope.$index, ...scope.row }"
-              ></slot>
+              <slot :name="item.slotName" v-bind:row="formatRow(scope)"></slot>
             </template>
           </el-table-column>
           <!-- 多级表头 -->
@@ -249,6 +255,17 @@ export default {
   },
   components: { ToolBar, Column },
   methods: {
+    getCellStyle({ column }) {
+      // TODO 针对 Safari表格 width 与 showOverflowTooltip 共存异常
+      const tempWidth = column.realWidth || column.width;
+      if (column.showOverflowTooltip) {
+        return {
+          minWidth: tempWidth + 'px',
+          maxWidth: tempWidth + 'px',
+        };
+      }
+      return {};
+    },
     // 控制操作栏按钮是否显示
     isShowAction(btn = {}) {
       // 明确标明显示
@@ -258,6 +275,10 @@ export default {
       // 明确标明不显示
       if (btn.permission == false) return false;
       return false;
+    },
+    formatRow(scope) {
+      scope.row.$index = scope.$index;
+      return scope.row;
     },
     /**
      * 表格数据刷新
@@ -299,6 +320,14 @@ export default {
         pageSize: val,
         pageNum: 1,
         total: this.config.pagination.total,
+      });
+      this.$emit('update:json', {
+        ...this.config,
+        pagination: {
+          pageSize: val,
+          pageNum: 1,
+          total: this.config.pagination.total,
+        },
       });
       this.$emit('handleChange', 1);
     },

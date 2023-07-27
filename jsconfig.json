@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "commonjs",
+    "paths": {
+      "@/*": ["./examples/*"],
+      "@api/*": ["./examples/api/*"],
+      "@styles/*": ["./examples/styles/*"],
+      "@utils/*": ["./examples/utils/*"]
+    }
+  },
+  "vueCompilerOptions": {
+    "target": 2
+  },
+  "checkJs": false,
+  "include": ["examples/**/*"],
+  "exclude": ["node_modules/**/*"]
+}

@@ -101,16 +101,21 @@
             filterable: true, //支持输入过滤
             clearable: true,
             change: this.getSelectList, // 自定义事件，回调接口
+            field: {
+              label: 'name',
+              value: 'id',
+            },
             options: [
-              { label: '全部', value: 0 },
-              { label: '已注销', value: 1 },
-              { label: '老用户', value: 2 },
-              { label: '新用户', value: 3 },
+              { name: '全部', id: 0 },
+              { name: '已注销', id: 1 },
+              { name: '老用户', id: 2 },
+              { name: '新用户', id: 3 },
             ],
           },
           {
             type: 'text',
             model: 'userName',
+            label: '用户名',
             placeholder: '请输入用户名',
           },
         ],
@@ -132,6 +137,72 @@
 ```
 
 :::
+
+> field 为字段映射，下拉框默认使用 label 和 value 渲染，如果接口返回的不是 label 和 value，可以使用 field 进行转换，非常便捷。
+
+:::demo
+
+```html
+<search-form inline="flex" :json.sync="form" :model.sync="queryForm" />
+
+<script>
+  export default {
+    data() {
+      return {
+        queryForm: {
+          userStatus: 1,
+        },
+        form: [
+          {
+            type: 'select',
+            model: 'userStatus',
+            label: '用户状态',
+            field: {
+              label: 'name',
+              value: 'id',
+            },
+            options: [],
+            fetchOptions: async () => {
+              return [
+                {
+                  name: '在职',
+                  id: 0,
+                },
+                {
+                  name: '离职',
+                  id: 1,
+                },
+              ];
+            },
+          },
+        ],
+      };
+    },
+    mounted() {
+      setTimeout(() => {
+        this.getList();
+      });
+    },
+    methods: {
+      getList() {
+        // 此处可调用接口、修改form对象等
+        this.form[0].options.push({
+          name: '测试',
+          id: Math.floor(Math.random() * 100),
+        });
+
+        // 或者
+        this.form.$userStatus.options.push({ name: 'hello', id: 3 });
+      },
+    },
+  };
+</script>
+```
+
+:::
+
+> 下拉框动态赋值可以使用 fetchOptions 函数直接调用接口进行返回，或者使用 this.form[0].options 动态赋值，还支持通过$拼接字段的方式快捷赋值。
+> 注意：rocket-form跟search-form结构不太一致，所以rocket-form中使用this.json.formList.$userStatus.options 的方式赋值或者取值。
 
 ## Date 组件
 

@@ -1,13 +1,11 @@
 <template>
   <wrapper>
-    <search-box>
-      <!-- 表单查询区 -->
-      <search-form
-        :json="form"
-        :model.sync="queryParams"
-        @handleQuery="getTableList"
-      />
-    </search-box>
+    <!-- 表单查询区 -->
+    <search-form
+      :json="form"
+      :model.sync="queryParams"
+      @handleQuery="getTableList"
+    />
     <div class="table-box">
       <!-- 列表区域 -->
       <rocket-table
@@ -68,6 +66,7 @@
 <script>
 export default {
   name: 'dialog-power',
+  title: '弹框表单2',
   data() {
     return {
       showLoading: false,
