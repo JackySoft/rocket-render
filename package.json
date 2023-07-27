@@ -48,11 +48,8 @@
     "release:patch": "standard-version --release-as patch"
   },
   "dependencies": {
-    "axios": "^0.24.0",
-    "core-js": "^3.19.0",
     "element-ui": "^2.15.6",
-    "vue": "^2.6.11",
-    "vue-router": "^3.5.3"
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -69,7 +66,10 @@
     "vue-template-compiler": "^2.6.11",
     "vuepress": "^1.8.2",
     "vuepress-plugin-auto-sidebar": "^2.3.2",
-    "vuepress-plugin-demo-container": "^0.2.0"
+    "vuepress-plugin-demo-container": "^0.2.0",
+    "axios": "^0.24.0",
+    "core-js": "^3.19.0",
+    "vue-router": "^3.5.3"
   },
   "browserslist": [
     "> 1%",
