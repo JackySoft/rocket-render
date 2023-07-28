@@ -46,14 +46,12 @@ Vue.use(RocketRender)
 <template>
   <div>
     <!-- rocket-form没有背景和边距，为了体验，可以给外层添加一个容器并设置背景和边距 -->
-    <div class="search-box">
-      <!-- 表单查询区 -->
-      <search-form
-        :json="form"
-        :model.sync="queryForm"
-        @handleQuery="getTableList"
-      />
-    </div>
+    <!-- 表单查询区 -->
+    <search-form
+      :json="form"
+      :model.sync="queryForm"
+      @handleQuery="getTableList"
+    />
     <!-- 列表区域，支撑各种场景的列显示以及自定义列 -->
     <rocket-table :json="tableJson" @handleChange="getTableList" />
   </div>
@@ -89,6 +87,10 @@ Vue.use(RocketRender)
               // 可获取所有值，也可直接重置修改其它字段
               values.use_status = 2;
             },
+            // 用来判断当前表单是否显示
+            show(values) {
+              return values.use_status == 1;
+            },
             prepend: 'https://',
             append: '.com',
           },
@@ -101,6 +103,11 @@ Vue.use(RocketRender)
               { label: '在线', value: 1 },
               { label: '离线', value: 2 },
             ],
+            // 下拉框动态取值，可以使用
+            fetchOptions: async () => {
+              return await request('/api/userList');
+            },
+            // 或者在mounted中，通过this.form[1].options = [{label:1,value:1}] 动态赋值
           },
           {
             type: 'select',
@@ -315,17 +322,10 @@ Vue.use(RocketRender)
       },
       handleTime(val) {
         this.form[7].pickerOptions.minTime = val;
+        // 或者通过$获取每个表单字段进行对象赋值
+        this.form.$time_part_start.pickerOptions.minTime = val;
       },
     },
   };
 </script>
-<style lang="scss">
-  .search-box {
-    background-color: #ffffff;
-    margin-bottom: 20px;
-    padding: 20px 20px 0;
-    border-radius: 4px;
-    border: 1px solid #ebeef5;
-  }
-</style>
 ```
