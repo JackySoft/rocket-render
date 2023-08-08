@@ -32,12 +32,22 @@ npm i rocket-render -S
 
 1. main.js 中全局安装插件
 
-```
-import Vue from 'vue'
-import RocketRender from 'rocket-render'
-import 'rocket-render/lib/rocket-render.css'
+```js
+import Vue from 'vue';
+import RocketRender from 'rocket-render';
+import 'rocket-render/lib/rocket-render.css';
 
-Vue.use(RocketRender)
+Vue.use(RocketRender, {
+  size: 'small', // form/table全局尺寸: medium / small / mini
+  empty: '-', // table列中字段为空时，默认显示内容
+  inline: 'flex', // 搜索表单全局配置
+  toolbar: true, // 是否展示工具条
+  align: center, // 表格列对齐方式
+  border: true, // 表格是否显示边框
+  pager: true, // 是否显示分页器
+  pageSize: 20, // 全局每页条数
+  emptyText: '暂无数据', // 表格无数据时展示内容
+});
 ```
 
 2. 页面使用组件
@@ -83,6 +93,7 @@ Vue.use(RocketRender)
             model: 'user_name',
             label: '用户',
             placeholder: '请输入用户名称',
+            // 所有组件都正常change事件
             change(val, values, model) {
               // 可获取所有值，也可直接重置修改其它字段
               values.use_status = 2;
@@ -103,11 +114,6 @@ Vue.use(RocketRender)
               { label: '在线', value: 1 },
               { label: '离线', value: 2 },
             ],
-            // 下拉框动态取值，可以使用
-            fetchOptions: async () => {
-              return await request('/api/userList');
-            },
-            // 或者在mounted中，通过this.form[1].options = [{label:1,value:1}] 动态赋值
           },
           {
             type: 'select',
@@ -122,12 +128,22 @@ Vue.use(RocketRender)
               { label: '老用户', value: 2 },
               { label: '新用户', value: 3 },
             ],
+            // 如果接口返回的不是label/value结构，可以使用field进行映射
+            field: {
+              label: 'label',
+              value: 'value',
+            },
           },
           {
             type: 'select',
             model: 'user_list',
             label: '用户列表',
             options: [],
+            // 异步获取下拉选项值
+            fetchOptions: async () => {
+              return await request('/api/userList');
+            },
+            // 或者在mounted中，通过this.form[1].options = [{label:1,value:1}] 动态赋值
           },
           {
             type: 'date',
@@ -284,6 +300,24 @@ Vue.use(RocketRender)
             {
               prop: 'register_date',
               label: '注册时间',
+            },
+            {
+              type: 'action',
+              list: [
+                {
+                  text: '查看',
+                  // 按钮显示：支持boolean配置
+                  permission: true,
+                },
+                {
+                  text: '查看',
+                  // 按钮显示：支持函数调用
+                  permission: (row) => {
+                    if (row.status === 1) return true;
+                    return false;
+                  },
+                },
+              ],
             },
           ],
           data: [],

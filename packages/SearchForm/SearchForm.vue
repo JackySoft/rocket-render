@@ -397,7 +397,7 @@ export default {
       flex: 1;
     }
     .rr-action {
-      width: 200px;
+      min-width: 200px;
       text-align: right;
     }
   }
