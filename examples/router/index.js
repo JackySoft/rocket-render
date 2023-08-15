@@ -24,24 +24,9 @@ export const routes = [
         component: () => import('@/components/layout/BlankLayout.vue'),
         children: [
           {
-            path: 'grid',
-            name: '栅格表单',
-            component: () => import('@/views/form/GridQuery.vue'),
-          },
-          {
-            path: 'flex',
-            name: 'flex表单',
-            component: () => import('@/views/form/FlexQuery.vue'),
-          },
-          {
-            path: 'inline',
-            name: '行内表单',
-            component: () => import('@/views/form/InlineQuery.vue'),
-          },
-          {
-            path: 'dialog',
-            name: '弹框基础表单',
-            component: () => import('@/views/form/DialogQuery.vue'),
+            path: 'type',
+            name: '表单类型',
+            component: () => import('@/views/form/FormType.vue'),
           },
           {
             path: 'power',

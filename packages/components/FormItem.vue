@@ -206,7 +206,7 @@
       v-on="$listeners"
     />
     <!-- 文件上传 -->
-    <OUpload
+    <RUpload
       v-else-if="item.type === 'upload'"
       :item="item"
       v-bind="$attrs"
@@ -252,8 +252,8 @@
   </el-form-item>
 </template>
 <script>
-import OUpload from './OUpload';
-let components = { OUpload };
+import RUpload from './Upload';
+let components = { RUpload };
 const options = {
   name: 'FormItem',
   props: ['item'],

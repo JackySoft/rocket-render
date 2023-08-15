@@ -207,20 +207,26 @@ export default {
       } = this.item.response || {};
       const result = response ? res[response] : res;
       // 保存上传内容到隐藏域
-      const list = [];
+      let list = [];
       this.value && list.push(...this.value);
       if (result[code] === codeVal) {
-        const imgList = Array.isArray(result[data])
-          ? result[data]
-          : [result[data]];
-        imgList.map((item) => {
-          list.push({
-            // fileName 兼容业务
-            fileName: item[name],
-            name: item[name],
-            url: item[url],
+        if (this.item.listType === 'avatar') {
+          const imageData = result[data];
+          list = [imageData];
+        } else {
+          const imgList = Array.isArray(result[data])
+            ? result[data]
+            : [result[data]];
+          imgList.map((item) => {
+            list.push({
+              // fileName 兼容业务
+              fileName: item[name],
+              name: item[name],
+              url: item[url],
+            });
           });
-        });
+        }
+
         this.$emit('input', list);
         if (
           this.item.successCallback &&

@@ -15,29 +15,26 @@
 9. 通过 v-bind="$attrs"和v-on="$listners"保留大部分原生属性和事件
 10. 支持表格索引列、支持表格多选功能
 11. 支持表格自定义列
+12. 表格中的列表按钮，支持使用 permission 来控制显示和隐藏，permission 支持布尔、函数和对象等三种配置方式。
 
 ## 基本用法[支持复选、单元格点击、图片、formatter、badge]
 
 :::demo
 
 ```html
-<div class="search-box">
-  <search-form
-    :json="searchJson"
-    :model.sync="queryForm"
-    @handleQuery="getTableList"
-  />
-</div>
+<search-form
+  :json="searchJson"
+  :model.sync="queryForm"
+  @handleQuery="getTableList"
+/>
 <!-- 列表区域 -->
-<div class="table-box">
-  <rocket-table
-    :json.sync="tableJson"
-    @handleCellClick="handleCellClick"
-    @handleOperate="handleOperate"
-    @handleChange="getTableList"
-    @handleAction="handleAction"
-  />
-</div>
+<rocket-table
+  :json.sync="tableJson"
+  @handleCellClick="handleCellClick"
+  @handleOperate="handleOperate"
+  @handleChange="getTableList"
+  @handleAction="handleAction"
+/>
 <script>
   export default {
     data() {
@@ -149,7 +146,10 @@
                 },
                 {
                   text: '编辑',
-                  permission: true,
+                  // 支持函数的形式判断是否显示
+                  permission: (row) => {
+                    return row.status == 1;
+                  },
                 },
                 {
                   text: '删除',
@@ -207,7 +207,8 @@
         }
       },
       // action为点击的按钮索引，row为当前行的数据
-      handleAction({ index, row }) {
+      handleAction({ index, text, row }) {
+        // 也可以根据text的按钮文本来判断，因为索引不太可靠，有时候，删除一个按钮以后，索引会发生变化。
         if (index === 0) {
           this.$message.success('你选择了第一个按钮');
         } else if (index === 1) {
@@ -773,6 +774,8 @@
 
 :::
 
+> permission 用来控制操作按钮或者列表中的按钮的显示和隐藏，也可以直接使用函数来处理更加方便。
+
 ## RocketTable - json 参数
 
 | 参数       | 说明                          | 类型          | 可选值       | 默认值 |
@@ -787,24 +790,28 @@
 
 ## RocketTable - json - columns 对象
 
-| 参数                | 说明                           | 类型    | 可选值                |   默认值   |
-| :------------------ | :----------------------------- | :------ | :-------------------- | :--------: |
-| prop                | 列属性                         | String  | 无                    |     无     |
-| label               | 列头                           | String  | 无                    |     无     |
-| width               | 设置列宽度                     | Number  | 无                    |     无     |
-| type                | 列特殊类型显示                 | String  | 参考 column-type      |     无     |
-| list                | 显示操作列表                   | Array   | 参考 column-list      |     无     |
-| sortable            | 是否排序                       | Boolean | `true/false/custom`   |     无     |
-| sortOrders          | 设置排序方式                   | Array   | 参考 Element          |     无     |
-| span                | 多级表头                       | Array   | 参考示例              |     无     |
-| empty               | 当返回空的时候，设置默认显示值 | String  | `--`                  |     无     |
-| tips                | 表头增加提示语                 | String  | `--`                  |     无     |
-| formatter           | 数据格式化，同官方             | String  | `--`                  |     无     |
-| filter              | 过滤器，用来处理日期和金额     | String  | 'money/date/datetime' |     无     |
-| showOverflowTooltip | 当内容过长被隐藏时显示 tooltip | Boolean | true                  | flase/true |
+| 参数                | 说明                           | 类型             | 可选值                |   默认值   |
+| :------------------ | :----------------------------- | :--------------- | :-------------------- | :--------: |
+| prop                | 列属性                         | String           | 无                    |     无     |
+| label               | 列头                           | String           | 无                    |     无     |
+| width               | 设置列宽度                     | Number           | 无                    |     无     |
+| type                | 列特殊类型显示                 | String           | 参考 column-type      |     无     |
+| list                | 显示操作列表                   | Array            | 参考 column-list      |     无     |
+| sortable            | 是否排序                       | Boolean          | `true/false/custom`   |     无     |
+| sortOrders          | 设置排序方式                   | Array            | 参考 Element          |     无     |
+| span                | 多级表头                       | Array            | 参考示例              |     无     |
+| empty               | 当返回空的时候，设置默认显示值 | String           | `--`                  |     无     |
+| tips                | 表头增加提示语                 | String           | `--`                  |     无     |
+| formatter           | 数据格式化，同官方             | String           | `--`                  |     无     |
+| filter              | 过滤器，用来处理日期和金额     | String           | 'money/date/datetime' |     无     |
+| showOverflowTooltip | 当内容过长被隐藏时显示 tooltip | Boolean          | true                  | flase/true |
+| permissions         | 控制按钮是否显示               | Boolean/Function | true                  | flase/true |
 
 > showOverflowTooltip 官方默认为关闭，为了表格体验，统一开启，也可以手动关闭
+
 > type=action 时，只有设置了 width 才会关闭 tool-tip，否则也会开启。
+
+> permissions 对于有 RBAC 权限设置的系统，非常管用，配置如果觉得麻烦，可以使用函数定义，更加简单。
 
 ## pagination
 
@@ -840,12 +847,12 @@
 
 > 主要用于操作按钮列（新增、编辑、删除）
 
-| 参数       | 说明         | 类型            | 可选值                                       | 默认值 |
-| :--------- | :----------- | :-------------- | :------------------------------------------- | :----: |
-| text       | 按钮文本     | String          | 无                                           |   无   |
-| permission | 是否可见     | Object          | `true、false、{prop:'status',show:{1:true}}` |   无   |
-| prop       | 按钮映射字段 | `Object/String` | 参考上文 Demo                                |   无   |
-| val        | 根据值去映射 | Object          | 参考上文 Demo                                |   无   |
+| 参数       | 说明         | 类型                    | 可选值                                                                | 默认值 |
+| :--------- | :----------- | :---------------------- | :-------------------------------------------------------------------- | :----: |
+| text       | 按钮文本     | String                  | 无                                                                    |   无   |
+| permission | 是否可见     | Boolean/Function/Object | `true、false、{prop:'status',show:{1:true}}、function(){return true}` |   无   |
+| prop       | 按钮映射字段 | `Object/String`         | 参考上文 Demo                                                         |   无   |
+| val        | 根据值去映射 | Object                  | 参考上文 Demo                                                         |   无   |
 
 ## 事件
 

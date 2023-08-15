@@ -18,9 +18,6 @@
         @handleChange="getTableList"
       >
         <template v-slot:action>
-          <el-button type="primary" @click="showModal1 = true">
-            嵌套表单
-          </el-button>
           <el-button type="primary" @click="showModal2 = true">
             表单嵌套表格
           </el-button>
@@ -202,15 +199,6 @@ export default {
       // 分页对象
       pagination: {
         total_count: 0,
-      },
-      showModal1: false,
-      rocketConfig: config,
-      userInfo: {
-        a1: '10001',
-        a2: '10002',
-        a3: 1,
-        list: [{ a7: '', a8: '' }],
-        checked: [],
       },
       showModal2: false,
       formConfig: {

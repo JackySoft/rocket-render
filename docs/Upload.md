@@ -2,7 +2,7 @@
 
 仅 RocketForm 支持上传功能
 
-> 上传本身比较复杂，因此单独做说明。整体用法同 ElementUI
+> 上传本身比较复杂，因此单独做说明。整体用法同 ElementUI。
 
 ## 支持的功能列表
 
@@ -251,7 +251,7 @@
 
 ## 基本用法 - 头像上传【listType=avatar】
 
-> 头像一般只能上传一张
+> 头像一般只能上传一张，所以默认会返回一个列表，但只包含一张图片。
 
 :::demo
 
@@ -308,6 +308,8 @@
               rules: [
                 { required: true, message: '请上传文件', trigger: 'blur' },
               ],
+              // 用来接收上传成功后的回调，一般不需要，用于特殊情况。
+              successCallback: () => {},
             },
           ],
         },
@@ -326,6 +328,8 @@
 ```
 
 :::
+
+> 注意：头像只有一张，如果上传成功以后，列表只会返回当前上传的头像列表，数组只有一个元素。提交接口的时候，可能需要从数组里面获取第一个元素，拿到 url 提交到后台去。
 
 ## 基本用法 - 文件拖拽上传【listType=upload】
 
@@ -409,22 +413,23 @@
 
 ## Upload 组件属性
 
-| 参数         | 说明                   | 类型    | 可选值                                  | 默认值 |
-| :----------- | :--------------------- | :------ | :-------------------------------------- | :----: |
-| listType     | 列表对象               | String  | text/picture/picture-card/avatar/upload |  text  |
-| action       | 接口提交地址           | String  | 无                                      |   无   |
-| headers      | 添加请求头             | Object  | 无                                      |   无   |
-| data         | 额外的请求参数         | Object  | 无                                      |   无   |
-| name         | 上传文件 name 值       | String  | 无                                      |  file  |
-| accept       | 上传文件格式，同 HTML5 | String  | 无                                      |   无   |
-| fileType     | 上传文件格式           | Array   | 无                                      |   无   |
-| fileSize     | 上传文件大小，单位 K   | String  | 无                                      |   无   |
-| limit        | 上传文件数量           | Number  | 无                                      |   无   |
-| multiple     | 是否可上传多个         | Boolean | 无                                      |   无   |
-| showFileList | 是否显示文件列表       | Boolean | 无                                      |   无   |
-| domain       | 图片前缀               | String  | 无                                      |   无   |
-| tips         | 上次提示语             | String  | 无                                      |   无   |
-| response     | 接口返回结构           | Boolean | 无                                      |   无   |
+| 参数            | 说明                   | 类型     | 可选值                                  | 默认值 |
+| :-------------- | :--------------------- | :------- | :-------------------------------------- | :----: |
+| listType        | 列表对象               | String   | text/picture/picture-card/avatar/upload |  text  |
+| action          | 接口提交地址           | String   | 无                                      |   无   |
+| headers         | 添加请求头             | Object   | 无                                      |   无   |
+| data            | 额外的请求参数         | Object   | 无                                      |   无   |
+| name            | 上传文件 name 值       | String   | 无                                      |  file  |
+| accept          | 上传文件格式，同 HTML5 | String   | 无                                      |   无   |
+| fileType        | 上传文件格式           | Array    | 无                                      |   无   |
+| fileSize        | 上传文件大小，单位 K   | String   | 无                                      |   无   |
+| limit           | 上传文件数量           | Number   | 无                                      |   无   |
+| multiple        | 是否可上传多个         | Boolean  | 无                                      |   无   |
+| showFileList    | 是否显示文件列表       | Boolean  | 无                                      |   无   |
+| domain          | 图片前缀               | String   | 无                                      |   无   |
+| tips            | 上次提示语             | String   | 无                                      |   无   |
+| response        | 接口返回结构           | Boolean  | 无                                      |   无   |
+| successCallback | 上传成功后的回调       | Function | 无                                      |   无   |
 
 ## response 结构映射
 

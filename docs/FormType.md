@@ -26,29 +26,38 @@
 19. `type='label'`文本组件
 20. `type='tips'`tips 组件
 21. `type='table'` 支持表单中内嵌表格组件
+22. `type='slot'` 如果想自定义，可以使用 slot 来自定义组件。
 
 ### 自定义参数
 
-| 参数   | 说明               | 类型                        | 可选值   | 默认值 |
-| :----- | :----------------- | :-------------------------- | :------- | :----: |
-| type   | 支持大部分组件     | String                      | 参考上文 |   无   |
-| label  | 表单文本           | String                      | 无       |   无   |
-| model  | 需要渲染的 v-model | String                      | 无       |   无   |
-| tips   | 提示语             | String                      | 无       |   无   |
-| change | 自定义事件         | fn(val,values,model,config) | 无       |   无   |
+| 参数         | 说明                     | 类型                        | 可选值   | 默认值 |
+| :----------- | :----------------------- | :-------------------------- | :------- | :----: |
+| type         | 支持大部分组件           | String                      | 参考上文 |   无   |
+| label        | 表单文本                 | String                      | 无       |   无   |
+| model        | 需要渲染的 v-model       | String                      | 无       |   无   |
+| tips         | 提示语                   | String                      | 无       |   无   |
+| change       | 自定义事件               | fn(val,values,model,config) | 无       |   无   |
+| show         | 是否显示此字段           | fn(values)                  | 无       |   无   |
+| fetchOptions | 下拉框独有，可以拉取接口 | fn()                        | 无       |   无   |
+
+> 每个表单都支持 change 事件，用来处理自定义业务。
+> 每个表单都支持 show 方法，用来处理显隐功能。当前只支持在 rocket-form 中做显隐。
 
 ## Input 组件
 
 :::demo
 
 ```html
-<search-form inline="flex" :json="form" :model.sync="queryForm" />
+<search-form :json="form" :model.sync="queryForm" />
 
 <script>
   export default {
     data() {
       return {
-        queryForm: {},
+        queryForm: {
+          status: 1,
+          type: 1,
+        },
         form: [
           {
             type: 'text',
@@ -62,8 +71,8 @@
              * model 当前表单对象
              */
             change(val, values, model) {
-              // 重置query_field、修改其它表单值等，不过对于查询表单而言，我们有专门的重置按钮
-              values.query_field = 0;
+              // 修改其它表单项值
+              values.type = 0;
             },
           },
         ],
@@ -75,14 +84,14 @@
 
 :::
 
-> input 组件配置废除 prepend，可通过独立的 select 配置来增加下拉选项
+> prepend 只支持 字符串，不支持配置组件。
 
 ## Select 组件
 
 :::demo
 
 ```html
-<search-form inline="flex" :json="form" :model.sync="queryForm" />
+<search-form :json="form" :model.sync="queryForm" />
 
 <script>
   export default {
@@ -90,7 +99,6 @@
       return {
         queryForm: {
           userStatus: [1, 2],
-          userName: 'tom',
         },
         form: [
           {
@@ -101,6 +109,7 @@
             filterable: true, //支持输入过滤
             clearable: true,
             change: this.getSelectList, // 自定义事件，回调接口
+            // 字段映射，用来处理接口返回字段，避免前端去循环处理一次。
             field: {
               label: 'name',
               value: 'id',
@@ -111,12 +120,6 @@
               { name: '老用户', id: 2 },
               { name: '新用户', id: 3 },
             ],
-          },
-          {
-            type: 'text',
-            model: 'userName',
-            label: '用户名',
-            placeholder: '请输入用户名',
           },
         ],
       };
@@ -143,7 +146,7 @@
 :::demo
 
 ```html
-<search-form inline="flex" :json.sync="form" :model.sync="queryForm" />
+<search-form :json.sync="form" :model.sync="queryForm" />
 
 <script>
   export default {
@@ -157,11 +160,14 @@
             type: 'select',
             model: 'userStatus',
             label: '用户状态',
+            filterable: true,
+            // 字段映射
             field: {
               label: 'name',
               value: 'id',
             },
             options: [],
+            // 如果下拉是动态的，可以使用此方式直接获取
             fetchOptions: async () => {
               return [
                 {
@@ -177,23 +183,6 @@
           },
         ],
       };
-    },
-    mounted() {
-      setTimeout(() => {
-        this.getList();
-      });
-    },
-    methods: {
-      getList() {
-        // 此处可调用接口、修改form对象等
-        this.form[0].options.push({
-          name: '测试',
-          id: Math.floor(Math.random() * 100),
-        });
-
-        // 或者
-        this.form.$userStatus.options.push({ name: 'hello', id: 3 });
-      },
     },
   };
 </script>
@@ -230,8 +219,9 @@
             label: '日期范围',
             // 对于日期范围控件来说，一般接口需要拆分为两个字段，通过export可以很方便的实现字段拆分
             export: ['startTime', 'endTime'],
-            // 日期换换为时间戳单位
-            valueFormat: 'timestamp',
+            // 日期转换为时间戳单位
+            valueFormat: 'timestamp', // 支持：yyyy-MM-dd HH:mm:ss
+            defaultTime: ['00:00:00', '23:59:59'], //可以设置默认时间，有时候非常有用。后端查询的时候，必须从0点开始才能查到数据。
           },
           {
             type: 'datetime',
@@ -275,7 +265,7 @@
 :::demo
 
 ```html
-<search-form inline="flex" :json="form" :model.sync="queryForm" />
+<search-form :json="form" :model.sync="queryForm" />
 
 <script>
   export default {
@@ -314,7 +304,7 @@
 :::demo
 
 ```html
-<search-form inline="flex" :json="form" :model.sync="queryForm" />
+<search-form :json="form" :model.sync="queryForm" />
 
 <script>
   export default {
@@ -364,6 +354,7 @@
               { label: '在线', value: 1 },
               { label: '离线', value: 2 },
             ],
+            // 支持fetchOptions来动态获取
           },
         ],
       };
@@ -379,7 +370,7 @@
 :::demo
 
 ```html
-<search-form inline="flex" :json="form" :model.sync="queryForm" />
+<search-form :json="form" :model.sync="queryForm" />
 
 <script>
   export default {
@@ -450,7 +441,7 @@ field
 :::demo
 
 ```html
-<search-form inline="flex" :json="form" :model.sync="queryForm" />
+<search-form :json="form" :model.sync="queryForm" />
 <script>
   export default {
     data() {
@@ -629,5 +620,8 @@ field
 | 参数   | 说明                                     | 类型 | 可选值 | 默认值 |
 | :----- | :--------------------------------------- | :--- | :----- | :----: |
 | change | 所有表单均暴露 change 事件，可做业务处理 | fn   | 无     |   无   |
+| show   | 所有表单均暴露 show 事件，可做显示和隐藏 | fn   | 无     |   无   |
 
-> change 事件返回三个参数 fn(val,values,model,json)，分别为当前组件值、当前表单所有值、当前组件 model 和当前 json 配置
+> change 事件返回三个参数 fn(val,values,model,json)，分别为当前组件值、当前表单所有值、当前组件 model 和当前 json 配置.
+
+> show 函数主要用来处理显隐功能，返回 true，显示；返回 false，不显示；

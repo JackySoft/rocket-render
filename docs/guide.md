@@ -22,13 +22,11 @@ Vue.use(RocketRender);
 
 ```html
 <template>
-  <div class="search-box">
-    <search-form
-      :json="form"
-      :model.sync="queryForm"
-      @handleQuery="getTableList"
-    />
-  </div>
+  <search-form
+    :json="form"
+    :model.sync="queryForm"
+    @handleQuery="getTableList"
+  />
 </template>
 <script>
   export default {
@@ -42,19 +40,9 @@ Vue.use(RocketRender);
             label: '用户',
             placeholder: '请输入用户名称',
           },
-          {
-            type: 'switch',
-            model: 'open',
-            label: '状态',
-          },
         ],
       };
     },
   };
 </script>
-<style>
-  .search-box {
-    padding: 15px;
-  }
-</style>
 ```
