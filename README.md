@@ -10,8 +10,6 @@
 
 - Release： [Release 文档](https://jackysoft.github.io/rocket-render-doc/Release.html)。
 
-> 2.3.0 做了重大调整，其中 Search-Form 组件增加了默认样式，可能会受影响，大家可以删除自己的样式或者从新覆盖 rocket-render 的样式。
-
 ## Features
 
 - 基于 json 配置化开发表单、表格组件
@@ -37,16 +35,17 @@ import Vue from 'vue';
 import RocketRender from 'rocket-render';
 import 'rocket-render/lib/rocket-render.css';
 
+// 可根据公司业务做全局定制
 Vue.use(RocketRender, {
   size: 'small', // form/table全局尺寸: medium / small / mini
   empty: '-', // table列中字段为空时，默认显示内容
-  inline: 'flex', // 搜索表单全局配置
-  toolbar: true, // 是否展示工具条
-  align: center, // 表格列对齐方式
-  border: true, // 表格是否显示边框
-  pager: true, // 是否显示分页器
-  pageSize: 20, // 全局每页条数
-  emptyText: '暂无数据', // 表格无数据时展示内容
+  inline: 'flex', // 搜索表单全局配置，默认：flex
+  toolbar: true, // 是否展示工具条，默认：true
+  align: center, // 表格列对齐方式，默认：center
+  border: true, // 表格是否显示边框，默认：true
+  pager: true, // 是否显示分页器，默认：true
+  pageSize: 20, // 全局每页条数，默认：20
+  emptyText: '暂无数据', // 表格无数据时展示内容，默认：暂无数据
 });
 ```
 
@@ -55,8 +54,7 @@ Vue.use(RocketRender, {
 ```html
 <template>
   <div>
-    <!-- rocket-form没有背景和边距，为了体验，可以给外层添加一个容器并设置背景和边距 -->
-    <!-- 表单查询区 -->
+    <!-- 搜索表单，自带样式，可以自定义进行覆盖 -->
     <search-form
       :json="form"
       :model.sync="queryForm"
@@ -93,14 +91,29 @@ Vue.use(RocketRender, {
             model: 'user_name',
             label: '用户',
             placeholder: '请输入用户名称',
-            // 所有组件都正常change事件
+            /**
+             * 所有组件都包含change事件，用于处理自定义业务
+             * val: 当前字段值
+             * values：当前表单值
+             * model: 当前字段
+             */
             change(val, values, model) {
               // 可获取所有值，也可直接重置修改其它字段
               values.use_status = 2;
             },
-            // 用来判断当前表单是否显示
+            /**
+             * 用来做显隐，判断当前字段是否需要展示
+             * 支持函数和对象两种写法
+             * 注意：show只能用在rocket-form中，search-form暂时未支持。
+             */
             show(values) {
-              return values.use_status == 1;
+              return [1, 3, 4].includes(values.user_type);
+            },
+            // 方式二：
+            show: {
+              // 当user_type为 1/3/4 其中一个时显示
+              model: 'user_type',
+              val: [1, 3, 4],
             },
             prepend: 'https://',
             append: '.com',
@@ -128,17 +141,17 @@ Vue.use(RocketRender, {
               { label: '老用户', value: 2 },
               { label: '新用户', value: 3 },
             ],
-            // 如果接口返回的不是label/value结构，可以使用field进行映射
-            field: {
-              label: 'label',
-              value: 'value',
-            },
           },
           {
             type: 'select',
             model: 'user_list',
             label: '用户列表',
             options: [],
+            // 如果接口返回的不是label/value结构，可以使用field进行映射
+            field: {
+              label: 'name',
+              value: 'id',
+            },
             // 异步获取下拉选项值
             fetchOptions: async () => {
               return await request('/api/userList');
@@ -162,15 +175,13 @@ Vue.use(RocketRender, {
             label: '日期范围',
             width: '220px',
             shortcuts: true,
+            // 一般接口需要拆分成两个字段，可以使用export进行拆解，非常实用。
+            export: ['startTime', 'endTime'],
           },
           {
             type: 'time-select',
             label: '注册时段',
             model: 'time_part_start',
-            action: {
-              type: 'reset',
-              model: ['time_part_end'],
-            },
             change: this.handleTime,
             pickerOptions: {
               start: '00:00',
@@ -304,17 +315,37 @@ Vue.use(RocketRender, {
             {
               type: 'action',
               list: [
+                // 第一种：常规用法，通过text显示按钮名称
                 {
-                  text: '查看',
-                  // 按钮显示：支持boolean配置
+                  text: '编辑',
+                  // 默认显示，可不填，一般我们通过permission来做按钮权限，控制显示和隐藏
                   permission: true,
                 },
+                //支持style/class等相关属性，所有el-button支持的属性，都可以添加
                 {
-                  text: '查看',
-                  // 按钮显示：支持函数调用
-                  permission: (row) => {
-                    if (row.status === 1) return true;
-                    return false;
+                  text: '删除',
+                  permission: true,
+                  style: { color: 'red' },
+                  class: 'txt',
+                },
+                // 第二种：支持根据返回值动态显示不同按钮名称
+                {
+                  prop: 'status', //显示的按钮需要根据此状态动态控制
+                  val: {
+                    2: '启用', // status为2，显示启用
+                    1: {
+                      // status为1，显示禁用，同时设置按钮颜色
+                      text: '禁用',
+                      disabled: true, //按钮禁用
+                    },
+                  },
+                  permission: true, //权限控制，根据后台返回动态设置
+                },
+                // 第三种：直接使用函数编程，推荐使用编程
+                {
+                  text: '添加',
+                  permission: ({ status }) => {
+                    return status == 1;
                   },
                 },
               ],
@@ -348,6 +379,7 @@ Vue.use(RocketRender, {
           this.tableJson.pagination.total = res.total_count;
         });
       },
+      // 推荐使用fetchOptions方法来动态获取下拉值。
       getSelectList(val, values, model) {
         this.$request.get('/select/list').then((res) => {
           // 动态设置options数组

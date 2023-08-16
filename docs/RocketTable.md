@@ -521,7 +521,7 @@
                   text: '编辑',
                   permission: true, // 默认显示，可不填，一般我们通过permission来做按钮权限，控制显示和隐藏
                 },
-                //  //支持style/class等相关属性，所有el-button支持的属性，都可以添加
+                //支持style/class等相关属性，所有el-button支持的属性，都可以添加
                 {
                   text: '删除',
                   permission: true,
