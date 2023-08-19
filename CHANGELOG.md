@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.6](https://github.com/JackySoft/rocket-render/compare/v2.3.5...v2.3.6) (2023-08-19)
+
+
+### Features
+
+* 修复问题，删除grid布局 ([371af74](https://github.com/JackySoft/rocket-render/commit/371af74010116cee82133ebbee4a5266289380ef))
+* 修改文档 ([420324a](https://github.com/JackySoft/rocket-render/commit/420324a2e3f3b8517de2788476aa923583306661))
+
 ### [2.3.5](https://github.com/JackySoft/rocket-render/compare/v2.3.4...v2.3.5) (2023-08-16)
 
 ### [2.3.4](https://github.com/JackySoft/rocket-render/compare/v2.3.3...v2.3.4) (2023-08-15)
