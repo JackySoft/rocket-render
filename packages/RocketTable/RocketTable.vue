@@ -205,7 +205,7 @@ export default {
   data() {
     return {
       size:
-        (this.json ? this.json.size : this.$attrs.size) || this.$rocket.size,
+        (this.json && this.json.size) || this.$attrs.size || this.$rocket.size,
       isFullScreen: false,
       pageSize: 0, // 缓存每页条数，只有在切换每页条数时使用
     };
@@ -213,7 +213,7 @@ export default {
   computed: {
     createTableId() {
       return Number(
-        Math.random().toString().substr(3, 3) + Date.now(),
+        Math.random().toString().substring(3, 3) + Date.now(),
       ).toString(36);
     },
     config() {
