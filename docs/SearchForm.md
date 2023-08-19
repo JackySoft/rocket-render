@@ -2,7 +2,7 @@
 
 基础查询表单组件，可设置为栅格布局或行内布局，支持 ElementUI 上所有表单组件，语法与原生一致。
 
-> SearchForm 只能用于查询表单，更复杂的表单可使用 RocketForm。SearchForm 支撑三种布局类型：grid 布局、flex 布局和 inline 布局，默认为 flex 模式（左右分布）。
+> SearchForm 只能用于查询表单，更复杂的表单可使用 RocketForm。SearchForm 支撑两种布局类型：flex 布局和 inline 布局，默认为 flex 模式（左右分布）。
 
 ## 基本用法 - 行内表单(inline=inline)
 
@@ -22,41 +22,6 @@
             model: 'user_name',
             label: '用户名称',
             placeholder: '请输入用户名称',
-          },
-        ],
-      };
-    },
-  };
-</script>
-```
-
-:::
-
-## 基本用法 - 栅格表单(inline=grid)
-
-> 根据屏幕分辨率动态控制，1920 以上每行 4 列，1200 以上每行 3 列，1200 以下每行 2 列
-
-:::demo 通过配置 form 对象，可动态生成 UI 组件，点击查询会更新 model 对象，并通过@handleQuery 事件做后续操作；inline 默认为栅格布局，更完整用法请参考下文详细组件文档。
-
-```html
-<search-form inline="grid" :json="form" :model.sync="queryForm" />
-
-<script>
-  export default {
-    data() {
-      return {
-        queryForm: {},
-        form: [
-          {
-            type: 'input',
-            model: 'user_name',
-            label: '用户',
-            placeholder: '请输入用户名称',
-          },
-          {
-            type: 'switch',
-            model: 'open',
-            label: '状态',
           },
         ],
       };
@@ -104,11 +69,11 @@
 
 ## 组件属性
 
-| 参数   | 说明               | 类型        | 可选值 | 默认值 |
-| :----- | :----------------- | :---------- | :----- | :----: | ------- | ------ |
-| inline | 行内表单，默认栅格 | String      | `grid  |  flex  | inline` | `flex` |
-| json   | 绑定 JSON 对象     | Array[item] | 无     |   无   |
-| model  | 表单初始化数据     | Object      | 无     |   无   |
+| 参数   | 说明               | 类型        | 可选值 | 默认值  |
+| :----- | :----------------- | :---------- | :----- | :-----: | ------ |
+| inline | 行内表单，默认栅格 | String      | `flex  | inline` | `flex` |
+| json   | 绑定 JSON 对象     | Array[item] | 无     |   无    |
+| model  | 表单初始化数据     | Object      | 无     |   无    |
 
 ## json 参数
 

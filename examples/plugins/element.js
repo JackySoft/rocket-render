@@ -3,4 +3,4 @@ import './element-variables.scss';
 
 // 全局引入
 import Element from 'element-ui';
-Vue.use(Element, { size: 'small' });
+Vue.use(Element);

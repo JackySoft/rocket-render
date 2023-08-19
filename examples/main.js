@@ -33,7 +33,6 @@ Vue.prototype.$api = api;
 Vue.prototype.$request = request;
 
 Vue.config.productionTip = false;
-
 new Vue({
   router,
   render: (h) => h(App),

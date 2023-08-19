@@ -8,12 +8,13 @@ const install = function (Vue, opts = {}) {
   Vue.use(RocketForm);
   Vue.use(RocketTable);
   Vue.use(RocketDesc);
+  console.log('===', Vue.prototype.$ELEMENT.size);
   let options = {
     /**
      * form/table全局尺寸
      * medium / small / mini
      */
-    size: opts.size || 'small',
+    size: opts.size || Vue.prototype.$ELEMENT.size,
     // table列中字段为空时，默认显示内容
     empty: opts.empty || '-',
     // 搜索表单全局配置

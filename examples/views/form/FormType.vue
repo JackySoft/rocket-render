@@ -1,34 +1,11 @@
 <template>
   <wrapper>
     <h1>行内表单</h1>
-    <search-box>
-      <!-- 表单查询区 -->
-      <search-form
-        inline="inline"
-        :json="json"
-        :model.sync="queryForm"
-        @handleQuery="getTableList"
-      />
-    </search-box>
-    <h1>垂直表单</h1>
-    <search-box>
-      <!-- 表单查询区 -->
-      <search-form
-        inline="grid"
-        :json="json"
-        :model.sync="queryForm"
-        @handleQuery="getTableList"
-      />
-    </search-box>
+    <!-- 表单查询区 -->
+    <search-form inline="inline" :json="json" :model.sync="queryForm" />
     <h1>flex表单（默认风格）</h1>
-    <search-box>
-      <!-- 表单查询区 -->
-      <search-form
-        :json="json"
-        :model.sync="queryForm"
-        @handleQuery="getTableList"
-      />
-    </search-box>
+    <!-- 表单查询区 -->
+    <search-form :json="json" :model.sync="queryForm" />
   </wrapper>
 </template>
 
@@ -53,6 +30,18 @@ export default {
         query_field: 1,
       },
       json: [
+        {
+          type: 'text',
+          model: 'user_name',
+          label: '用户',
+          placeholder: '请输入用户名称',
+          change(val, values, model) {
+            // 可获取所有值，也可直接重置修改其它字段
+            values.use_status = 2;
+          },
+        },
+      ],
+      json1: [
         {
           type: 'text',
           model: 'user_name',
