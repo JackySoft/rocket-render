@@ -13,6 +13,7 @@
         class="rr-form-item"
         :style="{
           height: isOpen ? 'auto' : formHeight + 'px',
+          overflow: isOpen ? 'auto' : 'hidden',
         }"
       >
         <template v-for="(item, index) in json">
@@ -95,9 +96,9 @@ export default {
     } else if (this.$rocket.size === 'medium') {
       this.formHeight = 58;
     } else if (this.$rocket.size === 'small') {
-      this.formHeight = 55;
-    } else if (this.$rocket.size === 'mini') {
       this.formHeight = 51;
+    } else if (this.$rocket.size === 'mini') {
+      this.formHeight = 47;
     }
     // flex模式下，从新计算展开按钮是否显示
     if (this.mode == 'flex') this.calcHeight();
