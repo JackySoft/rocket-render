@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.7](https://github.com/JackySoft/rocket-render/compare/v2.3.6...v2.3.7) (2023-08-20)
+
+
+### Features
+
+* 优化 ([5306862](https://github.com/JackySoft/rocket-render/commit/5306862068d5dba84f3b73d0600e6b89f512e41e))
+
+
+### Bug Fixes
+
+* 修复高度问题 ([6687565](https://github.com/JackySoft/rocket-render/commit/66875657bb3d9b325a330d27871d066896bd2d50))
+
 ### [2.3.6](https://github.com/JackySoft/rocket-render/compare/v2.3.5...v2.3.6) (2023-08-19)
 
 
