@@ -54,14 +54,14 @@ Vue.use(RocketRender, {
 ```html
 <template>
   <div>
-    <!-- 搜索表单，自带样式，可以自定义进行覆盖 -->
+    <!-- 搜索表单，自带样式，可以自定义进行覆盖，model最好添加sync来同步语法糖 -->
     <search-form
       :json="form"
       :model.sync="queryForm"
       @handleQuery="getTableList"
     />
-    <!-- 列表区域，支撑各种场景的列显示以及自定义列 -->
-    <rocket-table :json="tableJson" @handleChange="getTableList" />
+    <!-- 列表区域，支撑各种场景的列显示以及自定义列，注意json要添加.sync用来同步对象 -->
+    <rocket-table :json.sync="tableJson" @handleChange="getTableList" />
   </div>
 </template>
 
