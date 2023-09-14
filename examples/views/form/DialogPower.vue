@@ -9,11 +9,7 @@
     <div class="table-box">
       <!-- 列表区域 -->
       <rocket-table
-        :loading="showLoading"
-        :column.sync="mainColumn"
-        :data="mainData"
-        border
-        :pagination.sync="pagination"
+        :json.sync="tbJson"
         @handleChange="getTableList"
         @handleAction="handleAction"
       >
@@ -37,7 +33,7 @@
     >
       <rocket-form
         ref="dialogForm1"
-        :json="dialogConfig1"
+        :json.sync="dialogConfig1"
         v-model="userInfo1"
         @handleClose="handleClose('dialogForm1')"
         @handleSubmit="handleSubmit"
@@ -69,7 +65,6 @@ export default {
   title: '弹框表单2',
   data() {
     return {
-      showLoading: false,
       // 保存查询条件
       queryParams: {
         time_part_start: '',
@@ -91,6 +86,10 @@ export default {
           type: 'time-select',
           label: '注册时段',
           gutter: 10,
+          show(values) {
+            if (values.order_status === 1) return false;
+            return true;
+          },
           items: [
             {
               model: 'time_part_start',
@@ -124,95 +123,98 @@ export default {
           label: '是否选择',
         },
       ],
-      mainColumn: [
-        {
-          prop: 'uid',
-          label: '用户ID',
-          width: 80,
-          fixed: 'left',
-        },
-        {
-          prop: 'cname',
-          label: '用户名称',
-          width: 70,
-        },
-        {
-          prop: 'user_img',
-          label: '头像',
-          width: 240,
-        },
-        {
-          prop: 'use_status',
-          label: '当前状态',
-          width: 80,
-          formatter(row) {
-            return {
-              1: '在线',
-              2: '离线',
-            }[row.use_status];
+      tbJson: {
+        // border: true,
+        columns: [
+          {
+            prop: 'uid',
+            label: '用户ID',
+            width: 80,
+            fixed: 'left',
           },
-        },
-        {
-          prop: 'user_email',
-          label: '邮箱',
-          width: 120,
-        },
-        {
-          prop: 'user_status_name',
-          label: '用户状态',
-          width: 70,
-          badge: {
-            id: 'user_status',
-            state: {
-              1: 'warning',
-              2: 'primary',
-              3: 'danger',
+          {
+            prop: 'cname',
+            label: '用户名称',
+            width: 70,
+          },
+          {
+            prop: 'user_img',
+            label: '头像',
+            width: 240,
+          },
+          {
+            prop: 'use_status',
+            label: '当前状态',
+            width: 80,
+            formatter(row) {
+              return {
+                1: '在线',
+                2: '离线',
+              }[row.use_status];
             },
           },
-        },
-        {
-          prop: 'intrest_name',
-          label: '兴趣',
-          width: 70,
-        },
-        {
-          prop: 'register_date',
-          label: '注册时间',
-        },
-        {
-          prop: '',
-          label: '操作',
-          type: 'action',
-          minWidth: '200px',
-          fixed: 'right',
-          list: [
-            {
-              prop: 'status',
-              val: {
-                2: '启用',
-                1: {
-                  text: '禁用',
-                  color: 'danger',
-                },
+          {
+            prop: 'user_email',
+            label: '邮箱',
+            width: 120,
+          },
+          {
+            prop: 'user_status_name',
+            label: '用户状态',
+            width: 70,
+            badge: {
+              id: 'user_status',
+              state: {
+                1: 'warning',
+                2: 'primary',
+                3: 'danger',
               },
-              permission: true,
             },
-            {
-              text: '编辑',
-              permission: true,
-            },
-            {
-              text: '删除',
-              color: 'danger',
-              permission: true,
-            },
-          ],
+          },
+          {
+            prop: 'intrest_name',
+            label: '兴趣',
+            width: 70,
+          },
+          {
+            prop: 'register_date',
+            label: '注册时间',
+          },
+          {
+            prop: '',
+            label: '操作',
+            type: 'action',
+            minWidth: '200px',
+            fixed: 'right',
+            list: [
+              {
+                prop: 'status',
+                val: {
+                  2: '启用',
+                  1: {
+                    text: '禁用',
+                    color: 'danger',
+                  },
+                },
+                permission: true,
+              },
+              {
+                text: '编辑',
+                permission: true,
+              },
+              {
+                text: '删除',
+                color: 'danger',
+                permission: true,
+              },
+            ],
+          },
+        ],
+        data: [],
+        // 分页对象
+        pagination: {
+          total: 0,
         },
-      ],
-      mainData: [],
-      // 分页对象
-      pagination: {
-        total_count: 0,
       },
       showModal1: false,
       showModal2: false,
@@ -425,7 +427,7 @@ export default {
       },
       userInfo1: {
         uid: 10001,
-        intrest: [1, 2],
+        intrest: [],
         query_field: 1,
       },
       dialogConfig2: {
@@ -540,16 +542,14 @@ export default {
   methods: {
     // 首页列表查询
     getTableList(page = 1) {
-      this.showLoading = true;
-      this.pagination.page = page;
+      this.tbJson.pagination.pageNum = page;
       const data = {
         ...this.queryParams, // 查询表单数据
-        ...this.pagination, // 默认分页数据
+        ...this.tbJson.pagination, // 默认分页数据
       };
       this.$api.getBasicList(data).then((res) => {
-        this.showLoading = false;
-        this.mainData = res.list;
-        this.pagination.total_count = res.total_count;
+        this.tbJson.data = res.list;
+        this.tbJson.pagination.total = res.total;
       });
     },
     async handleSubmit() {
@@ -571,7 +571,7 @@ export default {
     handleAction({ index, row }) {
       if (index === 1) {
         this.showModal1 = true;
-        this.userInfo1 = row;
+        this.userInfo1 = { ...row, intrest: [] };
       }
     },
     handleClose(form) {

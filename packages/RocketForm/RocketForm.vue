@@ -164,6 +164,7 @@ export default {
     this.setFastProp();
   },
   methods: {
+    // 控制当前组件是否展示
     calcItemShow(item, value) {
       if (!item.show) {
         return true;
@@ -180,30 +181,6 @@ export default {
      * change(val,values,item,json)当前值/所有值/当前item/所有配置
      */
     handleInput(item, val) {
-      const { action } = item;
-      /**
-       * type: 'reset' 重置对应表单
-       * model: 'all' 重置所有表单
-       * model: ['state'] 重置指定表单
-       * 重置也可以通过change事件进行重置
-       */
-      if (action && action.type === 'reset') {
-        const modelList = action.model;
-        // 重置所有表单
-        if (modelList === 'all') {
-          this.handleReset();
-          this.value[item.model] = val;
-        } else if (modelList) {
-          // 重置部分表单
-          modelList.map((key) => {
-            if (Array.isArray(this.value[key])) {
-              this.value[key] = [];
-            } else {
-              this.value[key] = undefined;
-            }
-          });
-        }
-      }
       if (typeof item.change === 'function') {
         item.change(val, this.value, item.model, this.json);
       }
@@ -227,17 +204,29 @@ export default {
     // 表单重置
     handleReset() {
       this.$refs[this.refForm].resetFields();
+      // 重置时，删除解构出来的日期字段
+      this.json.formList.map((item) => {
+        if (
+          ['daterange', 'monthrange', 'datetimerange'].includes(item.type) &&
+          item.export
+        ) {
+          delete this.value[item.export[0]];
+          delete this.value[item.export[1]];
+        }
+      });
     },
     // 默认走dialog弹框自带的关闭，也可以执行当前页面关闭按钮
     handleClose() {
-      this.$refs[this.refForm].resetFields();
+      this.handleReset();
       this.$emit('handleClose');
     },
     // 默认触发查询点击事件
     handleSubmit() {
       this.$refs[this.refForm].validate((valid) => {
         if (valid) {
-          this.$emit('handleSubmit', this.value);
+          // 过滤掉undefined的参数
+          const params = JSON.parse(JSON.stringify(this.value));
+          this.$emit('handleSubmit', params);
         }
       });
     },

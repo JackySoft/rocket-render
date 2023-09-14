@@ -15,7 +15,7 @@
     <component
       v-if="include(item.type)"
       :is="item.type"
-      :style="item.style || item.width ? `width:${item.width}` : ''"
+      :style="item.style || (item.width ? `width:${item.width}` : '')"
       v-bind="$attrs"
       v-on="$listeners"
     >
@@ -23,7 +23,7 @@
     <!-- text/textarea/number -->
     <el-input
       v-else-if="['input', 'text', 'textarea', 'number'].includes(item.type)"
-      :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
+      :style="item.style || (item.width ? `width:${item.width}` : 'width:100%')"
       :class="[item.arrow === false ? 'disable-arrow' : '']"
       :clearable="typeof item.clearable == 'undefined' ? true : item.clearable"
       v-bind="$attrs"
@@ -37,14 +37,14 @@
     <!-- input-number -->
     <el-input-number
       v-else-if="item.type === 'input-number'"
-      :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
+      :style="item.style || (item.width ? `width:${item.width}` : 'width:100%')"
       v-bind="$attrs"
       v-on="$listeners"
     ></el-input-number>
     <!-- 下拉控件 -->
     <el-select
       v-else-if="item.type === 'select'"
-      :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
+      :style="item.style || (item.width ? `width:${item.width}` : 'width:100%')"
       :clearable="typeof item.clearable == 'undefined' ? true : item.clearable"
       :filterable="
         typeof item.filterable == 'undefined' ? true : item.filterable
@@ -64,14 +64,14 @@
     <!-- TimePicker-固定时间 -->
     <el-time-select
       v-else-if="item.type === 'time-select'"
-      :style="item.style || item.width ? `width:${item.width}` : ''"
+      :style="item.style || (item.width ? `width:${item.width}` : '')"
       v-bind="$attrs"
       v-on="$listeners"
     />
     <!-- TimePicker-任意时间 -->
     <el-time-picker
       v-else-if="item.type === 'time-picker'"
-      :style="item.style || item.width ? `width:${item.width}` : ''"
+      :style="item.style || (item.width ? `width:${item.width}` : '')"
       v-bind="$attrs"
       v-on="$listeners"
     />
@@ -82,7 +82,7 @@
           item.type,
         )
       "
-      :style="item.style || item.width ? `width:${item.width}` : ''"
+      :style="item.style || (item.width ? `width:${item.width}` : '')"
       v-bind="$attrs"
       v-on="$listeners"
       :value-format="item.valueFormat || 'yyyy-MM-dd'"
@@ -97,7 +97,7 @@
       v-else-if="
         ['daterange', 'monthrange', 'datetimerange'].includes(item.type)
       "
-      :style="item.style || item.width ? `width:${item.width}` : ''"
+      :style="item.style || (item.width ? `width:${item.width}` : '')"
       v-bind="$attrs"
       v-on="$listeners"
       :value-format="item.valueFormat || 'yyyy-MM-dd'"
@@ -119,7 +119,7 @@
           item.type,
         )
       "
-      :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
+      :style="item.style || (item.width ? `width:${item.width}` : 'width:100%')"
       v-bind="$attrs"
       v-on="$listeners"
     >
@@ -143,14 +143,14 @@
     <!-- 开关 -->
     <el-switch
       v-else-if="item.type === 'switch'"
-      :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
+      :style="item.style || (item.width ? `width:${item.width}` : 'width:100%')"
       v-bind="$attrs"
       v-on="$listeners"
     ></el-switch>
     <!-- 单个复选，一般可用switch代替 -->
     <el-checkbox
       v-else-if="item.type === 'checkbox' && !item.options"
-      :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
+      :style="item.style || (item.width ? `width:${item.width}` : 'width:100%')"
       v-bind="$attrs"
       v-on="$listeners"
       >{{ item.showLabel ? item.label : '' }}</el-checkbox
@@ -158,13 +158,7 @@
     <!-- 复选框组，为了便于开发，仅通过options区分 -->
     <el-checkbox-group
       v-else-if="item.type === 'checkbox' && item.options"
-      :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
-      :size="item.size"
-      :disabled="item.disabled"
-      :min="item.min"
-      :max="item.max"
-      :text-color="item.textColor"
-      :fill="item.fill"
+      :style="item.style || (item.width ? `width:${item.width}` : 'width:100%')"
       v-bind="$attrs"
       v-on="$listeners"
     >
@@ -179,18 +173,19 @@
       </template>
       <template v-else>
         <el-checkbox
-          v-for="check in item.options"
+          v-for="check in item.options || []"
           :key="check.label"
           :label="check.value"
           v-bind="check"
-          >{{ check.label }}</el-checkbox
         >
+          {{ check.label }}
+        </el-checkbox>
       </template>
     </el-checkbox-group>
     <!-- 级联框 -->
     <el-cascader
       v-else-if="item.type === 'cascader'"
-      :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
+      :style="item.style || (item.width ? `width:${item.width}` : 'width:100%')"
       :clearable="typeof item.clearable == 'undefined' ? true : item.clearable"
       :filterable="
         typeof item.filterable == 'undefined' ? true : item.filterable
@@ -201,7 +196,7 @@
     <!-- 穿梭框 -->
     <el-transfer
       v-else-if="item.type === 'transfer'"
-      :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
+      :style="item.style || (item.width ? `width:${item.width}` : 'width:100%')"
       v-bind="$attrs"
       v-on="$listeners"
     />
@@ -222,7 +217,7 @@
     <!-- 按钮 -->
     <el-button
       v-else-if="item.type === 'button'"
-      :style="item.style || item.width ? `width:${item.width}` : 'width:100%'"
+      :style="item.style || (item.width ? `width:${item.width}` : 'width:100%')"
       v-bind="item.button"
       v-on="$listeners"
     >
@@ -232,7 +227,7 @@
     <div v-else-if="item.type === 'label'" :style="item.style">
       {{ item.text || $attrs.value }}
     </div>
-    <template v-else-if="item.tips || item.type === 'tips'">
+    <template v-if="item.tips || item.type === 'tips'">
       <!-- 默认tips在文本框下面-->
       <div class="form-tip" v-if="typeof item.tips === 'string'">
         {{ item.tips }}

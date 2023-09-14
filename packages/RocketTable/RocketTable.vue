@@ -274,6 +274,10 @@ export default {
       if (typeof btn.permission == 'undefined') return true;
       // 明确标明不显示
       if (btn.permission == false) return false;
+      // 添加函数支持
+      if (typeof btn.permission === 'function') {
+        return btn.permission(btn);
+      }
       return false;
     },
     formatRow(scope) {
@@ -324,8 +328,8 @@ export default {
       this.$emit('update:json', {
         ...this.config,
         pagination: {
-          pageSize: val,
           pageNum: 1,
+          pageSize: val,
           total: this.config.pagination.total,
         },
       });
@@ -336,6 +340,13 @@ export default {
      * @param {val} 页码
      */
     handleCurrentChange(val) {
+      this.$emit('update:json', {
+        ...this.config,
+        pagination: {
+          ...this.config.pagination,
+          pageNum: val,
+        },
+      });
       this.$emit('handleChange', val);
     },
   },

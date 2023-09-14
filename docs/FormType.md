@@ -55,15 +55,17 @@
     data() {
       return {
         queryForm: {
-          status: 1,
-          type: 1,
+          name: '',
+          age: 0,
         },
         form: [
           {
             type: 'text',
-            model: 'user_name',
-            label: '用户名称',
+            model: 'name',
+            label: '名称',
             placeholder: '请输入用户名称',
+            // 控制组件宽度
+            width: '150px',
             /**
              * 所有组件自定义事件，可做异步操作，修改其它表单值
              * val 当前输入值
@@ -73,6 +75,17 @@
             change(val, values, model) {
               // 修改其它表单项值
               values.type = 0;
+            },
+          },
+          {
+            type: 'text',
+            model: 'age',
+            label: '年龄',
+            width: '150px',
+            // 控制组件是否显示
+            show(values) {
+              if (values.name) return true;
+              return false;
             },
           },
         ],
@@ -108,18 +121,23 @@
             multiple: true, // 支持多选
             filterable: true, //支持输入过滤
             clearable: true,
-            change: this.getSelectList, // 自定义事件，回调接口
+            // 如果下拉框的值是动态的，可以使用fetchOptions获取，必须返回promise
+            fetchOptions: async () => {
+              return [
+                { name: '全部', id: 0 },
+                { name: '已注销', id: 1 },
+                { name: '老用户', id: 2 },
+                { name: '新用户', id: 3 },
+              ];
+            },
             // 字段映射，用来处理接口返回字段，避免前端去循环处理一次。
             field: {
               label: 'name',
               value: 'id',
             },
-            options: [
-              { name: '全部', id: 0 },
-              { name: '已注销', id: 1 },
-              { name: '老用户', id: 2 },
-              { name: '新用户', id: 3 },
-            ],
+            options: [],
+            // 如果想要修改其它表单值，可以通过change事件来处理
+            change: this.getSelectList,
           },
         ],
       };
@@ -141,57 +159,19 @@
 
 :::
 
+### 属性介绍
+
+| 参数       | 说明     | 类型    | 可选值     |            默认值             |
+| :--------- | :------- | :------ | :--------- | :---------------------------: |
+| filterable | 是否过滤 | Boolean | true/false |             true              |
+| clearable  | 是否清楚 | Boolean | true/false |             true              |
+| field      | 结构映射 | Object  | 无         | {label:'label',value:'value'} |
+
 > field 为字段映射，下拉框默认使用 label 和 value 渲染，如果接口返回的不是 label 和 value，可以使用 field 进行转换，非常便捷。
 
-:::demo
+> 如果要获取 SearchForm 中的下拉值，可以使用 this.form.$userStatus.options 或者 this.form[0].options。
 
-```html
-<search-form :json.sync="form" :model.sync="queryForm" />
-
-<script>
-  export default {
-    data() {
-      return {
-        queryForm: {
-          userStatus: 1,
-        },
-        form: [
-          {
-            type: 'select',
-            model: 'userStatus',
-            label: '用户状态',
-            filterable: true,
-            // 字段映射
-            field: {
-              label: 'name',
-              value: 'id',
-            },
-            options: [],
-            // 如果下拉是动态的，可以使用此方式直接获取
-            fetchOptions: async () => {
-              return [
-                {
-                  name: '在职',
-                  id: 0,
-                },
-                {
-                  name: '离职',
-                  id: 1,
-                },
-              ];
-            },
-          },
-        ],
-      };
-    },
-  };
-</script>
-```
-
-:::
-
-> 下拉框动态赋值可以使用 fetchOptions 函数直接调用接口进行返回，或者使用 this.form[0].options 动态赋值，还支持通过$拼接字段的方式快捷赋值。
-> 注意：rocket-form跟search-form结构不太一致，所以rocket-form中使用this.json.formList.$userStatus.options 的方式赋值或者取值。
+> 如果要获取 RocketForm 中的下拉值，可以使用 this.json.formList.$userStatus.options 或者 this.json.formList[0].options。因为两个组件的结构不一样。
 
 ## Date 组件
 
@@ -227,15 +207,7 @@
             type: 'datetime',
             label: '注册时间',
             model: 'register_datetime',
-            shortcuts: true,
-          },
-          {
-            type: 'datetimerange',
-            label: '时间范围',
-            model: 'register_datetime_range',
-            // 对于日期范围控件来说，一般接口需要拆分为两个字段，通过export可以很方便的实现字段拆分
-            export: ['startTime', 'endTime'],
-            shortcuts: true,
+            shortcuts: true, //显示快捷键
           },
         ],
       };
@@ -243,6 +215,8 @@
   };
 </script>
 ```
+
+> 这里有一个非常实用的功能：日期范围默认赋值以后，组件会自动分解成两个字段，重置的时候，还能还原回去。
 
 :::
 
@@ -291,7 +265,7 @@
 
 :::
 
-### type = checkbox
+### 属性介绍
 
 | 参数           | 说明     | 类型   | 可选值   | 默认值 |
 | :------------- | :------- | :----- | :------- | :----: | --- |
@@ -429,75 +403,6 @@
 ```
 
 :::
-
-> 用法同 ElementUI
-
-## type = select
-
-> `filterable` 和 `clearable` 默认为 true，增加字段转换
-
-field
-
-:::demo
-
-```html
-<search-form :json="form" :model.sync="queryForm" />
-<script>
-  export default {
-    data() {
-      return {
-        queryForm: {},
-        form: [
-          {
-            type: 'select',
-            model: 'user_status',
-            label: '用户状态',
-            change: this.getSelectList, // 自定义事件，回调接口
-            options: [
-              { label: '全部', value: 0 },
-              { label: '已注销', value: 1 },
-              { label: '老用户', value: 2 },
-              { label: '新用户', value: 3 },
-            ],
-          },
-          {
-            type: 'select',
-            model: 'order_status',
-            label: '订单状态',
-            options: [],
-          },
-        ],
-      };
-    },
-    methods: {
-      /**
-       * change回调
-       * @param {val} 当前值
-       * @param {values} 当前所有值
-       * @param {model} 当前model
-       */
-      getSelectList(val, values, model) {
-        // 可直接清空对应表单
-        values['order_status'] = '';
-        // 可直接对表单进行赋值，也可调用接口动态赋值
-        this.form[1].options = [
-          { label: '全部', value: 0 },
-          { label: '完成', value: 2 },
-          { label: '取消', value: 3 },
-        ];
-      },
-    },
-  };
-</script>
-```
-
-:::
-
-| 参数       | 说明     | 类型    | 可选值     |            默认值             |
-| :--------- | :------- | :------ | :--------- | :---------------------------: |
-| filterable | 是否过滤 | Boolean | true/false |             true              |
-| clearable  | 是否清楚 | Boolean | true/false |             true              |
-| field      | 结构映射 | Object  | 无         | {label:'label',value:'value'} |
 
 ## TimeSelect
 

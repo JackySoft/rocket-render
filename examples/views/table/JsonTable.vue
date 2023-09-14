@@ -1,14 +1,12 @@
 <template>
   <wrapper>
-    <search-box>
-      <!-- 表单查询区 -->
-      <search-form
-        :json="form"
-        :model.sync="queryForm"
-        @handleQuery="getTableList"
-        @handleReset="getTableList"
-      />
-    </search-box>
+    <!-- 表单查询区 -->
+    <search-form
+      :json="form"
+      :model.sync="queryForm"
+      @handleQuery="getTableList"
+      @handleReset="getTableList"
+    />
     <div class="table-box">
       <!-- 列表区域 -->
       <rocket-table
@@ -26,7 +24,6 @@ export default {
   name: 'query',
   data() {
     return {
-      showLoading: false,
       // 保存查询条件
       queryForm: {
         user_name: 'jack',
@@ -84,10 +81,14 @@ export default {
           {
             type: 'primary',
             text: '新增',
+            permission: true,
           },
           {
             type: 'danger',
             text: '删除',
+            permission: () => {
+              return true;
+            },
           },
         ],
         columns: [
@@ -161,6 +162,7 @@ export default {
             width: '200px',
             fixed: 'right',
             list: [
+              // 如果row中的status=1，则显示禁用，2显示启用
               {
                 prop: 'status',
                 val: {
@@ -170,11 +172,15 @@ export default {
                     color: 'danger',
                   },
                 },
+                // 控制按钮是否显示
                 permission: true,
               },
               {
                 text: '编辑',
-                permission: true,
+                // 支持函数判断
+                permission: () => {
+                  return true;
+                },
               },
               {
                 text: '删除',
@@ -198,7 +204,6 @@ export default {
   methods: {
     // 首页列表查询,page为子组件传递的页码，默认为1
     getTableList(pageNum = 1) {
-      this.showLoading = true;
       this.tableJson.pagination.pageNum = pageNum;
       const data = {
         ...this.queryForm, // 查询表单数据
@@ -206,27 +211,37 @@ export default {
       };
       this.$api.getBasicList(data).then((res) => {
         this.tableJson.data = res.list;
-        this.showLoading = false;
         this.tableJson.pagination.total = res.total;
       });
     },
     // 表格上操作按钮
     handleOperate({ text, index }) {
+      /**
+       * 支持两种方式：
+       * 1. 根据索引判断点击的是哪个按钮。
+       * 2. 根据文本判断点击的是哪个按钮。
+       */
       if (index === 0) {
-        this.$message.success('你点击第一个操作按钮');
-      } else if (index === 1) {
-        this.$message.success('你点击了第二个操作按钮');
+        this.$message.success('你点击新增操作按钮');
+      }
+      if (text === '删除') {
+        this.$message.success('你点击了删除操作按钮');
       }
     },
-    // action为点击的按钮索引，row为当前行的数据
-    handleAction({ index, row }) {
+    // 表格中，列的操作按钮：index为点击的按钮索引，row为当前行的数据
+    handleAction({ index, text, row }) {
+      // 方式一：根据文本判断
+      this.$message.success(`你点击了表格中${text}按钮`);
+      /*
+      // 方式二：根据索引判断，有个弊端，万一列表的按钮顺序发生变化，索引可能会错乱。
       if (index === 0) {
-        this.$message.success('你选择了第一个按钮');
+        this.$message.success(`你点击了表格中${text}按钮`);
       } else if (index === 1) {
         this.$message.success('你选择了第二个按钮');
       } else {
         this.$message.success('你选择了第三个按钮');
       }
+      */
       console.log(row);
     },
   },

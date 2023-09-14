@@ -55,10 +55,15 @@
             {
               type: 'primary',
               text: '新增',
+
+              permission: true,
             },
             {
               type: 'danger',
               text: '删除',
+              permission: () => {
+                return true;
+              },
             },
           ],
           columns: [
@@ -133,6 +138,7 @@
               width: '200px',
               fixed: 'right',
               list: [
+                // 根据status的值来显示不同的按钮名称
                 {
                   prop: 'status',
                   val: {
@@ -142,11 +148,12 @@
                       color: 'danger',
                     },
                   },
+                  // 控制按钮是否显示，默认使用boolean控制
                   permission: true,
                 },
                 {
                   text: '编辑',
-                  // 支持函数的形式判断是否显示
+                  // 也支持函数的形式判断是否显示
                   permission: (row) => {
                     return row.status == 1;
                   },
@@ -200,21 +207,28 @@
       },
       // 表格上操作按钮
       handleOperate({ text, index }) {
+        /**
+         * 支持两种方式：
+         * 1. 根据索引判断点击的是哪个按钮。
+         * 2. 根据文本判断点击的是哪个按钮。
+         */
         if (index === 0) {
-          this.$message.success('你点击第一个操作按钮');
-        } else if (index === 1) {
-          this.$message.success('你点击了第二个操作按钮');
+          this.$message.success('你点击新增操作按钮');
+        }
+        if (text === '删除') {
+          this.$message.success('你点击了删除操作按钮');
         }
       },
-      // action为点击的按钮索引，row为当前行的数据
+      // 表格中，列的操作按钮：index为点击的按钮索引，row为当前行的数据
       handleAction({ index, text, row }) {
-        // 也可以根据text的按钮文本来判断，因为索引不太可靠，有时候，删除一个按钮以后，索引会发生变化。
-        if (index === 0) {
-          this.$message.success('你选择了第一个按钮');
-        } else if (index === 1) {
-          this.$message.success('你选择了第二个按钮');
-        } else {
-          this.$message.success('你选择了第三个按钮');
+        // 方式一：根据文本判断
+        if (text === '禁用') this.$message.success(`你点击了表格中${text}按钮`);
+        // 方式二：根据索引判断，但是有一个弊端，如果列表按钮顺序发生变化，会导致索引错乱。
+        if (index === 1) {
+          this.$message.success('你点击了编辑按钮');
+        }
+        if (index === 2) {
+          this.$message.success('你点击了删除按钮');
         }
         console.log(row);
       },

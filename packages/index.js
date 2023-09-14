@@ -8,7 +8,6 @@ const install = function (Vue, opts = {}) {
   Vue.use(RocketForm);
   Vue.use(RocketTable);
   Vue.use(RocketDesc);
-  console.log('===', Vue.prototype.$ELEMENT.size);
   let options = {
     /**
      * form/table全局尺寸

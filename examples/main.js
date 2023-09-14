@@ -20,7 +20,7 @@ Vue.use(RocketRender, {
   toolbar: true,
   align: 'center',
   stripe: true,
-  border: false,
+  border: true,
   pager: true,
   pageSize: 20,
   emptyText: '暂无数据',

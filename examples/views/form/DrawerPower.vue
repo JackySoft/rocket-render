@@ -10,11 +10,7 @@
     <div class="table-box">
       <!-- 列表区域 -->
       <rocket-table
-        border
-        :showLoading="showLoading"
-        :column.sync="mainColumn"
-        :data="mainData"
-        :pagination.sync="pagination"
+        :json.sync="tableJson"
         @handleChange="getTableList"
         @handleAction="handleAction"
       >
@@ -49,8 +45,9 @@ export default {
   title: '抽屉表单',
   data() {
     return {
-      queryForm: {}, // v-model值
-      showLoading: false,
+      queryForm: {
+        register_date: ['2023-09-01', '2023-09-14'],
+      },
       form: [
         {
           type: 'select',
@@ -75,94 +72,99 @@ export default {
           model: 'cname',
         },
       ],
-      mainColumn: [
-        {
-          prop: 'uid',
-          label: '用户ID',
-          width: 80,
-        },
-        {
-          prop: 'cname',
-          label: '用户名称',
-          width: 70,
-        },
-        {
-          prop: 'user_img',
-          label: '头像',
-          width: 240,
-        },
-        {
-          prop: 'use_status',
-          label: '当前状态',
-          width: 70,
-          formatter(row) {
-            return {
-              1: '在线',
-              2: '离线',
-            }[row.use_status];
+      tableJson: {
+        columns: [
+          {
+            prop: 'uid',
+            label: '用户ID',
+            width: 80,
           },
-        },
-        {
-          prop: 'user_email',
-          label: '邮箱',
-          width: 120,
-        },
-        {
-          prop: 'user_status_name',
-          label: '用户状态',
-          width: 80,
-          type: 'badge',
-          badge: {
-            id: 'user_status',
-            state: {
-              1: 'warning',
-              2: 'primary',
-              3: 'danger',
+          {
+            prop: 'cname',
+            label: '用户名称',
+            width: 70,
+          },
+          {
+            prop: 'user_img',
+            label: '头像',
+            width: 240,
+          },
+          {
+            prop: 'use_status',
+            label: '当前状态',
+            width: 70,
+            formatter(row) {
+              return {
+                1: '在线',
+                2: '离线',
+              }[row.use_status];
             },
           },
-        },
-        {
-          prop: 'intrest_name',
-          label: '兴趣',
-        },
-        {
-          prop: 'register_date',
-          label: '注册时间',
-        },
-        {
-          prop: '',
-          label: '操作',
-          width: '150px',
-          type: 'action',
-          list: [
-            {
-              prop: 'status',
-              val: {
-                2: '启用',
-                1: {
-                  text: '禁用',
-                  color: 'danger',
-                },
+          {
+            prop: 'user_email',
+            label: '邮箱',
+            width: 120,
+          },
+          {
+            prop: 'user_status_name',
+            label: '用户状态',
+            width: 80,
+            type: 'badge',
+            badge: {
+              id: 'user_status',
+              state: {
+                1: 'warning',
+                2: 'primary',
+                3: 'danger',
               },
-              permission: true,
             },
-            {
-              text: '编辑',
-              permission: true,
-            },
-            {
-              text: '删除',
-              color: 'danger',
-              permission: true,
-            },
-          ],
+          },
+          {
+            prop: 'intrest_name',
+            label: '兴趣',
+          },
+          {
+            prop: 'register_date',
+            label: '注册时间',
+          },
+          {
+            prop: '',
+            label: '操作',
+            width: '150px',
+            type: 'action',
+            list: [
+              {
+                prop: 'status',
+                val: {
+                  2: '启用',
+                  1: {
+                    text: '禁用',
+                    color: 'danger',
+                  },
+                },
+                permission: true,
+              },
+              {
+                text: '编辑',
+                permission: true,
+              },
+              {
+                text: '删除',
+                color: 'danger',
+                permission: true,
+              },
+            ],
+          },
+        ],
+        data: [],
+        // 分页对象
+        pagination: {
+          pageNum: 1,
+          pageSize: 10,
+          total: 0,
         },
-      ],
-      mainData: [],
-      // 分页对象
-      pagination: {
-        total_count: 0,
       },
+
       showModal: false,
       dialogForm: {
         intrest: [],
@@ -281,23 +283,21 @@ export default {
   },
   methods: {
     // 首页列表查询
-    getTableList(page = 1) {
-      this.showLoading = true;
-      this.pagination.page = page;
+    getTableList(pageNum = 1) {
+      this.tableJson.pagination.pageNum = pageNum;
       const data = {
-        ...this.queryParams, // 查询表单数据
-        ...this.pagination, // 默认分页数据
+        ...this.queryForm, // 查询表单数据
+        ...this.tableJson.pagination, // 默认分页数据
       };
       this.$api.getBasicList(data).then((res) => {
-        this.mainData = res.list;
-        this.showLoading = false;
-        this.pagination.total_count = res.total_count;
+        this.tableJson.data = res.list;
+        this.tableJson.pagination.total = res.total;
       });
     },
     handleAction({ index, row }) {
       if (index === 1) {
         this.showModal = true;
-        this.dialogForm = row;
+        this.dialogForm = { ...row, intrest: [] };
       }
     },
     openModal() {

@@ -17,13 +17,15 @@
         }"
       >
         <template v-for="(item, index) in json">
-          <FormItem
-            :key="index"
-            :item="item"
-            v-bind="item"
-            :value="value[item.model]"
-            @input="(val) => handleInput(item, val)"
-          />
+          <template v-if="calcItemShow(item, value)">
+            <FormItem
+              :key="index"
+              :item="item"
+              v-bind="item"
+              :value="value[item.model]"
+              @input="(val) => handleInput(item, val)"
+            />
+          </template>
         </template>
         <div ref="expandFlag"></div>
       </div>
@@ -63,6 +65,7 @@
   </el-form>
 </template>
 <script>
+import SearchForm from '.';
 import FormItem from './../components/FormItem';
 export default {
   name: 'SearchForm',
@@ -78,6 +81,7 @@ export default {
       value: { ...this.model }, // 初始化表单值
       isOpen: false, // 当前是否为展开状态
       formHeight: 0,
+      showOpen: false,
     };
   },
   computed: {
@@ -90,6 +94,9 @@ export default {
     this.setFastProp();
   },
   mounted() {
+    if (!Array.isArray(this.json)) {
+      throw new Error('SearchForm的属性json必须为一个数组');
+    }
     // 根据全局尺寸，计算SearchForm高度
     if (this.$rocket.size == '') {
       this.formHeight = 62;
@@ -102,38 +109,42 @@ export default {
     }
     // flex模式下，从新计算展开按钮是否显示
     if (this.mode == 'flex') this.calcHeight();
+    // 如果默认有日期数组，并且携带export，我们会自动拆解
+    this.json.map((item) => {
+      if (
+        ['daterange', 'monthrange', 'datetimerange'].includes(item.type) &&
+        item.export
+      ) {
+        const [start, end] = this.value[item.model];
+        if (!Array.isArray(item.export)) {
+          throw Error('item.export must be a Array');
+        }
+        if (start && end) {
+          this.value[item.export[0]] = start;
+          this.value[item.export[1]] = end;
+          this.$emit('update:model', { ...this.value });
+        }
+      }
+    });
   },
   methods: {
+    // 控制当前组件是否展示
+    calcItemShow(item, value) {
+      if (!item.show) {
+        return true;
+      }
+      if (typeof item.show === 'object') {
+        return item.show.val.includes(value[item.show.model]);
+      }
+      if (typeof item.show === 'function') {
+        return item.show(value);
+      }
+    },
     /**
      * 触发自定义事件
      * @callback(val,values,model)当前值/所有值/当前model
      */
     handleInput(item, val) {
-      const { action } = item;
-      /**
-       * type: 'reset' 重置对应表单
-       * model: 'all' 重置所有表单
-       * model: ['state'] 重置指定表单
-       * 重置也可以通过change事件进行重置
-       */
-      if (action && action.type === 'reset') {
-        const modelList = action.model;
-        // 重置所有表单
-        if (modelList === 'all') {
-          this.handleReset();
-          this.value[item.model] = val;
-        } else if (modelList) {
-          // 重置部分表单
-          modelList.map((key) => {
-            if (Array.isArray(this.value[key])) {
-              this.value[key] = [];
-            } else {
-              this.value[key] = undefined;
-            }
-            return key;
-          });
-        }
-      }
       if (typeof item.change === 'function') {
         item.change(val, this.value, item.model, this.json);
       }
@@ -142,9 +153,6 @@ export default {
         ['daterange', 'monthrange', 'datetimerange'].includes(item.type) &&
         item.export
       ) {
-        if (!Array.isArray(item.export)) {
-          throw Error('item.export must be a Array');
-        }
         this.value = {
           ...this.value,
           [item.model]: val || '',
@@ -162,17 +170,20 @@ export default {
     handleReset() {
       this.$refs.searchForm.resetFields();
       this.json.map((item) => {
-        if (
-          ['daterange', 'monthrange', 'datetimerange'].includes(item.type) &&
-          item.export
-        ) {
+        if (['daterange', 'monthrange', 'datetimerange'].includes(item.type)) {
           let dateRange = this.value[item.model];
-          if (dateRange) {
+          // 如果日期对象没有两个值，我们就直接给空数组，同时删除export字段
+          if (dateRange && dateRange.length < 2) {
+            this.value[item.model] = [];
+            if (item.export) {
+              delete this.value[item.export[0]];
+              delete this.value[item.export[1]];
+            }
+          }
+          // 如果默认就有值，重置以后依然会保持默认的值，此时还需要修改export
+          if (dateRange && dateRange.length === 2 && item.export) {
             this.value[item.export[0]] = dateRange[0];
             this.value[item.export[1]] = dateRange[1];
-          } else {
-            delete this.value[item.export[0]];
-            delete this.value[item.export[1]];
           }
         }
       });
@@ -183,7 +194,14 @@ export default {
      * 点击查询，回传数据，重置页码
      */
     handleQuery() {
-      this.$emit('update:model', { ...this.value });
+      // 提交给接口的参数，过滤掉undefined和空字符串
+      const params = {};
+      Object.keys(this.value).map((key) => {
+        if (typeof this.value[key] === 'undefined') return;
+        if (this.value[key] === '') return;
+        params[key] = this.value[key];
+      });
+      this.$emit('update:model', { ...params });
       this.$emit('handleQuery', 1);
     },
     setFastProp() {
