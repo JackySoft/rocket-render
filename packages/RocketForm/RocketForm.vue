@@ -210,8 +210,20 @@ export default {
           ['daterange', 'monthrange', 'datetimerange'].includes(item.type) &&
           item.export
         ) {
-          delete this.value[item.export[0]];
-          delete this.value[item.export[1]];
+          let dateRange = this.value[item.model];
+          // 如果日期对象没有两个值，我们就直接给空数组，同时删除export字段
+          if (dateRange && dateRange.length < 2) {
+            this.value[item.model] = [];
+            if (item.export) {
+              delete this.value[item.export[0]];
+              delete this.value[item.export[1]];
+            }
+          }
+          // 如果默认就有值，重置以后依然会保持默认的值，此时还需要修改export
+          if (dateRange && dateRange.length === 2 && item.export) {
+            this.value[item.export[0]] = dateRange[0];
+            this.value[item.export[1]] = dateRange[1];
+          }
         }
       });
     },
