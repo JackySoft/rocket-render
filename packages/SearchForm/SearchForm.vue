@@ -22,6 +22,7 @@
               :key="index"
               :item="item"
               v-bind="item"
+              :options="undefined"
               :value="value[item.model]"
               @input="(val) => handleInput(item, val)"
             />
@@ -218,9 +219,11 @@ export default {
     },
     // flex 布局模式下，计算是否有展开按钮
     calcHeight() {
-      this.showOpen = false;
-      const offsetTop = this.$refs.expandFlag.offsetTop;
-      if (offsetTop > this.formHeight) this.showOpen = true;
+      this.$nextTick(() => {
+        this.showOpen = false;
+        const offsetTop = this.$refs.expandFlag.offsetTop;
+        if (offsetTop > this.formHeight) this.showOpen = true;
+      });
     },
   },
   /**
@@ -233,6 +236,14 @@ export default {
    * 当父组件修改model时，需要同步修改子组件
    */
   watch: {
+    // 如果JSON是异步的，则可能会出现展开按钮无法显示，需要同步再计算一次
+    json: {
+      handler: function (val, oldVal) {
+        console.log(val.length, oldVal.length);
+        this.calcHeight();
+      },
+      deep: true,
+    },
     model: {
       handler: function (val) {
         this.value = { ...val };

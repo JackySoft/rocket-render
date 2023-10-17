@@ -60,6 +60,7 @@ export default {
           label: '用户状态',
           multiple: true, // 支持多选
           filterable: true, // 支持输入过滤
+          width: '200px',
           options: [
             { label: '全部', value: 0 },
             { label: '已注销', value: 1 },
@@ -71,6 +72,27 @@ export default {
           type: 'date',
           model: 'register_date',
           label: '注册日期',
+          shortcuts: true,
+          width: '150px',
+        },
+        {
+          type: 'date',
+          model: 'register_date1',
+          label: '注册日期1',
+          shortcuts: true,
+          width: '150px',
+        },
+        {
+          type: 'date',
+          model: 'register_date2',
+          label: '注册日期2',
+          shortcuts: true,
+          width: '150px',
+        },
+        {
+          type: 'date',
+          model: 'register_date2',
+          label: '注册日期3',
           shortcuts: true,
           width: '150px',
         },

@@ -44,6 +44,7 @@ const install = function (Vue, opts = {}) {
   if (typeof opts.stripe == 'undefined') options.rocketTable.stripe = true;
   if (typeof opts.border == 'undefined') options.rocketTable.border = true;
   if (typeof opts.pager == 'undefined') options.rocketTable.pager = true;
+  Vue.prototype.$ELEMENT.size = options.size;
   Vue.prototype.$rocket = options;
 };
 export { SearchForm, RocketForm, RocketTable, RocketDesc };
