@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.11](https://github.com/JackySoft/rocket-render/compare/v2.3.9...v2.3.11) (2023-10-17)
+
+
+### Features
+
+* 优化 ([fe26ec2](https://github.com/JackySoft/rocket-render/commit/fe26ec2b92c8e2895850d854844731c7138d5ec9))
+
+
+### Bug Fixes
+
+* 修复rocket-form ([26ea84b](https://github.com/JackySoft/rocket-render/commit/26ea84bd74c14d2be137a1786d99f48debd33c06))
+
 ### [2.3.10](https://github.com/JackySoft/rocket-render/compare/v2.3.9...v2.3.10) (2023-09-14)
 
 
