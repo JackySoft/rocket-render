@@ -18,6 +18,8 @@
 
 ## Install
 
+1. 安装 ElementUI
+
 ```
 yarn add rocket-render -S
 
@@ -26,22 +28,36 @@ yarn add rocket-render -S
 npm i rocket-render -S
 ```
 
+2. rocket-render 依赖 ElementUI，所以需要提前安装 ElementUI
+
+```
+yarn add element-ui -S
+```
+
+3. 本案例需要使用 axios，所以也需要安装 axios（插件本身不需要 axios）
+
+```
+yarn add axios -S
+```
+
 ## Usage
 
 1. main.js 中全局安装插件
 
 ```js
 import Vue from 'vue';
+import Element from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 import RocketRender from 'rocket-render';
 import 'rocket-render/lib/rocket-render.css';
-
+Vue.use(Element);
 // 可根据公司业务做全局定制
 Vue.use(RocketRender, {
   size: 'small', // form/table全局尺寸: medium / small / mini
   empty: '-', // table列中字段为空时，默认显示内容
   inline: 'flex', // 搜索表单全局配置，默认：flex
   toolbar: true, // 是否展示工具条，默认：true
-  align: center, // 表格列对齐方式，默认：center
+  align: 'center', // 表格列对齐方式，默认：center
   border: true, // 表格是否显示边框，默认：true
   pager: true, // 是否显示分页器，默认：true
   pageSize: 20, // 全局每页条数，默认：20
@@ -53,7 +69,8 @@ Vue.use(RocketRender, {
 
 ```html
 <template>
-  <div>
+  <!-- style 不是必须的，此处为了好看，添加一个默认背景 -->
+  <div style="background-color: #f1f1f1;padding: 20px;">
     <!-- 搜索表单，自带样式，可以自定义进行覆盖，model最好添加sync来同步语法糖 -->
     <search-form
       :json="form"
@@ -61,11 +78,16 @@ Vue.use(RocketRender, {
       @handleQuery="getTableList"
     />
     <!-- 列表区域，支撑各种场景的列显示以及自定义列，注意json要添加.sync用来同步对象 -->
-    <rocket-table :json.sync="tableJson" @handleChange="getTableList" />
+    <rocket-table
+      :json.sync="tableJson"
+      @handleChange="getTableList"
+      style="margin-top: 20px;padding: 20px;"
+    />
   </div>
 </template>
 
 <script>
+  import axios from 'axios';
   export default {
     name: 'index',
     data() {
@@ -135,6 +157,7 @@ Vue.use(RocketRender, {
             multiple: true, // 支持多选
             filterable: true, // 支持输入过滤
             change: this.getSelectList, // 自定义事件，回调接口
+            width: '260px',
             options: [
               { label: '全部', value: 0 },
               { label: '已注销', value: 1 },
@@ -154,7 +177,10 @@ Vue.use(RocketRender, {
             },
             // 异步获取下拉选项值
             fetchOptions: async () => {
-              return await request('/api/userList');
+              const res = await axios.get(
+                'https://www.fastmock.site/mock/f7b55d085be70bdf2bdd62fb3c65081a/api/userList',
+              );
+              return res.data;
             },
             // 或者在mounted中，通过this.form[1].options = [{label:1,value:1}] 动态赋值
           },
@@ -366,25 +392,30 @@ Vue.use(RocketRender, {
     },
     methods: {
       // 首页列表查询,page为子组件传递的页码，默认为1
-      getTableList(page = 1) {
-        this.tableJson.showLoading = true;
+      async getTableList(page = 1) {
         this.tableJson.pagination.page = page;
         const data = {
           ...this.queryForm, // 查询表单数据
           ...this.tableJson.pagination, // 默认分页数据
         };
-        this.$api.getBasicList(data).then((res) => {
-          this.tableJson.data = res.list;
-          this.tableJson.showLoading = false;
-          this.tableJson.pagination.total = res.total_count;
-        });
+        const res = await axios.get(
+          'https://www.fastmock.site/mock/f7b55d085be70bdf2bdd62fb3c65081a/api/basic/list',
+          data,
+        );
+        this.tableJson.data = res.data.list;
+        this.tableJson.pagination.total = res.data.total;
       },
       // 推荐使用fetchOptions方法来动态获取下拉值。
       getSelectList(val, values, model) {
-        this.$request.get('/select/list').then((res) => {
-          // 动态设置options数组
-          this.form[3].options = res;
-        });
+        console.log(val, values, model);
+        axios
+          .get(
+            'https://www.fastmock.site/mock/f7b55d085be70bdf2bdd62fb3c65081a/api/userList',
+          )
+          .then((res) => {
+            // 动态设置options数组
+            this.form[3].options = res.data;
+          });
       },
       handleTime(val) {
         this.form[7].pickerOptions.minTime = val;
