@@ -18,7 +18,7 @@
 
 ## Install
 
-1. 安装 ElementUI
+1. 安装 rocket-render
 
 ```
 yarn add rocket-render -S
@@ -28,13 +28,13 @@ yarn add rocket-render -S
 npm i rocket-render -S
 ```
 
-2. rocket-render 依赖 ElementUI，所以需要提前安装 ElementUI
+2. rocket-render 依赖 ElementUI，所以需要安装 ElementUI
 
 ```
 yarn add element-ui -S
 ```
 
-3. 本案例需要使用 axios，所以也需要安装 axios（插件本身不需要 axios）
+3. 本案例需要使用 axios 发送请求，所以也需要安装 axios（插件本身不需要 axios）
 
 ```
 yarn add axios -S
@@ -48,9 +48,12 @@ yarn add axios -S
 import Vue from 'vue';
 import Element from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+
 import RocketRender from 'rocket-render';
 import 'rocket-render/lib/rocket-render.css';
+
 Vue.use(Element);
+
 // 可根据公司业务做全局定制
 Vue.use(RocketRender, {
   size: 'small', // form/table全局尺寸: medium / small / mini
@@ -92,7 +95,6 @@ Vue.use(RocketRender, {
     name: 'index',
     data() {
       return {
-        showLoading: false,
         // 表单model对象，用于初始化值和获取表单值
         queryForm: {
           user_name: 'jack',
